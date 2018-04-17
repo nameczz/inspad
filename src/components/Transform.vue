@@ -31,39 +31,39 @@ export default {
             },
             {
               name: '化学实体识别',
-              path: '/research/chemidentify',
+              path: '/research/chemdetect',
             },
             {
               name: '新闻实体识别',
-              path: 'null',
+              path: '/research/newsdetect',
             },
             {
               name: '英文近似关键词',
-              path: 'null',
+              path: '/research/endetect',
             },
             {
               name: '中文近似关键词',
-              path: 'null',
+              path: '/research/cndetect',
             },
             {
               name: '标准名称提取',
-              path: 'null',
+              path: '/research/titledetect',
             },
             {
               name: '标题翻译',
-              path: 'null',
+              path: '/research/titletranslate',
             },
             {
               name: '摘要翻译',
-              path: 'null',
+              path: '/research/summarytranslate',
             },
             {
               name: '单位监测',
-              path: 'null',
+              path: '/research/unitdetect',
             },
             {
               name: '图像表格提取',
-              path: 'null',
+              path: '/research/phototabledetect',
             },
           ],
         },

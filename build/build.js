@@ -1,6 +1,7 @@
 'use strict'
 require('./check-versions')()
 
+process.argvobj = require('./params')()
 process.env.NODE_ENV = 'production'
 
 const ora = require('ora')

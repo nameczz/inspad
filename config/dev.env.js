@@ -4,8 +4,8 @@ const prodEnv = require('./prod.env')
 
 module.exports = merge(prodEnv, {
   NODE_ENV: '"development"',
-  // API_DOMAIN: '"http://ranking-webapi.zhihuiya.com"',
-  API_DOMAIN: '"http://192.168.44.66:9000"',
+  API_DOMAIN: '"http://ranking-webapi.zhihuiya.com"',
+  // API_DOMAIN: '"http://192.168.44.66:9000"',
   API_DOMAIN_API: '"https://api.zhihuiya.com"',
   API_DOMAIN_PASSPORT: '"https://passport.zhihuiya.com"',
   API_DOMAIN_DEV_CENTER: '"https://dev-center.zhihuiya.com"',

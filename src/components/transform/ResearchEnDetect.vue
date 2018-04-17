@@ -1,0 +1,100 @@
+<template>
+  <div>
+    <div class="trans-header">
+      <div class="container">
+        英文近似关键词
+      </div>
+    </div>
+    <div class="trans-body">
+      <div class="trans-main">
+        <div class="container">
+          <div class="info">
+            <div class="info-title">GET /compute/kwd_helper_en/</div>
+            <div class="info-desc">基于最先进的词向量算法，PatSnap 关键词助手 API 可以推荐专利领域的英文相似词。</div>
+          </div>
+          <section>
+            <header><icon src="~svg/view.svg"/> 案例演示</header>
+            <div class="clearfix">
+              <el-input
+                class="input-text float-left"
+                type="textarea"
+                resize="none"
+                :rows="4"
+                placeholder="请输入内容"
+                v-model="inputText"
+                name="inputText"
+                v-validate="'required'"
+                data-vv-as="文本"
+                :class="{'error':errors.has('inputText') }">
+              </el-input>
+              <el-button type="success" size="small" class="translate float-left" @click="translate">
+                识别
+              </el-button>
+              <div class="out-text float-left" v-html="outputText">
+              </div>
+            </div>
+          </section>
+          <section>
+            <header><icon src="~svg/code.svg"/> Json Schema</header>
+            <highlight :json="json"></highlight>
+          </section>
+        </div>
+      </div>
+      <copyright/>
+    </div>
+  </div>
+</template>
+
+<script>
+import {Input} from 'element-ui'
+import Highlight from 'md/highlight/Highlight'
+import apiResearch from 'api/research'
+export default {
+  components: {
+    [Input.name]: Input,
+    Highlight,
+  },
+  data() {
+    return {
+      inputText: 'tooth_brush,image_process,automobile',
+      outputText: '',
+      json: '',
+    }
+  },
+  methods: {
+    async translate() {
+      let res = await apiResearch.kwdHelperEn({
+        data: {words: this.inputText},
+      })
+      this.json = res
+      console.log(res)
+      if(res['error_code'] === 0) {
+        this.outputText = res.data.map(({keyword}) => keyword).join(', ')
+      }
+    },
+  },
+}
+</script>
+
+<style scoped lang="scss">
+  @import "~sty/var";
+  @import "~sty/components/transform";
+  .input-text{
+    width: 366px;
+  }
+  .translate{
+    width: 80px;
+    margin: 0 20px;
+  }
+  .out-text{
+    width: 366px;
+    height: 96px;
+    background: #ffffff;
+    border-radius: 4px;
+    font-size: 14px;
+    line-height: 1.5;
+    padding: 6px 16px;
+    box-sizing: border-box;
+    overflow-y: auto;
+  }
+</style>

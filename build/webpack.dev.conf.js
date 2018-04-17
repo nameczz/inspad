@@ -1,4 +1,5 @@
 'use strict'
+process.argvobj = require('./params')()
 const utils = require('./utils')
 const webpack = require('webpack')
 const config = require('../config')
