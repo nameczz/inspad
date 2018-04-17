@@ -1,0 +1,141 @@
+<template>
+  <div>
+    <header class="header">
+      <a class="float-left header-left">
+        <icon class="logo" src="~svg/open-api.svg"/>
+      </a>
+      <el-button class="login-button float-right" @click="openLoginDialog">登录</el-button>
+    </header>
+    <router-view class="content"></router-view>
+    <el-dialog
+      title="登录"
+      :visible.sync="dialogVisible"
+      width="30%">
+      <form @submit.prevent="login">
+        <div class="field">
+          <el-input class="username"
+                    v-model="username"
+                    name="username"
+                    v-validate="'required|min:3'"
+                    data-vv-as="用户名"
+                    :class="{'error':errors.has('username') }"
+                    placeholder="用户名"></el-input>
+          <span v-show="errors.has('username')"
+                class="help error">{{ errors.first('username') }}</span>
+        </div>
+        <div class="field">
+          <el-input class="password"
+                    type="password"
+                    name="password"
+                    v-model="password"
+                    v-validate="'required|min:3'"
+                    data-vv-as="密码"
+                    :class="{'error':errors.has('password') }"
+                    placeholder="密码"></el-input>
+          <span v-show="errors.has('password')"
+                class="help error">{{ errors.first('password') }}</span>
+        </div>
+        <el-button class="login" type="success" native-type="submit">登录</el-button>
+      </form>
+    </el-dialog>
+  </div>
+</template>
+
+<script>
+import {Dialog, Input} from 'element-ui'
+import apiAuth from 'api/auth'
+import apiDev from 'api/dev'
+import Cookies from 'js-cookie'
+import {cookieToken, cookieRefreshToken, cookieClientName, cookieClientId, cookieClientSecret} from '@/const/cookies'
+import 'md/validate'
+
+export default {
+  components: {
+    [Dialog.name]: Dialog,
+    [Input.name]: Input,
+  },
+  data() {
+    return {
+      dialogVisible: false,
+      username: '',
+      password: '',
+    }
+  },
+  methods: {
+    openLoginDialog() {
+      this.dialogVisible = true
+    },
+    async login() {
+      let result = await this.$validator.validateAll()
+      if (result) {
+        let res = await apiAuth.login({
+          username: this.username,
+          password: this.password,
+        })
+        Cookies.set(cookieRefreshToken, res.refresh_token)
+        Cookies.set(cookieToken, res.token)
+        let [client] = await apiDev.getClient()
+        Cookies.set(cookieClientName, client.client_name)
+        Cookies.set(cookieClientId, client.id)
+        Cookies.set(cookieClientSecret, client.plain_secret)
+
+        let token = await apiDev.getToken()
+        console.log(token)
+      }
+      // this.dialogVisible = false
+    },
+  },
+}
+</script>
+
+<style scoped lang="scss">
+  @import "~sty/var";
+  .header{
+    height: $headerHeight;
+    background: #2e3436;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 300;
+  }
+  .header-left{
+    margin-left: 24px;
+    >.logo{
+      vertical-align: top;
+      width: 214px;
+      height: 37px;
+      margin-top: ($headerHeight - 37px) / 2;
+    }
+  }
+  .login-button{
+    margin-right: 66px;
+    margin-top: ($headerHeight - 32px) / 2;
+    width: 64px;
+    height: 32px;
+    border-radius: 4px;
+    background: transparent;
+    padding: 0 8px;
+    border: solid 1px #ffffff;
+    font-size: 14px;
+    color: #ffffff;
+  }
+  .content {
+    position: absolute;
+    left: 0;
+    top: $headerHeight;
+    right: 0;
+    bottom: 0;
+    color: #333333;
+  }
+  .login{
+    width: 100%;
+  }
+  .error{
+    margin: 5px 0;
+    display: block;
+  }
+  .field{
+    margin-bottom: 20px;
+  }
+</style>

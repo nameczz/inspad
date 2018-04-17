@@ -1,0 +1,5 @@
+@import "~sty/var";
+
+.progress{
+  @include progress($blue, #D8D8D8, 12px, 200px)
+}

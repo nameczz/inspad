@@ -1,0 +1,14 @@
+.pop-up{
+  position: relative;
+  z-index: 51;
+}
+
+//起止时间
+.start-end-date{
+  margin-top: 15px;
+
+  >span{
+    font-size: 14px;
+    margin: 0 5px;
+  }
+}

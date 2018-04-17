@@ -1,0 +1,11 @@
+@mixin progress($activeBg, $bg, $height, $width) {
+  height: $height;
+  background: $bg;
+  width: $width;
+
+  >i{
+    display: block;
+    height: $height;
+    background: $activeBg;
+  }
+}

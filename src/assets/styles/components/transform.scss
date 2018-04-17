@@ -1,0 +1,46 @@
+.trans-header{
+  height: 48px;
+  background: #ffffff;
+  color: #000000;
+  line-height: 48px;
+  font-size: 18px;
+  box-shadow: 0 1px 0 0 #d5e1e3;
+  position: relative;
+  z-index: 1;
+}
+.trans-body{
+  position: absolute;
+  top: 48px;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  overflow: auto;
+  background: #f9f9f9;
+  >.trans-main{
+    box-sizing: border-box;
+    min-height: calc(100vh - 60px - 57px - 48px);
+    border-bottom: 1px solid transparent;
+    border-top: 1px solid transparent;
+  }
+}
+.info{
+  line-height: 24px;
+  font-size: 14px;
+  margin: 20px 0;
+  color: #3f4546;
+}
+section{
+  font-size: 18px;
+  line-height: 25px;
+  color: #3f4546;
+  margin-bottom: 40px;
+  >header{
+    margin-bottom: 20px;
+    >.icon{
+      width: 16px;
+      height: 16px;
+      vertical-align: top;
+      margin-top: 4.5px;
+    }
+  }
+}
