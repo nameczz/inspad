@@ -1,9 +1,12 @@
 import {mapApi} from '@/axios-help'
 export default mapApi({
   langDetect: {
-    method: 'POST',
+    method: 'post',
     url: '/compute/lang_detect/',
-    transformRequest(params) {
+    tpl: 'api',
+    body: true,
+    transformRequest(params, opt) {
+      // opt.params = params
       return params
     },
   },

@@ -44,9 +44,9 @@
 <script>
 import {Dialog, Input} from 'element-ui'
 import apiAuth from 'api/auth'
-import apiDev from 'api/dev'
 import Cookies from 'js-cookie'
-import {cookieToken, cookieRefreshToken, cookieClientName, cookieClientId, cookieClientSecret} from '@/const/cookies'
+import {cookieToken, cookieRefreshToken, cookieClientName,
+  cookieClientId, cookieClientSecret, cookieAccessToken} from '@/const/cookies'
 import 'md/validate'
 
 export default {
@@ -72,17 +72,23 @@ export default {
           username: this.username,
           password: this.password,
         })
+        console.log(res)
         Cookies.set(cookieRefreshToken, res.refresh_token)
         Cookies.set(cookieToken, res.token)
-        let [client] = await apiDev.getClient()
+        let [client] = await apiAuth.getClient()
         Cookies.set(cookieClientName, client.client_name)
         Cookies.set(cookieClientId, client.id)
         Cookies.set(cookieClientSecret, client.plain_secret)
-
-        let token = await apiDev.getToken()
-        console.log(token)
+        console.log(client)
+        try{
+          let tokenRes = await apiAuth.getToken()
+          Cookies.set(cookieAccessToken, 'Bearer ' + tokenRes['access_token'])
+        } catch(e) {
+          console.log(e)
+          /* eslint-disable */
+           }
+        this.dialogVisible = false
       }
-      // this.dialogVisible = false
     },
   },
 }

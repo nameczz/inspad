@@ -21,19 +21,23 @@
                resize="none"
                :rows="4"
                placeholder="请输入内容"
-               v-model="inputText">
+               v-model="inputText"
+               name="inputText"
+               v-validate="'required'"
+               data-vv-as="文本"
+               :class="{'error':errors.has('inputText') }">
              </el-input>
-             <el-button type="success" size="small" class="translate float-left">
+             <el-button type="success" size="small" class="translate float-left" @click="translate">
                识别
              </el-button>
              <div class="out-text float-left">
-               法语 Français
+               {{outputText}}
              </div>
            </div>
          </section>
          <section>
            <header><icon src="~svg/code.svg"/> Json Schema</header>
-           <highlight></highlight>
+           <highlight :json="json"></highlight>
          </section>
        </div>
      </div>
@@ -45,7 +49,7 @@
 <script>
 import {Input} from 'element-ui'
 import Highlight from 'md/highlight/Highlight'
-// import apiResearch from 'api/research'
+import apiResearch from 'api/research'
 export default {
   components: {
     [Input.name]: Input,
@@ -54,26 +58,23 @@ export default {
   data() {
     return {
       inputText: '',
-      json: {
-        '$schema': 'http://json-schema.org/draft-04/schema#',
-        'definitions': {},
-        'id': 'http://api.patsnap.com/cloud_patent/patent_id-schema.json',
-        'properties': {
-          'limit': {
-            'default': 10,
-            'description': '每页条目数',
-            'title': 'The limit schema',
-            'type': 'integer',
-            'minimum': 0,
-            'maximum': 100,
-          },
-        },
-      },
+      outputText: '',
+      json: null,
     }
   },
-  created() {
-    /*apiResearch.langDetect({
-    })*/
+  methods: {
+    async translate() {
+      let res = await apiResearch.langDetect({
+        data: {
+          text: this.inputText,
+        },
+        session: 'string',
+      })
+      this.json = res
+      if(res['error_code'] === 0) {
+        this.outputText = res.data.lang
+      }
+    },
   },
 }
 </script>

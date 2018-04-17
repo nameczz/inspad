@@ -3,6 +3,7 @@ export default mapApi({
   login: {
     method: 'post',
     url: '/loginsubmit',
+    template: '',
     transformRequest(params, opt) {
       opt.params = {
         client_id: process.env.CLIENT_ID,
