@@ -59,20 +59,20 @@ export default {
   data() {
     return {
       /*eslint-disable*/
-      inputText: '本发明提供一种电池电源，包括多个电池模组，每个电池模组包括多个电池、位于该电池模组的第一侧且与该电池模组内各个电池电性连接的管理电路、位于该电池模组与该管理电路相背的第二侧且与该电池模组内各个电池热耦合的散热冷源。该管理电路用于管理该电池模组内各个电池的充放电。该散热冷源用于散发该电池模组内各个电池传导过来的热量。该多个电池模组排布成两列，且两列电池模组的第一侧邻近、相对设置。如此设置，可以避免该多个管理电路受该多个散热冷源散发的热量的影响，从而可保证该多个管理电路工作稳定、避免安全隐患。',
+      inputText: '本发明属于锂离子电池技术领域，具体公开了一种锂离子电池负极材料、负极和锂离子电池。所述锂离子电池负极材料包括水溶性粘结剂，所述水溶性粘结剂为接枝改性魔芋葡甘露聚糖。本发明实施例提供的锂离子电池负极材料，粘结剂采用接枝改性魔芋葡甘露聚糖，由于该粘结剂具有优越的柔顺及粘结性能，因此可降低锂离子电池负极材料中粘结剂的使用量，使得负极活性物质在负极材料中所占的比重增大，进而使得锂离子电池能量密度获得提升，提高了锂离子电池性能。',
       outputText: '',
       json: '',
     }
   },
   methods: {
     async translate() {
-      let res = await apiResearch.transTitleCnEn({
+      let res = await apiResearch.transAbstrCnen({
         data: {text: this.inputText},
       })
       this.json = res
       console.log(res)
       if(res['error_code'] === 0) {
-        this.outputText = res.data.text
+        this.outputText = res.data
       }
     },
   },

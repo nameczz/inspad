@@ -1,30 +1,46 @@
 import {mapApi} from '@/axios-help'
 export default mapApi({
-  login: {
-    method: 'post',
-    url: '/loginsubmit',
-    template: '',
+  searchPatent: {
+    url: '/patent/simple/search',
+    tpl: 'apiData',
     transformRequest(params, opt) {
-      opt.params = {
-        client_id: process.env.CLIENT_ID,
-        response_type: 'TOKEN',
-      }
-      // params.client_id = process.env.CLIENT_ID
-      // params.response_type = 'TOKEN'
       return params
     },
   },
-  checksession: {
-    method: 'GET',
-    config: {
-      baseURL: process.env.API_ORIGIN2,
-    },
-    url: '/checksession',
-    transformRequest(params) {
-      params.client_id = process.env.CLIENT_ID
-      params.response_type = 'TOKEN'
+  getPatentValuation: {
+    url: '/patent/valuation',
+    tpl: 'apiData',
+    transformRequest(params, opt) {
       return params
     },
   },
-}, 'dev')
+  getPatentLegalInfo: {
+    url: '/patent/legal',
+    tpl: 'apiData',
+    transformRequest(params, opt) {
+      return params
+    },
+  },
+  getPatentDesc: {
+    url: '/patent/description',
+    tpl: 'apiData',
+    transformRequest(params, opt) {
+      return params
+    },
+  },
+  getPatentClaim: {
+    url: '/patent/claim',
+    tpl: 'apiData',
+    transformRequest(params, opt) {
+      return params
+    },
+  },
+  getPatentCitation: {
+    url: '/patent/citation',
+    tpl: 'apiData',
+    transformRequest(params, opt) {
+      return params
+    },
+  },
+})
 

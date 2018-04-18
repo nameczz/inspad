@@ -43,6 +43,12 @@ const apiDomainInit = {
     opt.headers['content-type'] = 'application/json'
     opt.headers['Authorization'] = Cookies.get(cookieAccessToken)
   },
+  apiData(opt) {
+    opt.baseURL = process.env.API_DOMAIN_API
+    opt.headers['X-PatSnap-Version'] = '1.0.0'
+    opt.headers['content-type'] = 'application/json'
+    opt.headers['Authorization'] = Cookies.get(cookieAccessToken)
+  },
   dev(opt) {
     opt.baseURL = process.env.API_DOMAIN_DEV_CENTER
   },
@@ -59,10 +65,10 @@ function toUrlData(json) {
   let array = []
   for(let key in json) {
     if(json.hasOwnProperty(key)) {
-      array.push(key + '=' + json[key])
+      array.push(key + '=' + encodeURIComponent(json[key]))
     }
   }
-  return (array.length > 0 ? '?' : '') + encodeURI(array.join('&'))
+  return (array.length > 0 ? '?' : '') + array.join('&')
 }
 
 /**
@@ -102,7 +108,6 @@ function mapApi(apis) {
 
         try {
           let postDataType = opt.body ? 'body' : 'params'
-          console.log(postDataType)
           let sp = new URLSearchParams()
           sp.append('data', JSON.stringify({
             method: reqOpts.method.toUpperCase(),

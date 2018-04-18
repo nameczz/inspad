@@ -9,18 +9,18 @@ const Login = resolve => require(['@/components/Login'], resolve)
 const Content = resolve => require(['@/components/Content'], resolve)
 const Transform = resolve => require(['@/components/Transform'], resolve)
 
-const ResearchLangdetect = resolve => require(['@/components/transform/ResearchLangdetect'], resolve)
-const ResearchChemDetect = resolve => require(['@/components/transform/ResearchChemDetect'], resolve)
-const ResearchNewsDetect = resolve => require(['@/components/transform/ResearchNewsDetect'], resolve)
-const ResearchEnDetect = resolve => require(['@/components/transform/ResearchEnDetect'], resolve)
-const ResearchCnDetect = resolve => require(['@/components/transform/ResearchCnDetect'], resolve)
-const ResearchTitleDetect = resolve => require(['@/components/transform/ResearchTitleDetect'], resolve)
-const ResearchTitleTranslate = resolve => require(['@/components/transform/ResearchTitleTranslate'], resolve)
-const ResearchSummaryTranslate = resolve => require(['@/components/transform/ResearchSummaryTranslate'], resolve)
-const ResearchUnitDetect = resolve => require(['@/components/transform/ResearchUnitDetect'], resolve)
-const ResearchPhotoTableDetect = resolve => require(['@/components/transform/ResearchPhotoTableDetect'], resolve)
+const ResearchLangdetect = resolve => require(['@/components/transform/research/Langdetect'], resolve)
+const ResearchChemDetect = resolve => require(['@/components/transform/research/ChemDetect'], resolve)
+const ResearchNewsDetect = resolve => require(['@/components/transform/research/NewsDetect'], resolve)
+const ResearchEnDetect = resolve => require(['@/components/transform/research/EnDetect'], resolve)
+const ResearchCnDetect = resolve => require(['@/components/transform/research/CnDetect'], resolve)
+const ResearchTitleDetect = resolve => require(['@/components/transform/research/TitleDetect'], resolve)
+const ResearchTitleTranslate = resolve => require(['@/components/transform/research/TitleTranslate'], resolve)
+const ResearchSummaryTranslate = resolve => require(['@/components/transform/research/SummaryTranslate'], resolve)
+const ResearchUnitDetect = resolve => require(['@/components/transform/research/UnitDetect'], resolve)
+const ResearchPhotoTableDetect = resolve => require(['@/components/transform/research/PhotoTableDetect'], resolve)
 
-const DataPatent = resolve => require(['@/components/transform/DataPatent'], resolve)
+const DataPatent = resolve => require(['@/components/transform/data/Patent'], resolve)
 // const Report = resolve => require(['@/components/Report'], resolve)
 //
 // const OrganList = resolve => require(['@/components/organ/List'], resolve)
@@ -34,7 +34,7 @@ let router = new Router({
     {
       path: '/',
       redirect: {
-        name: 'Login',
+        name: 'ResearchLangdetect',
       },
     },
     {
