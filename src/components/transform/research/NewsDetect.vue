@@ -9,7 +9,6 @@
       <div class="trans-main">
         <div class="container">
           <div class="info">
-            <div class="info-title">GET /compute/ner_news_cn/</div>
             <div class="info-desc">基于最先进的机器学习算法 ，PatSnap 中文实体识别 API 可以识别人名，机构以及地理位置，整体准确度高达 90%。</div>
           </div>
           <section>

@@ -2,14 +2,13 @@
   <div>
    <div class="trans-header">
      <div class="container">
-       语言监测
+       语言检测
      </div>
    </div>
    <div class="trans-body">
      <div class="trans-main">
        <div class="container">
          <div class="info">
-           <div class="info-title">GET /compute/lang_detect/</div>
            <div class="info-desc">基于最先进的神经网络算法 ，PatSnap 语言检测 API 可以识别多达 38 种语言，而且整体准确率高达 99%。</div>
          </div>
          <section>

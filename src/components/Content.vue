@@ -4,7 +4,8 @@
       <a class="float-left header-left">
         <icon class="logo" src="~svg/open-api.svg"/>
       </a>
-      <el-button class="login-button float-right" @click="openLoginDialog">登录</el-button>
+      <span v-if="logged" class="user-name">{{clientName}}</span>
+      <el-button v-else class="login-button float-right" @click="openLoginDialog">登录</el-button>
     </header>
     <router-view class="content"></router-view>
     <el-dialog
@@ -35,18 +36,17 @@
           <span v-show="errors.has('password')"
                 class="help error">{{ errors.first('password') }}</span>
         </div>
-        <el-button class="login" type="success" native-type="submit">登录</el-button>
+        <el-button class="login" type="success" native-type="submit" :loading="logging">登录</el-button>
       </form>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import {Dialog, Input} from 'element-ui'
+import {Dialog, Input, Message} from 'element-ui'
 import apiAuth from 'api/auth'
 import Cookies from 'js-cookie'
-import {cookieToken, cookieRefreshToken, cookieClientName,
-  cookieClientId, cookieClientSecret, cookieAccessToken} from '@/const/cookies'
+import {cookieToken, cookieRefreshToken, cookieClientName, cookieAccessToken} from '@/const/cookies'
 import 'md/validate'
 
 export default {
@@ -59,35 +59,61 @@ export default {
       dialogVisible: false,
       username: '',
       password: '',
+      logging: false,
     }
+  },
+  computed: {
+    logged() {
+      return this.$store.state.user.logged
+    },
+    clientName() {
+      return this.$store.state.user.clientName
+    },
   },
   methods: {
     openLoginDialog() {
       this.dialogVisible = true
     },
+    showError(err) {
+      Message({
+        message: err,
+        type: 'error',
+      })
+    },
+    async getClientInfo() {
+      let [client] = await apiAuth.getClient()
+      Cookies.set(cookieClientName, client.client_name)
+      this.$store.commit('setClientName', client.client_name)
+      this.getToken(client.id, client.plain_secret)
+    },
+    async getToken(clientId, clientSecret) {
+      let tokenRes = await apiAuth.getToken({clientId, clientSecret})
+      Cookies.set(cookieAccessToken, 'Bearer ' + tokenRes['access_token'])
+      this.logging = false
+      this.dialogVisible = false
+    },
     async login() {
       let result = await this.$validator.validateAll()
       if (result) {
+        this.logging = true
         let res = await apiAuth.login({
           username: this.username,
           password: this.password,
         })
-        console.log(res)
+        if(res.errcode) {
+          switch(res.errcode) {
+            case '30103':
+              this.showError('用户名或密码错误')
+              break
+            default:
+              this.showError('系统错误')
+          }
+          this.logging = false
+          return
+        }
         Cookies.set(cookieRefreshToken, res.refresh_token)
         Cookies.set(cookieToken, res.token)
-        let [client] = await apiAuth.getClient()
-        Cookies.set(cookieClientName, client.client_name)
-        Cookies.set(cookieClientId, client.id)
-        Cookies.set(cookieClientSecret, client.plain_secret)
-        console.log(client)
-        try{
-          let tokenRes = await apiAuth.getToken()
-          Cookies.set(cookieAccessToken, 'Bearer ' + tokenRes['access_token'])
-        } catch(e) {
-          console.log(e)
-          /* eslint-disable */
-           }
-        this.dialogVisible = false
+        this.getClientInfo()
       }
     },
   },
@@ -143,5 +169,11 @@ export default {
   }
   .field{
     margin-bottom: 20px;
+  }
+  .user-name{
+    float: right;
+    color: #ffffff;
+    line-height: 60px;
+    margin-right: 20px;
   }
 </style>

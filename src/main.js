@@ -5,6 +5,7 @@ import Icon from '@/modules/icon'
 import '@/assets/styles/common.scss'
 import {Button} from 'element-ui'
 import Copyright from '@/components/busi/Copyright'
+import store from './store'
 
 Vue.component('icon', Icon)
 Vue.use(Button)
@@ -15,5 +16,6 @@ new Vue({
   el: '#app',
   router,
   components: {App},
+  store,
   template: '<App/>',
 })

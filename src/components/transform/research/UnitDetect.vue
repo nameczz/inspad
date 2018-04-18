@@ -2,14 +2,13 @@
   <div>
     <div class="trans-header">
       <div class="container">
-        单位监测
+        单位检测
       </div>
     </div>
     <div class="trans-body">
       <div class="trans-main">
         <div class="container">
           <div class="info">
-            <div class="info-title">GET /compute/unit_detect_cn/</div>
             <div class="info-desc"></div>
           </div>
           <section>

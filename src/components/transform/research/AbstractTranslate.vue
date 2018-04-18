@@ -9,7 +9,6 @@
       <div class="trans-main">
         <div class="container">
           <div class="info">
-            <div class="info-title">GET /compute/trans_abstr_cnen/</div>
             <div class="info-desc">
               基于最先进的神经网络算法，PatSnap 专利翻译 API 可以快速地将中文专利摘要翻译成英文，BLEU score 高达 49.23，远超其他通用机器翻译引擎。
             </div>

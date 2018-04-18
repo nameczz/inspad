@@ -9,7 +9,6 @@
       <div class="trans-main">
         <div class="container">
           <div class="info">
-            <div class="info-title">GET /compute/kwd_helper_cn/</div>
             <div class="info-desc">基于最先进的词向量算法，PatSnap 关键词助手 API 可以推荐专利领域的中文相似词。</div>
           </div>
           <section>
@@ -56,7 +55,7 @@ export default {
   },
   data() {
     return {
-      inputText: '图片,处理,汽车',
+      inputText: '图片',
       outputText: '',
       json: '',
     }

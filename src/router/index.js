@@ -16,7 +16,7 @@ const ResearchEnDetect = resolve => require(['@/components/transform/research/En
 const ResearchCnDetect = resolve => require(['@/components/transform/research/CnDetect'], resolve)
 const ResearchTitleDetect = resolve => require(['@/components/transform/research/TitleDetect'], resolve)
 const ResearchTitleTranslate = resolve => require(['@/components/transform/research/TitleTranslate'], resolve)
-const ResearchSummaryTranslate = resolve => require(['@/components/transform/research/SummaryTranslate'], resolve)
+const ResearchAbstractTranslate = resolve => require(['@/components/transform/research/AbstractTranslate'], resolve)
 const ResearchUnitDetect = resolve => require(['@/components/transform/research/UnitDetect'], resolve)
 const ResearchPhotoTableDetect = resolve => require(['@/components/transform/research/PhotoTableDetect'], resolve)
 
@@ -98,9 +98,9 @@ let router = new Router({
               component: ResearchTitleTranslate,
             },
             {
-              path: 'research/summarytranslate',
-              name: 'ResearchSummaryTranslate',
-              component: ResearchSummaryTranslate,
+              path: 'research/abstracttranslate',
+              name: 'ResearchAbstractTranslate',
+              component: ResearchAbstractTranslate,
             },
             {
               path: 'research/unitdetect',
@@ -142,7 +142,7 @@ let router = new Router({
 
 if(process.env.NODE_ENV !== 'testing') {
   router.beforeEach((to, from, next) => {
-    document.title = to.meta.title || '智慧芽 东部中心'
+    // document.title = to.meta.title || '智慧芽 东部中心'
     next()
   })
 }

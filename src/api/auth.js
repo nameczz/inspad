@@ -1,6 +1,6 @@
 import {mapApi} from '@/axios-help'
 import Cookies from 'js-cookie'
-import {cookieToken, cookieClientId, cookieClientSecret} from '@/const/cookies'
+import {cookieToken} from '@/const/cookies'
 export default mapApi({
   login: {
     method: 'post',
@@ -42,7 +42,7 @@ export default mapApi({
       //   password: Cookies.get(cookieClientSecret),
       // }
       opt.headers['Authorization'] = 'Basic ' +
-        btoa(Cookies.get(cookieClientId) + ':' + Cookies.get(cookieClientSecret))
+        btoa(params.clientId + ':' + params.clientSecret)
       return {'grant_type': 'client_credentials'}
     },
   },

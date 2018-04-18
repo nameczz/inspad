@@ -9,7 +9,6 @@
       <div class="trans-main">
         <div class="container">
           <div class="info">
-            <div class="info-title">GET /compute/cname_parser_cn/</div>
             <div class="info-desc"></div>
           </div>
           <section>

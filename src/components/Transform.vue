@@ -26,7 +26,7 @@ export default {
           name: '研发',
           children: [
             {
-              name: '语言监测',
+              name: '语言检测',
               path: '/research/langdetect',
             },
             {
@@ -55,10 +55,10 @@ export default {
             },
             {
               name: '摘要翻译',
-              path: '/research/summarytranslate',
+              path: '/research/abstracttranslate',
             },
             {
-              name: '单位监测',
+              name: '单位检测',
               path: '/research/unitdetect',
             },
             {
