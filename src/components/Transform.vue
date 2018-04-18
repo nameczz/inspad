@@ -76,11 +76,11 @@ export default {
             },
             {
               name: '企业',
-              path: 'null',
+              path: '/data/company',
             },
             {
               name: '代理机构',
-              path: 'null',
+              path: '/data/agency',
             },
             {
               name: '商标',

@@ -42,5 +42,54 @@ export default mapApi({
       return params
     },
   },
+  searchCompany: {
+    url: '/company/simple/search',
+    tpl: 'apiData',
+    transformRequest(params, opt) {
+      return params
+    },
+  },
+  getCompany: {
+    url: '/company',
+    tpl: 'apiData',
+    transformRequest(params, opt) {
+      return params
+    },
+  },
+  getCompanyShareholder: {
+    url: '/company/shareholder',
+    tpl: 'apiData',
+    transformRequest(params, opt) {
+      return params
+    },
+  },
+  searchAgency: {
+    url: '/agency/simple/search',
+    tpl: 'apiData',
+    transformRequest(params, opt) {
+      return params
+    },
+  },
+  getAgency: {
+    url: '/agency',
+    tpl: 'apiData',
+    transformRequest(params, opt) {
+      return params
+    },
+  },
+  getAgencyPatent: {
+    url: '/agency/patent',
+    tpl: 'apiData',
+    transformRequest(params, opt) {
+      return params
+    },
+  },
+  getAgencyAgent: {
+    url: '/agency/agent/',
+    tpl: 'apiData',
+    transformRequest(params, opt) {
+      opt.url += params.agent_id
+    },
+  },
 })
 

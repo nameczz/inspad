@@ -21,6 +21,8 @@ const ResearchUnitDetect = resolve => require(['@/components/transform/research/
 const ResearchPhotoTableDetect = resolve => require(['@/components/transform/research/PhotoTableDetect'], resolve)
 
 const DataPatent = resolve => require(['@/components/transform/data/Patent'], resolve)
+const DataCompany = resolve => require(['@/components/transform/data/Company'], resolve)
+const DataAgency = resolve => require(['@/components/transform/data/Agency'], resolve)
 // const Report = resolve => require(['@/components/Report'], resolve)
 //
 // const OrganList = resolve => require(['@/components/organ/List'], resolve)
@@ -113,6 +115,16 @@ let router = new Router({
               path: 'data/patent',
               name: 'DataPatent',
               component: DataPatent,
+            },
+            {
+              path: 'data/company',
+              name: 'DataCompany',
+              component: DataCompany,
+            },
+            {
+              path: 'data/agency',
+              name: 'DataAgency',
+              component: DataAgency,
             },
           ],
         },

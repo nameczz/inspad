@@ -53,3 +53,7 @@ export function date(val, format) {
   }
 }
 
+const patentIdHideReg = /^(\w{3})\w+(\w{4})$/
+export function idEncode(val) {
+  return val.replace(patentIdHideReg, '$1****$2')
+}

@@ -80,7 +80,7 @@
                 <tbody>
                 <tr v-for="item in resultList"
                     :key="item.patent_id">
-                  <td>{{item.patent_id|patentId}}</td>
+                  <td>{{item.patent_id|idEncode}}</td>
                   <td>¥{{item.patent_value|commafy}}</td>
                   <td><a class="view" @click="showLegalInfo(item.patent_id)">点击查看</a></td>
                   <td><a class="view" @click="showPatentDesc(item.patent_id)">点击查看</a></td>
@@ -112,9 +112,9 @@
 import {Input, Dialog} from 'element-ui'
 import Highlight from 'md/highlight/Highlight'
 import arrayToMap from 'md/array-to-map'
-import {commafy} from 'md/filters'
+import {commafy, idEncode} from 'md/filters'
 import apiData from 'api/data'
-const patentIdHideReg = /^(\w{3})\w+(\w{4})$/
+
 export default {
   components: {
     [Input.name]: Input,
@@ -184,7 +184,7 @@ export default {
       })
       this.json = res
       this.dialogVisible = true
-      this.dialogTitle = 'ID: ' + this.encodePatentId(id) + ' 法律状态'
+      this.dialogTitle = 'ID: ' + idEncode(id) + ' 法律状态'
       this.dialogText = this.getTextFromArray(res.legal_info.legal_status[0].legal_desc)
     },
     async showPatentDesc(id) {
@@ -193,7 +193,7 @@ export default {
       })
       this.json = res
       this.dialogVisible = true
-      this.dialogTitle = 'ID: ' + this.encodePatentId(id) + ' 专利说明书'
+      this.dialogTitle = 'ID: ' + idEncode(id) + ' 专利说明书'
       this.dialogText = this.getTextFromArray(res.description)
     },
     async showPatentClaim(id) {
@@ -202,7 +202,7 @@ export default {
       })
       this.json = res
       this.dialogVisible = true
-      this.dialogTitle = 'ID: ' + this.encodePatentId(id) + ' 专利要求'
+      this.dialogTitle = 'ID: ' + idEncode(id) + ' 专利要求'
       this.dialogText = this.getTextFromArray(res.claim)
     },
     async showPatentCitation(id) {
@@ -212,17 +212,12 @@ export default {
       })
       this.json = res
       this.dialogVisible = true
-      this.dialogTitle = 'ID: ' + this.encodePatentId(id) + ' 专利引用详情'
+      this.dialogTitle = 'ID: ' + idEncode(id) + ' 专利引用详情'
       this.dialogText = res.citation.map(c => c.patent_number).join('<br>')
-    },
-    encodePatentId(val) {
-      return val.replace(patentIdHideReg, '$1****$2')
     },
   },
   filters: {
-    patentId(val) {
-      return val.replace(patentIdHideReg, '$1****$2')
-    },
+    idEncode,
     commafy,
   },
 }
