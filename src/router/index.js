@@ -23,6 +23,7 @@ const ResearchPhotoTableDetect = resolve => require(['@/components/transform/res
 const DataPatent = resolve => require(['@/components/transform/data/Patent'], resolve)
 const DataCompany = resolve => require(['@/components/transform/data/Company'], resolve)
 const DataAgency = resolve => require(['@/components/transform/data/Agency'], resolve)
+const DataTrademark = resolve => require(['@/components/transform/data/Trademark'], resolve)
 // const Report = resolve => require(['@/components/Report'], resolve)
 //
 // const OrganList = resolve => require(['@/components/organ/List'], resolve)
@@ -125,6 +126,11 @@ let router = new Router({
               path: 'data/agency',
               name: 'DataAgency',
               component: DataAgency,
+            },
+            {
+              path: 'data/trademark',
+              name: 'DataTrademark',
+              component: DataTrademark,
             },
           ],
         },

@@ -91,5 +91,19 @@ export default mapApi({
       opt.url += params.agent_id
     },
   },
+  searchTrademark: {
+    url: '/trademark/simple/search',
+    tpl: 'apiData',
+    transformRequest(params, opt) {
+      return params
+    },
+  },
+  getTrademark: {
+    url: '/trademark',
+    tpl: 'apiData',
+    transformRequest(params, opt) {
+      return params
+    },
+  },
 })
 

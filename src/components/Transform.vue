@@ -84,7 +84,7 @@ export default {
             },
             {
               name: '商标',
-              path: 'null',
+              path: '/data/trademark',
             },
             {
               name: '统计',
