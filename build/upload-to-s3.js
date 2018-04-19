@@ -72,7 +72,6 @@ function upload(config) {
 
 
   deleteAll(params.uri, () => {
-    console.log('start upload')
     uploadFiles.forEach((file) => {
       var commands = ['aws s3 cp',
         file.src,
@@ -85,14 +84,14 @@ function upload(config) {
 
       console.log(file.src + " exist: " + fs.existsSync(file.src))
 
-      // exec(wrapS3api(commands), (error, stdout, stderr) => {
-      //   if (error) {
-      //     console.log(error.stack)
-      //     console.log('Error code: ' + error.code)
-      //     return
-      //   }
-      //   console.log('uploaded: ' + file.dest)
-      // })
+      exec(wrapS3api(commands), (error, stdout, stderr) => {
+        if (error) {
+          console.log(error.stack)
+          console.log('Error code: ' + error.code)
+          return
+        }
+        console.log('uploaded: ' + file.dest)
+      })
     })
   })
 }
