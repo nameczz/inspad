@@ -82,8 +82,6 @@ function upload(config) {
         commands.push('--' + name, value)
       }
 
-      console.log(file.src + " exist: " + fs.existsSync(file.src))
-
       exec(wrapS3api(commands), (error, stdout, stderr) => {
         if (error) {
           console.log(error.stack)
