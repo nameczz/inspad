@@ -63,6 +63,13 @@ export default mapApi({
       return params
     },
   },
+  getCompanyStaff: {
+    url: '/company/staff',
+    tpl: 'apiData',
+    transformRequest(params, opt) {
+      return params
+    },
+  },
   searchAgency: {
     url: '/agency/simple/search',
     tpl: 'apiData',

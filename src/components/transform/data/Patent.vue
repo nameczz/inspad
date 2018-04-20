@@ -147,7 +147,7 @@ export default {
         offset: 0,
         limit: 10,
       }, this.inputForm))
-      if(res.numericErrorCode === -1) {
+      if(res.errorCode) {
         this.resultList = null
         return
       }
@@ -185,7 +185,7 @@ export default {
       this.json = res
       this.dialogVisible = true
       this.dialogTitle = 'ID: ' + idEncode(id) + ' 法律状态'
-      this.dialogText = this.getTextFromArray(res.legal_info.legal_status[0].legal_desc)
+      this.dialogText = res.errorCode ? '' : this.getTextFromArray(res.legal_info.legal_status[0].legal_desc)
     },
     async showPatentDesc(id) {
       let res = await apiData.getPatentDesc({
@@ -194,7 +194,7 @@ export default {
       this.json = res
       this.dialogVisible = true
       this.dialogTitle = 'ID: ' + idEncode(id) + ' 专利说明书'
-      this.dialogText = this.getTextFromArray(res.description)
+      this.dialogText = res.errorCode ? '' : this.getTextFromArray(res.description)
     },
     async showPatentClaim(id) {
       let res = await apiData.getPatentClaim({
@@ -203,7 +203,7 @@ export default {
       this.json = res
       this.dialogVisible = true
       this.dialogTitle = 'ID: ' + idEncode(id) + ' 专利要求'
-      this.dialogText = this.getTextFromArray(res.claim)
+      this.dialogText = res.errorCode ? '' : this.getTextFromArray(res.claim)
     },
     async showPatentCitation(id) {
       let res = await apiData.getPatentCitation({
@@ -213,7 +213,7 @@ export default {
       this.json = res
       this.dialogVisible = true
       this.dialogTitle = 'ID: ' + idEncode(id) + ' 专利引用详情'
-      this.dialogText = res.citation.map(c => c.patent_number).join('<br>')
+      this.dialogText = res.errorCode ? '' : res.citation.map(c => c.patent_number).join('<br>')
     },
   },
   filters: {

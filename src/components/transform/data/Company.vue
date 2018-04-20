@@ -42,7 +42,7 @@
                   <th>ID</th>
                   <th>企业名称</th>
                   <th>企业股东详情</th>
-                  <!--<th>专利说明书</th>-->
+                  <th>企业主要人员</th>
                   <!--<th>专利要求</th>-->
                   <!--<th>专利引用详情</th>-->
                 </tr>
@@ -53,6 +53,7 @@
                   <td>{{item.company_id|idEncode}}</td>
                   <td>{{item.company_name}}</td>
                   <td><a class="view" @click="showCompanyShareholder(item.company_id)">点击查看</a></td>
+                  <td><a class="view" @click="showCompanyStaff(item.company_id)">点击查看</a></td>
                   <!--<td><a class="view" @click="showPatentDesc(item.patent_id)">点击查看</a></td>-->
                   <!--<td><a class="view" @click="showPatentClaim(item.patent_id)">点击查看</a></td>-->
                   <!--<td><a class="view" @click="showPatentCitation(item.patent_id)">点击查看</a></td>-->
@@ -95,7 +96,7 @@ export default {
     return {
       inputForm: {
         company_name: '',
-        org_number: '',
+        org_number: '355527178',
         reg_number: '',
       },
       json: '',
@@ -108,7 +109,7 @@ export default {
   methods: {
     async translate() {
       let res = await apiData.searchCompany(Object.assign({}, this.inputForm))
-      if(res.numericErrorCode === -1) {
+      if(res.errorCode) {
         this.resultList = null
         return
       }
@@ -146,7 +147,16 @@ export default {
       this.json = res
       this.dialogVisible = true
       this.dialogTitle = 'ID: ' + idEncode(id) + ' 股东详情'
-      this.dialogText = res.shareholder.map(s => s.investor_name).join(', ')
+      this.dialogText = res.errorCode ? '' : res.shareholder.map(s => s.investor_name).join(', ')
+    },
+    async showCompanyStaff(id) {
+      let res = await apiData.getCompanyStaff({
+        company_id: id,
+      })
+      this.json = res
+      this.dialogVisible = true
+      this.dialogTitle = 'ID: ' + idEncode(id) + ' 主要人员'
+      this.dialogText = res.errorCode ? '' : res[0].staff.map(s => s.type + ': ' + s.name).join(', ')
     },
   },
   filters: {

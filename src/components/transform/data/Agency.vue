@@ -92,7 +92,7 @@ export default {
   methods: {
     async translate() {
       let res = await apiData.searchAgency(Object.assign({}, this.inputForm))
-      if(res.numericErrorCode === -1) {
+      if(res.errorCode) {
         this.resultList = null
         return
       }
@@ -128,7 +128,7 @@ export default {
       this.json = res
       this.dialogVisible = true
       this.dialogTitle = 'ID: ' + idEncode(id) + ' 代理人'
-      this.dialogText = res.map(s => s.agent_name).join(', ')
+      this.dialogText = res.errorCode ? '' : res.map(s => s.agent_name).join(', ')
     },
   },
   filters: {

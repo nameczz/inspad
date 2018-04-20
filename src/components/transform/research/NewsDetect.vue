@@ -72,7 +72,7 @@ export default {
       if(res['error_code'] === 0) {
         let lastEnd = 0
         let outputText = []
-        res.data.forEach(({entity, start, end}) => {
+        this.tempCompute(inputText, res.data).forEach(({entity, start, end}) => {
           if(start < 0 || end < 0) {
             return
           }
@@ -84,6 +84,16 @@ export default {
         this.outputText = outputText.join('')
         this.outputEl.scrollTop = this.inputEl.scrollTop = 0
       }
+    },
+    tempCompute(text, data) {
+      let cur = 0
+      data.forEach((item) => {
+        item.start = text.indexOf(item.entity) + cur
+        item.end = item.start + item.entity.length
+        text = text.substr(item.end - cur)
+        cur = item.end
+      })
+      return data
     },
     scroll(e) {
       let src = e.target

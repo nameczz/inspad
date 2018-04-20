@@ -140,7 +140,7 @@ export default {
         limit: 10,
         offset: 0,
       }, this.inputForm))
-      if(res.numericErrorCode === -1) {
+      if(res.errorCode) {
         this.resultList = null
         return
       }
