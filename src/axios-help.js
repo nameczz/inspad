@@ -4,6 +4,7 @@ import dateFormat from 'dateformat'
 import assign from 'core-js/library/modules/_object-assign'
 import {cookieAccessToken} from '@/const/cookies'
 import Cookies from 'js-cookie'
+import store from './store'
 
 let ai = axios.create({
   // baseURL: process.env.API_ORIGIN + process.env.API_PATH,
@@ -23,37 +24,43 @@ const TIME_FORMAT = 'yyyymm'
 const METHOD_GET = 'get'
 
 const transformRespondDefault = function(res) {
-  if(res.status === 200) {
-    return JSON.parse(res.data)
-  } else {
-    return JSON.parse(res.data)
-    // throw new Error('系统异常')
-  }
+  return res.data
 }
 
-const apiDomainInit = {
+const apiOptionTpl = {
   passport(opt) {
     opt.baseURL = process.env.API_DOMAIN_PASSPORT
     opt.headers['X-Requested-With'] = 'XMLHttpRequest'
-    // opt.headers['content-type'] = 'application/x-www-form-urlencoded'
+    if(opt.method === 'post') {
+      opt.headers['content-type'] = 'application/x-www-form-urlencoded'
+      if(opt.data) {
+        opt.data = toFormData(opt.data)
+      }
+    }
+    return opt
   },
   api(opt) {
     opt.baseURL = process.env.API_DOMAIN_API
     opt.headers['X-PatSnap-Version'] = 'v1'
     opt.headers['content-type'] = 'application/json'
     opt.headers['Authorization'] = Cookies.get(cookieAccessToken)
+
+    return toTempOption(opt, true)
   },
   apiData(opt) {
     opt.baseURL = process.env.API_DOMAIN_API
     opt.headers['X-PatSnap-Version'] = '1.0.0'
     opt.headers['content-type'] = 'application/json'
     opt.headers['Authorization'] = Cookies.get(cookieAccessToken)
+    return toTempOption(opt)
   },
   dev(opt) {
     opt.baseURL = process.env.API_DOMAIN_DEV_CENTER
+    return toTempOption(opt)
   },
   con(opt) {
     opt.baseURL = process.env.API_DOMAIN_CON
+    return toTempOption(opt)
   },
 }
 
@@ -69,6 +76,40 @@ function toUrlData(json) {
     }
   }
   return (array.length > 0 ? '?' : '') + array.join('&')
+}
+
+/**
+ * @param {object} opt
+ * @param {boolean?} body
+ * @return {object}
+ */
+function toTempOption(opt, body) {
+  let sp = new URLSearchParams()
+  sp.append('data', JSON.stringify({
+    method: opt.method.toUpperCase(),
+    url: opt.baseURL + opt.url + toUrlData(opt.params),
+    headers: opt.headers,
+    [body ? 'body' : 'params']: opt.data,
+  }))
+  return {
+    method: 'post',
+    url: '/api/openapi/common',
+    data: sp,
+  }
+}
+
+/**
+ * @param {object} data
+ * @return {URLSearchParams}
+ */
+function toFormData(data) {
+  const params = new URLSearchParams()
+  for(let key in data) {
+    if(data.hasOwnProperty(key)) {
+      params.append(key, data[key])
+    }
+  }
+  return params
 }
 
 /**
@@ -91,7 +132,6 @@ function mapApi(apis) {
             // 'Authorization': Cookies.get(cookieAccessToken),
           },
         }
-        apiDomainInit[opt.tpl](reqOpts)
 
         if(opt.transformRequest) {
           params = opt.transformRequest(params || {}, reqOpts)
@@ -107,41 +147,31 @@ function mapApi(apis) {
         }
 
         try {
-          let postDataType = opt.body ? 'body' : 'params'
-          let sp = new URLSearchParams()
-          sp.append('data', JSON.stringify({
-            method: reqOpts.method.toUpperCase(),
-            url: reqOpts.baseURL + reqOpts.url + toUrlData(reqOpts.params),
-            headers: reqOpts.headers,
-            [postDataType]: reqOpts.data,
-          }))
-          let res = await ai.request({
-            method: 'post',
-            url: '/api/openapi/common',
-            data: sp,
-          })
-          return (opt.transformResponse || transformRespondDefault)(res)
+          let realOption = apiOptionTpl[opt.tpl](reqOpts)
+          // let postDataType = opt.body ? 'body' : 'params'
+          // let sp = new URLSearchParams()
+          // sp.append('data', JSON.stringify({
+          //   method: reqOpts.method.toUpperCase(),
+          //   url: reqOpts.baseURL + reqOpts.url + toUrlData(reqOpts.params),
+          //   headers: reqOpts.headers,
+          //   [postDataType]: reqOpts.data,
+          // }))
+          // let res = await ai.request({
+          //   method: 'post',
+          //   url: '/api/openapi/common',
+          //   data: sp,
+          // })
+          let res = await ai.request(realOption)
+          if(typeof res.data === 'string') {
+            res.data = JSON.parse(res.data)
+          }
+          if(res.data.exp === 'token expired') {
+            store.dispatch('refreshToken')
+          } else {
+            return transformRespondDefault(res)
+          }
         } catch (e) {
           throw e
-          /*if(!opt.noLogin) {
-            let currentRoute = router.currentRoute
-            if(currentRoute.name !== 'login') {
-              let from = {
-                path: currentRoute.path,
-                params: currentRoute.params,
-                query: currentRoute.query,
-              }
-              router.push({
-                name: 'login',
-                query: {
-                  from: JSON.stringify(from),
-                },
-              })
-            }
-            throw new Error('请登录')
-          } else {
-            throw e
-          }*/
         }
       }
     }

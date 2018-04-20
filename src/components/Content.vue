@@ -46,7 +46,7 @@
 import {Dialog, Input, Message} from 'element-ui'
 import apiAuth from 'api/auth'
 import Cookies from 'js-cookie'
-import {cookieToken, cookieRefreshToken, cookieClientName, cookieAccessToken} from '@/const/cookies'
+import {cookieToken, cookieRefreshToken, cookieClientName, cookieAccessToken, cookieClientId} from '@/const/cookies'
 import 'md/validate'
 
 export default {
@@ -83,6 +83,7 @@ export default {
     async getClientInfo() {
       let [client] = await apiAuth.getClient()
       Cookies.set(cookieClientName, client.client_name)
+      Cookies.set(cookieClientId, client.id)
       this.$store.commit('setClientName', client.client_name)
       this.getToken(client.id, client.plain_secret)
     },
@@ -116,6 +117,10 @@ export default {
         this.getClientInfo()
       }
     },
+  },
+  async created() {
+    let res = await apiAuth.checksession()
+    console.log(res)
   },
 }
 </script>

@@ -15,6 +15,7 @@ export default mapApi({
   },
   checksession: {
     url: '/checksession',
+    tpl: 'passport',
     transformRequest(params) {
       params.client_id = process.env.CLIENT_ID
       params.response_type = 'TOKEN'

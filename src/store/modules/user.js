@@ -1,5 +1,5 @@
 import Cookies from 'js-cookie'
-import {cookieClientName} from '@/const/cookies'
+import {cookieClientName, cookieRefreshToken} from '@/const/cookies'
 
 let clientName = Cookies.get(cookieClientName)
 const state = {
@@ -19,7 +19,9 @@ const getters = {
 }
 
 const actions = {
-  refreshToken({commit}) {
+  async refreshToken({commit, state}) {
+    let refreshToken = Cookies.get(cookieRefreshToken)
+    console.log(!!refreshToken)
   },
 }
 
