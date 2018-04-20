@@ -18,18 +18,19 @@
                 class="input-text float-left"
                 type="textarea"
                 resize="none"
-                :rows="4"
+                :rows="12"
                 placeholder="请输入内容"
                 v-model="inputText"
                 name="inputText"
                 v-validate="'required'"
+                ref="inputText"
                 data-vv-as="文本"
                 :class="{'error':errors.has('inputText') }">
               </el-input>
               <el-button type="success" size="small" class="translate float-left" @click="translate">
                 识别
               </el-button>
-              <div class="out-text float-left" v-html="outputText">
+              <div class="out-text float-left" v-html="outputText" ref="outputText" @scroll="scroll">
               </div>
             </div>
           </section>
@@ -63,15 +64,37 @@ export default {
   },
   methods: {
     async translate() {
+      let inputText = this.inputText
       let res = await apiResearch.nerNewsCn({
-        data: this.inputText,
+        data: inputText,
       })
       this.json = res
-      console.log(res)
       if(res['error_code'] === 0) {
-        this.outputText = res.data.map(({entity}) => entity).join('<br>')
+        let lastEnd = 0
+        let outputText = []
+        res.data.forEach(({entity, start, end}) => {
+          if(start < 0 || end < 0) {
+            return
+          }
+          outputText.push(inputText.substring(lastEnd, start))
+          outputText.push('<i style="background: #a0ff00;">' + inputText.substring(start, end) + '</i>')
+          lastEnd = end
+        })
+        outputText.push(inputText.substring(lastEnd, inputText.length))
+        this.outputText = outputText.join('')
+        this.outputEl.scrollTop = this.inputEl.scrollTop = 0
       }
     },
+    scroll(e) {
+      let src = e.target
+      let dest = src === this.inputEl ? this.outputEl : this.inputEl
+      dest.scrollTop = src.scrollTop
+    },
+  },
+  mounted() {
+    this.inputEl = this.$refs.inputText.$refs.textarea
+    this.outputEl = this.$refs.outputText
+    this.$refs.inputText.$refs.textarea.addEventListener('scroll', this.scroll, false)
   },
 }
 </script>
@@ -86,9 +109,10 @@ export default {
     width: 80px;
     margin: 0 20px;
   }
+  $rowNum: 12;
   .out-text{
     width: 366px;
-    height: 96px;
+    height: $rowNum * 21px + 12px;
     background: #ffffff;
     border-radius: 4px;
     font-size: 14px;
