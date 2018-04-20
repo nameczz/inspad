@@ -1,17 +1,20 @@
 import Cookies from 'js-cookie'
 import {cookieClientName, cookieRefreshToken} from '@/const/cookies'
 
-let clientName = Cookies.get(cookieClientName)
 const state = {
-  clientName,
-  logged: !!clientName,
+  clientName: null,
+  loginStatus: 'pending',
 }
 
 // mutations
 const mutations = {
-  setClientName(state, clientName) {
-    state.clientName = clientName
-    state.logged = true
+  refreshLoggedUser(state) {
+    state.clientName = Cookies.get(cookieClientName)
+    state.loginStatus = 'logged'
+  },
+  removeLoggedUser(state) {
+    state.clientName = null
+    state.loginStatus = 'unlogged'
   },
 }
 

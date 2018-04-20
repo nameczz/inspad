@@ -39,6 +39,20 @@ const apiOptionTpl = {
     }
     return opt
   },
+  platform(opt) {
+    opt.baseURL = process.env.API_DOMAIN_PLATFORM
+    opt.headers['Authorization'] = Cookies.get(cookieAccessToken)
+    opt.headers['content-type'] = 'application/json'
+    opt.headers['Accept'] = 'application/json'
+    // opt.headers['X-Requested-With'] = 'XMLHttpRequest'
+    return toTempOption(opt)
+    // if(opt.method === 'post') {
+    //   if(opt.data) {
+    //     opt.data = toFormData(opt.data)
+    //   }
+    // }
+    // return opt
+  },
   api(opt) {
     opt.baseURL = process.env.API_DOMAIN_API
     opt.headers['X-PatSnap-Version'] = 'v1'

@@ -4,8 +4,10 @@
       <a class="float-left header-left">
         <icon class="logo" src="~svg/open-api.svg"/>
       </a>
-      <span v-if="logged" class="user-name">{{clientName}}</span>
-      <el-button v-else class="login-button float-right" @click="openLoginDialog">登录</el-button>
+      <span v-if="loginStatus==='logged'" class="user-name">{{clientName}}</span>
+      <el-button v-else-if="loginStatus==='unlogged'"
+                 class="login-button float-right"
+                 @click="openLoginDialog">登录</el-button>
     </header>
     <router-view class="content"></router-view>
     <el-dialog
@@ -63,8 +65,8 @@ export default {
     }
   },
   computed: {
-    logged() {
-      return this.$store.state.user.logged
+    loginStatus() {
+      return this.$store.state.user.loginStatus
     },
     clientName() {
       return this.$store.state.user.clientName
@@ -84,7 +86,7 @@ export default {
       let [client] = await apiAuth.getClient()
       Cookies.set(cookieClientName, client.client_name)
       Cookies.set(cookieClientId, client.id)
-      this.$store.commit('setClientName', client.client_name)
+      this.$store.commit('refreshLoggedUser')
       this.getToken(client.id, client.plain_secret)
     },
     async getToken(clientId, clientSecret) {
@@ -120,7 +122,15 @@ export default {
   },
   async created() {
     let res = await apiAuth.checksession()
-    console.log(res)
+    if(res.token) {
+      Cookies.set(cookieRefreshToken, res.refresh_token)
+      Cookies.set(cookieToken, res.token)
+      this.$store.commit('refreshLoggedUser')
+    } else {
+      Cookies.remove(cookieRefreshToken)
+      Cookies.remove(cookieToken)
+      this.$store.commit('removeLoggedUser')
+    }
   },
 }
 </script>
