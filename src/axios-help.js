@@ -5,6 +5,7 @@ import assign from 'core-js/library/modules/_object-assign'
 import {cookieAccessToken} from '@/const/cookies'
 import Cookies from 'js-cookie'
 import store from './store'
+import {Message} from 'element-ui'
 
 let ai = axios.create({
   // baseURL: process.env.API_ORIGIN + process.env.API_PATH,
@@ -58,6 +59,9 @@ const apiOptionTpl = {
     opt.headers['X-PatSnap-Version'] = 'v1'
     opt.headers['content-type'] = 'application/json'
     opt.headers['Authorization'] = Cookies.get(cookieAccessToken)
+    if(!opt.headers['Authorization']) {
+      throw new Error('unlogged')
+    }
 
     return toTempOption(opt, true)
   },
@@ -66,6 +70,9 @@ const apiOptionTpl = {
     opt.headers['X-PatSnap-Version'] = '1.0.0'
     opt.headers['content-type'] = 'application/json'
     opt.headers['Authorization'] = Cookies.get(cookieAccessToken)
+    if(!opt.headers['Authorization']) {
+      throw new Error('unlogged')
+    }
     return toTempOption(opt)
   },
   dev(opt) {
@@ -162,29 +169,29 @@ function mapApi(apis) {
 
         try {
           let realOption = apiOptionTpl[opt.tpl](reqOpts)
-          // let postDataType = opt.body ? 'body' : 'params'
-          // let sp = new URLSearchParams()
-          // sp.append('data', JSON.stringify({
-          //   method: reqOpts.method.toUpperCase(),
-          //   url: reqOpts.baseURL + reqOpts.url + toUrlData(reqOpts.params),
-          //   headers: reqOpts.headers,
-          //   [postDataType]: reqOpts.data,
-          // }))
-          // let res = await ai.request({
-          //   method: 'post',
-          //   url: '/api/openapi/common',
-          //   data: sp,
-          // })
           let res = await ai.request(realOption)
           if(typeof res.data === 'string') {
             res.data = JSON.parse(res.data)
           }
           if(res.data.exp === 'token expired') {
-            store.dispatch('refreshToken')
+            await store.dispatch('fetchAccessToken')
+            realOption = apiOptionTpl[opt.tpl](reqOpts)
+            // 再次请求api
+            let res2 = await ai.request(realOption)
+            if(typeof res2.data === 'string') {
+              res2.data = JSON.parse(res2.data)
+            }
+            return transformRespondDefault(res2)
           } else {
             return transformRespondDefault(res)
           }
         } catch (e) {
+          if(e.message === 'unlogged') {
+            Message({
+              message: '请登录',
+              type: 'error',
+            })
+          }
           throw e
         }
       }

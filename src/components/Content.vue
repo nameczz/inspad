@@ -48,7 +48,7 @@
 import {Dialog, Input, Message} from 'element-ui'
 import apiAuth from 'api/auth'
 import Cookies from 'js-cookie'
-import {cookieToken, cookieRefreshToken, cookieClientName, cookieAccessToken, cookieClientId} from '@/const/cookies'
+import {cookieToken, cookieRefreshToken} from '@/const/cookies'
 import 'md/validate'
 
 export default {
@@ -82,19 +82,6 @@ export default {
         type: 'error',
       })
     },
-    async getClientInfo() {
-      let [client] = await apiAuth.getClient()
-      Cookies.set(cookieClientName, client.client_name)
-      Cookies.set(cookieClientId, client.id)
-      this.$store.commit('refreshLoggedUser')
-      this.getToken(client.id, client.plain_secret)
-    },
-    async getToken(clientId, clientSecret) {
-      let tokenRes = await apiAuth.getToken({clientId, clientSecret})
-      Cookies.set(cookieAccessToken, 'Bearer ' + tokenRes['access_token'])
-      this.logging = false
-      this.dialogVisible = false
-    },
     async login() {
       let result = await this.$validator.validateAll()
       if (result) {
@@ -116,7 +103,9 @@ export default {
         }
         Cookies.set(cookieRefreshToken, res.refresh_token)
         Cookies.set(cookieToken, res.token)
-        this.getClientInfo()
+        await this.$store.dispatch('fetchAccessToken')
+        this.logging = false
+        this.dialogVisible = false
       }
     },
   },
@@ -127,8 +116,6 @@ export default {
       Cookies.set(cookieToken, res.token)
       this.$store.commit('refreshLoggedUser')
     } else {
-      Cookies.remove(cookieRefreshToken)
-      Cookies.remove(cookieToken)
       this.$store.commit('removeLoggedUser')
     }
   },

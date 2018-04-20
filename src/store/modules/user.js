@@ -1,5 +1,6 @@
 import Cookies from 'js-cookie'
-import {cookieClientName, cookieRefreshToken} from '@/const/cookies'
+import {cookieClientName, cookieClientId, cookieAccessToken, cookieRefreshToken, cookieToken} from '@/const/cookies'
+import apiAuth from 'api/auth'
 
 const state = {
   clientName: null,
@@ -15,6 +16,8 @@ const mutations = {
   removeLoggedUser(state) {
     state.clientName = null
     state.loginStatus = 'unlogged'
+    Cookies.remove(cookieRefreshToken)
+    Cookies.remove(cookieToken)
   },
 }
 
@@ -22,9 +25,14 @@ const getters = {
 }
 
 const actions = {
-  async refreshToken({commit, state}) {
-    let refreshToken = Cookies.get(cookieRefreshToken)
-    console.log(!!refreshToken)
+  async fetchAccessToken({commit, state}) {
+    let [client] = await apiAuth.getClient()
+    Cookies.set(cookieClientName, client.client_name)
+    Cookies.set(cookieClientId, client.id)
+    commit('refreshLoggedUser')
+
+    let tokenRes = await apiAuth.getToken({clientId: client.id, clientSecret: client.plain_secret})
+    Cookies.set(cookieAccessToken, 'Bearer ' + tokenRes['access_token'])
   },
 }
 
