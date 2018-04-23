@@ -9,7 +9,7 @@
       <div class="trans-main">
         <div class="container">
           <div class="info">
-            <div class="info-desc">基于最先进的机器学习算法 ，PatSnap 中文实体识别 API 可以识别人名，机构以及地理位置，整体准确度高达 90%。</div>
+            <div class="info-desc"></div>
           </div>
           <section>
             <header><icon src="~svg/view.svg"/> 案例演示</header>
@@ -17,14 +17,16 @@
               <div class="input-image">
                 <el-button type="success"
                            size="small"
-                           class="btn-upload float-left"
+                           class="btn-upload"
                            :loading="uploading"
                            @click="startFileUpload">上传图片</el-button>
                 <input class="file-field"
+                       accept="image/png"
                        ref="file"
                        type="file"
                        name="file"
                        @change="fileChange">
+                <span>仅限png</span>
               </div>
               <div class="out-container">
                 <div class="out-image">
@@ -56,7 +58,7 @@
 </template>
 
 <script>
-import {Input, Tooltip} from 'element-ui'
+import {Input, Tooltip, Message} from 'element-ui'
 import Highlight from 'md/highlight/Highlight'
 import apiResearch from 'api/research'
 import {percent} from 'md/filters'
@@ -93,17 +95,27 @@ export default {
       console.log('Error: ', error)
     },
     async readFileSuccess(e) {
-      let inputs = e.target.result.replace(/^data:image\/png;base64,/, '')
-      let res = await apiResearch.imageExtract({
-        data: {
-          inputs: `__file__:${inputs}`,
-        },
-        session: 'string',
-      })
-      this.json = res
-      this.uploading = false
-      this.$refs.file.value = null
-      this.drawResult(e.target.result, res.data)
+      try{
+        let inputs = e.target.result.replace(/^data:image\/png;base64,/, '')
+        let res = await apiResearch.imageExtract({
+          data: {
+            inputs: `__file__:${inputs}`,
+          },
+          session: 'string',
+        })
+        this.json = res
+        this.uploading = false
+        this.$refs.file.value = null
+        this.drawResult(e.target.result, res.data)
+      }catch (e) {
+        this.uploading = false
+        if(e.message !== 'unlogged') {
+          Message({
+            message: '文件上传失败',
+            type: 'error',
+          })
+        }
+      }
     },
     loadImageEnd() {
     },
@@ -148,6 +160,11 @@ export default {
     margin-left: 20px;
     width: 112px;
     text-align: center;
+    >span{
+      color: #3f4546;
+      font-size: 13px;
+      display: block;
+    }
   }
   .out-container{
     margin-left: 152px;

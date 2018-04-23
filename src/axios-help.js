@@ -12,6 +12,9 @@ let ai = axios.create({
   baseURL: process.env.API_DOMAIN,
   withCredentials: true,
   timeout: 10000,
+  // validateStatus: function(status) {
+  //   return status >= 200 && status <= 400
+  // },
 })
 /*ai.interceptors.response.use(function(response) {
   return response
