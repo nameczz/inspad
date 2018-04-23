@@ -61,10 +61,10 @@ export default {
               name: '单位检测',
               path: '/research/unitdetect',
             },
-            {
-              name: '图像表格提取',
-              path: '/research/phototabledetect',
-            },
+            // {
+            //   name: '图像表格提取',
+            //   path: '/research/phototabledetect',
+            // },
           ],
         },
         {
@@ -88,7 +88,7 @@ export default {
             },
             {
               name: '统计',
-              path: 'null',
+              path: '/data/statistics',
             },
           ],
         },

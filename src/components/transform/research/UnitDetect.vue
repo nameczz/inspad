@@ -67,7 +67,6 @@ export default {
         data: {text: this.inputText},
       })
       this.json = res
-      console.log(res)
       if(res['error_code'] === 0) {
         this.outputText = res.data.entities.join('<br>')
       }

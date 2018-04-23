@@ -41,22 +41,23 @@
                 <tr>
                   <th>ID</th>
                   <th>企业名称</th>
-                  <th>企业股东详情</th>
                   <th>企业主要人员</th>
-                  <!--<th>专利要求</th>-->
-                  <!--<th>专利引用详情</th>-->
+                  <th>企业股东详情</th>
+                  <th>企业对外投资</th>
+                  <th>企业变更</th>
+                  <th>企业分支机构</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr v-for="item in resultList"
-                    :key="item.patent_id">
+                    :key="item.company_id">
                   <td>{{item.company_id|idEncode}}</td>
                   <td>{{item.company_name}}</td>
-                  <td><a class="view" @click="showCompanyShareholder(item.company_id)">点击查看</a></td>
                   <td><a class="view" @click="showCompanyStaff(item.company_id)">点击查看</a></td>
-                  <!--<td><a class="view" @click="showPatentDesc(item.patent_id)">点击查看</a></td>-->
-                  <!--<td><a class="view" @click="showPatentClaim(item.patent_id)">点击查看</a></td>-->
-                  <!--<td><a class="view" @click="showPatentCitation(item.patent_id)">点击查看</a></td>-->
+                  <td><a class="view" @click="showCompanyShareholder(item.company_id)">点击查看</a></td>
+                  <td><a class="view" @click="showCompanyInvestment(item.company_id)">点击查看</a></td>
+                  <td><a class="view" @click="showCompanyChange(item.company_id)">点击查看</a></td>
+                  <td><a class="view" @click="showCompanyBranch(item.company_id)">点击查看</a></td>
                 </tr>
                 </tbody>
               </table>
@@ -83,7 +84,7 @@
 import {Input, Dialog} from 'element-ui'
 import Highlight from 'md/highlight/Highlight'
 import arrayToMap from 'md/array-to-map'
-import {commafy, idEncode} from 'md/filters'
+import {commafy, idEncode, date} from 'md/filters'
 import apiData from 'api/data'
 
 export default {
@@ -113,7 +114,6 @@ export default {
         this.resultList = null
         return
       }
-
       let cp = await apiData.getCompany({
         company_id: res.company_id.join(','),
       })
@@ -140,6 +140,15 @@ export default {
         return array[0].text
       }
     },
+    async showCompanyInvestment(id) {
+      let res = await apiData.getCompanyInvestment({
+        company_id: id,
+      })
+      this.json = res
+      this.dialogVisible = true
+      this.dialogTitle = 'ID: ' + idEncode(id) + ' 企业对外投资'
+      this.dialogText = res.errorCode ? '' : res[0].investment.map(s => s.outcompany_name).join(', ')
+    },
     async showCompanyShareholder(id) {
       let res = await apiData.getCompanyShareholder({
         company_id: id,
@@ -157,6 +166,42 @@ export default {
       this.dialogVisible = true
       this.dialogTitle = 'ID: ' + idEncode(id) + ' 主要人员'
       this.dialogText = res.errorCode ? '' : res[0].staff.map(s => s.type + ': ' + s.name).join(', ')
+    },
+    async showCompanyChange(id) {
+      let res = await apiData.getCompanyChange({
+        company_id: id,
+      })
+      this.json = res
+      this.dialogVisible = true
+      this.dialogTitle = 'ID: ' + idEncode(id) + ' 企业变更'
+      this.dialogText = res.errorCode ? '' : res[0].change.map(s => {
+        return s.change_item + ' 于 ' + date(s.change_time, 'yyyy年m月d号') + ' 从 ' + s.change_before + ' 变更为 ' +
+          s.change_after
+      }).join('<br>')
+    },
+    async showCompanyBranch(id) {
+      let res = await apiData.getCompanyBranch({
+        company_id: id,
+      })
+      this.json = res
+      this.dialogVisible = true
+      this.dialogTitle = 'ID: ' + idEncode(id) + ' 企业分支机构'
+      let branches = []
+      let showBranch = (cp, level) => {
+        branches.push(
+          `<span style="width:${level * 10}px;display: inline-block;"></span>${cp.company_name}`)
+        if(cp.branch) {
+          cp.branch.forEach.map((cpChild) => {
+            showBranch(cpChild, level + 1)
+          })
+        }
+      }
+      if(!res.errorCode) {
+        res[0].branch.forEach.map((cp) => {
+          showBranch(cp, 0)
+        })
+      }
+      this.dialogText = branches.join('<br>')
     },
   },
   filters: {

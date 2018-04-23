@@ -70,6 +70,34 @@ export default mapApi({
       return params
     },
   },
+  getCompanyInvestment: {
+    url: '/company/investment',
+    tpl: 'apiData',
+    transformRequest(params, opt) {
+      return params
+    },
+  },
+  getCompanyIndustry: {
+    url: '/company/industry',
+    tpl: 'apiData',
+    transformRequest(params, opt) {
+      return params
+    },
+  },
+  getCompanyChange: {
+    url: '/company/change',
+    tpl: 'apiData',
+    transformRequest(params, opt) {
+      return params
+    },
+  },
+  getCompanyBranch: {
+    url: '/company/branch',
+    tpl: 'apiData',
+    transformRequest(params, opt) {
+      return params
+    },
+  },
   searchAgency: {
     url: '/agency/simple/search',
     tpl: 'apiData',
@@ -107,6 +135,13 @@ export default mapApi({
   },
   getTrademark: {
     url: '/trademark',
+    tpl: 'apiData',
+    transformRequest(params, opt) {
+      return params
+    },
+  },
+  getLocationMapping: {
+    url: '/statistic/locations/mapping',
     tpl: 'apiData',
     transformRequest(params, opt) {
       return params
