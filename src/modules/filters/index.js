@@ -12,7 +12,7 @@ export function percent(val, num) {
   if(!val) {
     val = 0
   }
-  return fixed(val * 100 , num) + '%'
+  return (num === undefined ? val * 100 : fixed(val * 100 , num)) + '%'
 }
 
 export function fixed(val, num) {

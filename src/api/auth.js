@@ -9,7 +9,14 @@ export default mapApi({
     transformRequest(params, opt) {
       params.client_id = process.env.CLIENT_ID
       params.response_type = 'TOKEN'
-      // opt.params = params
+      return params
+    },
+  },
+  logout: {
+    method: 'get',
+    tpl: 'passport',
+    url: '/logout',
+    transformRequest(params, opt) {
       return params
     },
   },

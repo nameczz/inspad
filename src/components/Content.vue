@@ -4,7 +4,10 @@
       <a class="float-left header-left">
         <icon class="logo" src="~svg/open-api.svg"/>
       </a>
-      <span v-if="loginStatus==='logged'" class="user-name">{{clientName}}</span>
+      <div v-if="loginStatus==='logged'" class="user-name">
+        您好，{{clientName}}
+        <a class="logout" @click="logout">退出登录</a>
+      </div>
       <el-button v-else-if="loginStatus==='unlogged'"
                  class="login-button float-right"
                  @click="openLoginDialog">登录</el-button>
@@ -108,6 +111,10 @@ export default {
         this.dialogVisible = false
       }
     },
+    async logout() {
+      await apiAuth.logout()
+      this.$store.commit('removeLoggedUser')
+    },
   },
   async created() {
     let res = await apiAuth.checksession()
@@ -175,7 +182,13 @@ export default {
   .user-name{
     float: right;
     color: #ffffff;
-    line-height: 60px;
     margin-right: 20px;
+    line-height: 30px;
+    margin-top: 15px;
+  }
+  .logout{
+    color: $green;
+    font-size: 14px;
+    margin-left: 12px;
   }
 </style>

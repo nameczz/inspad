@@ -18,6 +18,9 @@ const mutations = {
     state.loginStatus = 'unlogged'
     Cookies.remove(cookieRefreshToken)
     Cookies.remove(cookieToken)
+    Cookies.remove(cookieClientId)
+    Cookies.remove(cookieClientName)
+    Cookies.remove(cookieAccessToken)
   },
 }
 
