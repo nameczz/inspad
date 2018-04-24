@@ -86,10 +86,10 @@ export default {
               name: '商标',
               path: '/data/trademark',
             },
-            // {
-            //   name: '统计',
-            //   path: '/data/statistics',
-            // },
+            {
+              name: '统计',
+              path: '/data/statistics',
+            },
           ],
         },
       ],

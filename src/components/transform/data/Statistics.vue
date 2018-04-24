@@ -17,15 +17,20 @@
             <div>
               <p>输入任意检索词查询代理机构ID，日期格式为:yyyyMMdd</p>
               <div class="clearfix">
-                <el-input
-                  class="input-text float-left"
-                  placeholder="代理机构编号"
-                  v-model="inputForm.agency_number">
-                </el-input>
+                <div class="float-left">
+                  <el-autocomplete
+                    class="float-left"
+                    v-model="location"
+                    :fetch-suggestions="search"
+                    placeholder="请输入地址"
+                    :trigger-on-focus="false"
+                    @select="handleSelect"
+                  ></el-autocomplete>
+                </div>
+                <el-button type="success" class="translate" @click="translate">
+                  开始查询
+                </el-button>
               </div>
-              <el-button type="success" class="translate" @click="translate">
-                开始查询
-              </el-button>
               <p>查询结果（只显示前10条结果）</p>
               <table class="table">
                 <thead>
@@ -66,14 +71,14 @@
 </template>
 
 <script>
-import {Input, Dialog} from 'element-ui'
+import {Autocomplete, Dialog} from 'element-ui'
 import Highlight from 'md/highlight/Highlight'
 import {commafy, idEncode} from 'md/filters'
 import apiData from 'api/data'
 
 export default {
   components: {
-    [Input.name]: Input,
+    [Autocomplete.name]: Autocomplete,
     [Dialog.name]: Dialog,
     Highlight,
   },
@@ -82,6 +87,8 @@ export default {
       inputForm: {
         agency_number: '11695',
       },
+      location: '',
+      selected: null,
       json: '',
       resultList: null,
       dialogTitle: '',
@@ -90,16 +97,46 @@ export default {
     }
   },
   methods: {
+    async search(queryString, cb) {
+      this.selected = null
+      if(!this.locPromise) {
+        this.locPromise = apiData.getLocationMapping()
+      }
+      let {data} = await this.locPromise
+      let result = []
+      data.forEach(({nameCn, id}) => {
+        if(nameCn.indexOf(queryString) > -1) {
+          result.push({
+            value: nameCn,
+            id,
+          })
+        }
+      })
+      cb(result)
+    },
+    handleSelect(item) {
+      this.selected = item
+    },
     async translate() {
-      let res = await apiData.searchAgency(Object.assign({}, this.inputForm))
-      if(res.errorCode) {
-        this.resultList = null
+      if(!this.location) {
         return
       }
-      let agencies = await apiData.getAgency({
-        agency_id: res.agency_id,
-      })
-      this.resultList = agencies
+      let locationId
+      if(this.selected && this.selected.value === this.location) {
+        locationId = this.selected.id
+      } else {
+        if(!this.locPromise) {
+          this.locPromise = apiData.getLocationMapping()
+        }
+        let {data} = await this.locPromise
+        for(let i = 0; i < data.length; i++) {
+          if(data[i].nameCn === this.location) {
+            locationId = data[i].id
+            break
+          }
+        }
+      }
+      console.log(locationId)
     },
     getTextFromArray(array) {
       if(!array || array.length === 0) {
@@ -148,7 +185,7 @@ export default {
   }
   .translate{
     width: 210px;
-    margin: 16px 0 24px;
+    margin: 0;
   }
   section{
     p{
