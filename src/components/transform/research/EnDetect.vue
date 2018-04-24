@@ -26,7 +26,7 @@
                 data-vv-as="文本"
                 :class="{'error':errors.has('inputText') }">
               </el-input>
-              <el-button type="success" size="small" class="translate float-left" @click="translate">
+              <el-button type="success" size="small" class="translate float-left" :loading="loading" @click="translate">
                 识别
               </el-button>
               <div class="out-text float-left" v-html="outputText">
@@ -58,15 +58,17 @@ export default {
       inputText: 'tooth_brush',
       outputText: '',
       json: '',
+      loading: false,
     }
   },
   methods: {
     async translate() {
+      this.loading = true
       let res = await apiResearch.kwdHelperEn({
         data: {words: this.inputText},
       })
       this.json = res
-      console.log(res)
+      this.loading = false
       if(res['error_code'] === 0) {
         this.outputText = res.data.map(({keyword}) => keyword).join(', ')
       }

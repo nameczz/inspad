@@ -28,7 +28,7 @@
                 data-vv-as="文本"
                 :class="{'error':errors.has('inputText') }">
               </el-input>
-              <el-button type="success" size="small" class="translate float-left" @click="translate">
+              <el-button type="success" size="small" class="translate float-left" :loading="loading" @click="translate">
                 提取
               </el-button>
               <div class="out-text float-left" v-html="outputText">
@@ -61,15 +61,17 @@ export default {
       inputText: '本发明属于锂离子电池技术领域，具体公开了一种锂离子电池负极材料、负极和锂离子电池。所述锂离子电池负极材料包括水溶性粘结剂，所述水溶性粘结剂为接枝改性魔芋葡甘露聚糖。本发明实施例提供的锂离子电池负极材料，粘结剂采用接枝改性魔芋葡甘露聚糖，由于该粘结剂具有优越的柔顺及粘结性能，因此可降低锂离子电池负极材料中粘结剂的使用量，使得负极活性物质在负极材料中所占的比重增大，进而使得锂离子电池能量密度获得提升，提高了锂离子电池性能。',
       outputText: '',
       json: '',
+      loading: false,
     }
   },
   methods: {
     async translate() {
+      this.loading = true
       let res = await apiResearch.transAbstrCnen({
         data: {text: this.inputText},
       })
       this.json = res
-      console.log(res)
+      this.loading = false
       if(res['error_code'] === 0) {
         this.outputText = res.data
       }

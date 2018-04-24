@@ -28,7 +28,7 @@
                 data-vv-as="文本"
                 :class="{'error':errors.has('inputText') }">
               </el-input>
-              <el-button type="success" size="small" class="translate float-left" @click="translate">
+              <el-button type="success" size="small" class="translate float-left" :loading="loading" @click="translate">
                 提取
               </el-button>
               <div class="out-text float-left" v-html="outputText">
@@ -60,15 +60,17 @@ export default {
       inputText: '具有应用可变电阻值主动固态电解质材料的内存胞元的内存组件及其制造方法',
       outputText: '',
       json: '',
+      loading: false,
     }
   },
   methods: {
     async translate() {
+      this.loading = true
       let res = await apiResearch.transTitleCnEn({
         data: {text: this.inputText},
       })
       this.json = res
-      console.log(res)
+      this.loading = false
       if(res['error_code'] === 0) {
         this.outputText = res.data.text
       }
