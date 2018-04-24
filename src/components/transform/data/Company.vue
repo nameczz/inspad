@@ -32,7 +32,7 @@
                   v-model="inputForm.reg_number">
                 </el-input>
               </div>
-              <el-button type="success" class="translate" @click="translate">
+              <el-button type="success" class="translate" :loading="loading" @click="translate">
                 开始查询
               </el-button>
               <p>查询结果（只显示前10条结果）</p>
@@ -105,10 +105,12 @@ export default {
       dialogTitle: '',
       dialogVisible: false,
       dialogText: '',
+      loading: false,
     }
   },
   methods: {
     async translate() {
+      this.loading = true
       let res = await apiData.searchCompany(Object.assign({}, this.inputForm))
       if(res.errorCode) {
         this.resultList = null
@@ -128,6 +130,7 @@ export default {
           }
         }
       })
+      this.loading = false
     },
     getTextFromArray(array) {
       if(!array || array.length === 0) {

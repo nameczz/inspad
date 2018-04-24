@@ -10,7 +10,7 @@
       <div class="trans-main">
         <div class="container">
           <div class="info">
-            <div class="info-desc">通过公司名称、组织机构编号或者注册编号获取相关企业ID，并使用ID查询到专利价值、法律详情、说明书、要求和引用详情等信息</div>
+            <div class="info-desc">通过公司名称、组织机构编号或者注册编号获取相关代理机构ID，并使用ID查询到专利价值、法律详情、说明书、要求和引用详情等信息</div>
           </div>
           <section>
             <header><icon src="~svg/view.svg"/> 案例演示</header>
@@ -23,7 +23,7 @@
                   v-model="inputForm.agency_number">
                 </el-input>
               </div>
-              <el-button type="success" class="translate" @click="translate">
+              <el-button type="success" class="translate" :loading="loading" @click="translate">
                 开始查询
               </el-button>
               <p>查询结果（只显示前10条结果）</p>
@@ -87,10 +87,12 @@ export default {
       dialogTitle: '',
       dialogVisible: false,
       dialogText: '',
+      loading: false,
     }
   },
   methods: {
     async translate() {
+      this.loading = true
       let res = await apiData.searchAgency(Object.assign({}, this.inputForm))
       if(res.errorCode) {
         this.resultList = null
@@ -100,6 +102,7 @@ export default {
         agency_id: res.agency_id,
       })
       this.resultList = agencies
+      this.loading = false
     },
     getTextFromArray(array) {
       if(!array || array.length === 0) {
