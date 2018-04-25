@@ -93,16 +93,19 @@ export default {
   methods: {
     async translate() {
       this.loading = true
-      let res = await apiData.searchAgency(Object.assign({}, this.inputForm))
-      if(res.errorCode) {
-        this.resultList = null
-        return
+      try {
+        let res = await apiData.searchAgency(Object.assign({}, this.inputForm))
+        if(res.errorCode) {
+          this.resultList = null
+          return
+        }
+        let agencies = await apiData.getAgency({
+          agency_id: res.agency_id,
+        })
+        this.resultList = agencies
+      } finally {
+        this.loading = false
       }
-      let agencies = await apiData.getAgency({
-        agency_id: res.agency_id,
-      })
-      this.resultList = agencies
-      this.loading = false
     },
     getTextFromArray(array) {
       if(!array || array.length === 0) {

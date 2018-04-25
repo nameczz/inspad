@@ -66,13 +66,16 @@ export default {
   methods: {
     async translate() {
       this.loading = true
-      let res = await apiResearch.transTitleCnEn({
-        data: {text: this.inputText},
-      })
-      this.json = res
-      this.loading = false
-      if(res['error_code'] === 0) {
-        this.outputText = res.data.text
+      try {
+        let res = await apiResearch.transTitleCnEn({
+          data: {text: this.inputText},
+        })
+        this.json = res
+        if(res['error_code'] === 0) {
+          this.outputText = res.data.text
+        }
+      } finally {
+        this.loading = false
       }
     },
   },

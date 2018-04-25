@@ -65,13 +65,16 @@ export default {
   methods: {
     async translate() {
       this.loading = true
-      let res = await apiResearch.unitDetectCn({
-        data: {text: this.inputText},
-      })
-      this.loading = false
-      this.json = res
-      if(res['error_code'] === 0) {
-        this.outputText = res.data.entities.join('<br>')
+      try {
+        let res = await apiResearch.unitDetectCn({
+          data: {text: this.inputText},
+        })
+        this.json = res
+        if(res['error_code'] === 0) {
+          this.outputText = res.data.entities.join('<br>')
+        }
+      } finally {
+        this.loading = false
       }
     },
   },

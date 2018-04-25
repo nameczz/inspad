@@ -145,30 +145,33 @@ export default {
   methods: {
     async translate() {
       this.loading = true
-      let res = await apiData.searchPatent(Object.assign({
-        offset: 0,
-        limit: 10,
-      }, this.inputForm))
-      if(res.errorCode) {
-        this.resultList = null
-        return
-      }
-
-      let pv = await apiData.getPatentValuation({
-        patent_id: res.patent.join(','),
-      })
-      let pvMap = arrayToMap(pv, 'patent_id')
-      this.resultList = res.patent.map(id => {
-        if(id in pvMap) {
-          return pvMap[id]
-        } else {
-          return {
-            patent_id: id,
-            patent_value: null,
-          }
+      try{
+        let res = await apiData.searchPatent(Object.assign({
+          offset: 0,
+          limit: 10,
+        }, this.inputForm))
+        if(res.errorCode) {
+          this.resultList = null
+          return
         }
-      })
-      this.loading = false
+
+        let pv = await apiData.getPatentValuation({
+          patent_id: res.patent.join(','),
+        })
+        let pvMap = arrayToMap(pv, 'patent_id')
+        this.resultList = res.patent.map(id => {
+          if(id in pvMap) {
+            return pvMap[id]
+          } else {
+            return {
+              patent_id: id,
+              patent_value: null,
+            }
+          }
+        })
+      } finally {
+        this.loading = false
+      }
     },
     getTextFromArray(array) {
       if(!array || array.length === 0) {

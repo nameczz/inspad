@@ -66,16 +66,19 @@ export default {
   methods: {
     async translate() {
       this.loading = true
-      let res = await apiResearch.langDetect({
-        data: {
-          text: this.inputText,
-        },
-        session: 'string',
-      })
-      this.json = res
-      this.loading = false
-      if(res['error_code'] === 0) {
-        this.outputText = res.data.lang
+      try {
+        let res = await apiResearch.langDetect({
+          data: {
+            text: this.inputText,
+          },
+          session: 'string',
+        })
+        this.json = res
+        if(res['error_code'] === 0) {
+          this.outputText = res.data.lang
+        }
+      } finally {
+        this.loading = false
       }
     },
   },

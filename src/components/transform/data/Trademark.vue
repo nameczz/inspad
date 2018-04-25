@@ -138,19 +138,22 @@ export default {
   methods: {
     async translate() {
       this.loading = true
-      let res = await apiData.searchTrademark(Object.assign({
-        limit: 10,
-        offset: 0,
-      }, this.inputForm))
-      if(res.errorCode) {
-        this.resultList = null
-        return
+      try {
+        let res = await apiData.searchTrademark(Object.assign({
+          limit: 10,
+          offset: 0,
+        }, this.inputForm))
+        if (res.errorCode) {
+          this.resultList = null
+          return
+        }
+        let trademarks = await apiData.getTrademark({
+          trademark_id: res.trademark_id.join(','),
+        })
+        this.resultList = trademarks
+      } finally {
+        this.loading = false
       }
-      let trademarks = await apiData.getTrademark({
-        trademark_id: res.trademark_id.join(','),
-      })
-      this.resultList = trademarks
-      this.loading = false
     },
     getTextFromArray(array) {
       if(!array || array.length === 0) {

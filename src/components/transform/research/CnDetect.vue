@@ -64,13 +64,16 @@ export default {
   methods: {
     async translate() {
       this.loading = true
-      let res = await apiResearch.kwdHelperCn({
-        data: {words: this.inputText},
-      })
-      this.json = res
-      this.loading = false
-      if(res['error_code'] === 0) {
-        this.outputText = res.data.map(({keyword}) => keyword).join(', ')
+      try {
+        let res = await apiResearch.kwdHelperCn({
+          data: {words: this.inputText},
+        })
+        this.json = res
+        if(res['error_code'] === 0) {
+          this.outputText = res.data.map(({keyword}) => keyword).join(', ')
+        }
+      } finally {
+        this.loading = false
       }
     },
   },

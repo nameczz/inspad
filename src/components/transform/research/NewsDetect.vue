@@ -66,26 +66,29 @@ export default {
   methods: {
     async translate() {
       this.loading = true
-      let inputText = this.inputText
-      let res = await apiResearch.nerNewsCn({
-        data: inputText,
-      })
-      this.json = res
-      this.loading = false
-      if(res['error_code'] === 0) {
-        let lastEnd = 0
-        let outputText = []
-        this.tempCompute(inputText, res.data).forEach(({entity, start, end}) => {
-          if(start < 0 || end < 0) {
-            return
-          }
-          outputText.push(inputText.substring(lastEnd, start))
-          outputText.push('<i style="background: #a0ff00;">' + inputText.substring(start, end) + '</i>')
-          lastEnd = end
+      try {
+        let inputText = this.inputText
+        let res = await apiResearch.nerNewsCn({
+          data: inputText,
         })
-        outputText.push(inputText.substring(lastEnd, inputText.length))
-        this.outputText = outputText.join('')
-        this.outputEl.scrollTop = this.inputEl.scrollTop = 0
+        this.json = res
+        if(res['error_code'] === 0) {
+          let lastEnd = 0
+          let outputText = []
+          this.tempCompute(inputText, res.data).forEach(({entity, start, end}) => {
+            if(start < 0 || end < 0) {
+              return
+            }
+            outputText.push(inputText.substring(lastEnd, start))
+            outputText.push('<i style="background: #a0ff00;">' + inputText.substring(start, end) + '</i>')
+            lastEnd = end
+          })
+          outputText.push(inputText.substring(lastEnd, inputText.length))
+          this.outputText = outputText.join('')
+          this.outputEl.scrollTop = this.inputEl.scrollTop = 0
+        }
+      } finally {
+        this.loading = false
       }
     },
     tempCompute(text, data) {

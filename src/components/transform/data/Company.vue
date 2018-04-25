@@ -111,26 +111,29 @@ export default {
   methods: {
     async translate() {
       this.loading = true
-      let res = await apiData.searchCompany(Object.assign({}, this.inputForm))
-      if(res.errorCode) {
-        this.resultList = null
-        return
-      }
-      let cp = await apiData.getCompany({
-        company_id: res.company_id.join(','),
-      })
-      let cpMap = arrayToMap(cp, 'company_id')
-      this.resultList = res.company_id.map(id => {
-        if(id in cpMap) {
-          return cpMap[id]
-        } else {
-          return {
-            company_id: id,
-            company_name: null,
-          }
+      try {
+        let res = await apiData.searchCompany(Object.assign({}, this.inputForm))
+        if(res.errorCode) {
+          this.resultList = null
+          return
         }
-      })
-      this.loading = false
+        let cp = await apiData.getCompany({
+          company_id: res.company_id.join(','),
+        })
+        let cpMap = arrayToMap(cp, 'company_id')
+        this.resultList = res.company_id.map(id => {
+          if(id in cpMap) {
+            return cpMap[id]
+          } else {
+            return {
+              company_id: id,
+              company_name: null,
+            }
+          }
+        })
+      } finally {
+        this.loading = false
+      }
     },
     getTextFromArray(array) {
       if(!array || array.length === 0) {
