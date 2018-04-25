@@ -5,7 +5,7 @@
         <icon class="logo" src="~svg/open-api.svg"/>
       </a>
       <div v-if="loginStatus==='logged'" class="user-name">
-        您好，{{clientName}}
+        您好，{{clientName || '用户'}}
         <a class="logout" @click="logout">退出登录</a>
       </div>
       <el-button v-else-if="loginStatus==='unlogged'"
@@ -89,26 +89,32 @@ export default {
       let result = await this.$validator.validateAll()
       if (result) {
         this.logging = true
-        let res = await apiAuth.login({
-          username: this.username,
-          password: this.password,
-        })
-        if(res.errcode) {
-          switch(res.errcode) {
-            case '30103':
-              this.showError('用户名或密码错误')
-              break
-            default:
-              this.showError('系统错误')
+        try {
+          let res = await apiAuth.login({
+            username: this.username,
+            password: this.password,
+          })
+          if(res.errcode) {
+            switch(res.errcode) {
+              case '30101':
+                this.showError('无该用户')
+                break
+              case '30103':
+                this.showError('密码错误')
+                break
+              default:
+                this.showError('系统错误')
+            }
+            this.logging = false
+            return
           }
+          Cookies.set(cookieRefreshToken, res.refresh_token)
+          Cookies.set(cookieToken, res.token)
+          await this.$store.dispatch('fetchAccessToken')
+          this.dialogVisible = false
+        } finally {
           this.logging = false
-          return
         }
-        Cookies.set(cookieRefreshToken, res.refresh_token)
-        Cookies.set(cookieToken, res.token)
-        await this.$store.dispatch('fetchAccessToken')
-        this.logging = false
-        this.dialogVisible = false
       }
     },
     async logout() {

@@ -11,6 +11,11 @@ export default mapApi({
       params.response_type = 'TOKEN'
       return params
     },
+    config: {
+      validateStatus: function(status) {
+        return status >= 200 && status <= 404
+      },
+    },
   },
   logout: {
     method: 'get',

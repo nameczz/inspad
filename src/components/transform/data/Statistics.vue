@@ -15,7 +15,6 @@
           <section>
             <header><icon src="~svg/view.svg"/> 案例演示</header>
             <div>
-              <p>输入任意检索词查询代理机构ID，日期格式为:yyyyMMdd</p>
               <div class="clearfix">
                 <div class="float-left input">
                   <el-autocomplete
@@ -24,7 +23,7 @@
                     placeholder="请输入地址"
                     :trigger-on-focus="false"
                     @select="handleSelect"></el-autocomplete>
-                  <el-select v-model="statType" placeholder="请选择">
+                  <el-select v-model="statType" placeholder="请选择数据类型">
                     <el-option
                       v-for="item in statTypes"
                       :key="item.value"
