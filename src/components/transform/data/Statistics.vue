@@ -90,7 +90,6 @@ export default {
         {value: 'getPatentsFamilyDimensions', label: '同族维度'},
         {value: 'getIndustryPatentsValue', label: '产业专利价值'},
         {value: 'getIndustryPatentsCount', label: '产业专利数量'},
-        {value: '企业专利价值', label: '企业专利价值'},
       ],
       outputText: '',
     }
