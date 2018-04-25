@@ -17,40 +17,28 @@
             <div>
               <p>输入任意检索词查询代理机构ID，日期格式为:yyyyMMdd</p>
               <div class="clearfix">
-                <div class="float-left">
+                <div class="float-left input">
                   <el-autocomplete
-                    class="float-left"
                     v-model="location"
                     :fetch-suggestions="search"
                     placeholder="请输入地址"
                     :trigger-on-focus="false"
-                    @select="handleSelect"
-                  ></el-autocomplete>
+                    @select="handleSelect"></el-autocomplete>
+                  <el-select v-model="statType" placeholder="请选择">
+                    <el-option
+                      v-for="item in statTypes"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value">
+                    </el-option>
+                  </el-select>
                 </div>
-                <el-button type="success" class="translate" @click="translate">
+                <el-button type="success" class="translate float-left" :loading="loading" @click="translate">
                   开始查询
                 </el-button>
+                <div class="out-text float-left" v-html="outputText">
+                </div>
               </div>
-              <p>查询结果（只显示前10条结果）</p>
-              <table class="table">
-                <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>代理机构名称</th>
-                  <th>代理机构专利</th>
-                  <th>代理人</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr v-for="item in resultList"
-                    :key="item.agency_id">
-                  <td>{{item.agency_id|idEncode}}</td>
-                  <td>{{item.agency_name}}</td>
-                  <td><a class="view" @click="showAgencyPatent(item.agency_id)">点击查看</a></td>
-                  <td><a class="view" @click="showAgencyAgent(item)">点击查看</a></td>
-                </tr>
-                </tbody>
-              </table>
             </div>
           </section>
           <section>
@@ -61,17 +49,11 @@
       </div>
       <copyright/>
     </div>
-    <el-dialog
-      :title="dialogTitle"
-      :visible.sync="dialogVisible"
-      width="30%">
-      <span v-html="dialogText"></span>
-    </el-dialog>
   </div>
 </template>
 
 <script>
-import {Autocomplete, Dialog} from 'element-ui'
+import {Autocomplete, Select, Option} from 'element-ui'
 import Highlight from 'md/highlight/Highlight'
 import {commafy, idEncode} from 'md/filters'
 import apiData from 'api/data'
@@ -79,7 +61,8 @@ import apiData from 'api/data'
 export default {
   components: {
     [Autocomplete.name]: Autocomplete,
-    [Dialog.name]: Dialog,
+    [Select.name]: Select,
+    [Option.name]: Option,
     Highlight,
   },
   data() {
@@ -94,6 +77,22 @@ export default {
       dialogTitle: '',
       dialogVisible: false,
       dialogText: '',
+      statType: '',
+      loading: false,
+      statTypes: [
+        {value: 'getValuablePatent', label: '价值最高专利'},
+        {value: 'getPatentsValueDimensions', label: '价值维度'},
+        {value: 'getPatentsTypeDimensionsWithAgency', label: '类型维度(代理机构)'},
+        {value: 'getPatentsTypeDimensionsWithoutAgency', label: '类型维度(非代理机构)'},
+        {value: 'getPatentsStatusDimensions', label: '状态维度'},
+        {value: 'getPatentsLegalDimensionsWithAgency', label: '法律维度(代理机构)'},
+        {value: 'getPatentsLegalDimensionsWithoutAgency', label: '法律维度(非代理机构)'},
+        {value: 'getPatentsFamilyDimensions', label: '同族维度'},
+        {value: 'getIndustryPatentsValue', label: '产业专利价值'},
+        {value: 'getIndustryPatentsCount', label: '产业专利数量'},
+        {value: '企业专利价值', label: '企业专利价值'},
+      ],
+      outputText: '',
     }
   },
   methods: {
@@ -129,43 +128,100 @@ export default {
           this.locPromise = apiData.getLocationMapping()
         }
         let {data} = await this.locPromise
-        for(let i = 0; i < data.length; i++) {
-          if(data[i].nameCn === this.location) {
-            locationId = data[i].id
-            break
-          }
+        let loc = data.find(item => item.nameCn === this.location)
+        if(loc) {
+          locationId = loc.id
         }
       }
-      console.log(locationId)
-    },
-    getTextFromArray(array) {
-      if(!array || array.length === 0) {
-        return ''
+      if(locationId && this.statType) {
+        this.loading = true
+        try {
+          await this[this.statType](locationId)
+        } finally {
+          this.loading = false
+        }
       }
-      let cn = array.find(({lang}) => lang === 'CN')
-      if(cn) {
-        return cn.text
+    },
+    async getValuablePatent(locationId) {
+      this.json = await apiData.getValuablePatents({locationId})
+      this.outputText = this.json.data.map(item => item.publishedNumber).join('<br>')
+    },
+    async getPatentsValueDimensions(locationId) {
+      this.json = await apiData.getPatentsValueDimensions({locationId})
+      this.outputText = `估价：${this.json.data.assessment} 元<br>授权数：${this.json.data.authCount}`
+    },
+    async getPatentsTypeDimensionsWithAgency(locationId) {
+      this.json = await apiData.getPatentsTypeDimensions({locationId, isWithAgency: 'yes'})
+      this.outputText = [
+        {value: 'invention', name: '发明专利'},
+        {value: 'utility', name: '实用新型'},
+        {value: 'appearance', name: '外观设计'},
+      ].map(({value, name}) => {
+        return name + '： ' + this.json.data[value]
+      }).join('<br>')
+    },
+    async getPatentsTypeDimensionsWithoutAgency(locationId) {
+      this.json = await apiData.getPatentsTypeDimensions({locationId, isWithAgency: 'no'})
+      this.outputText = [
+        {value: 'invention', name: '发明专利'},
+        {value: 'utility', name: '实用新型'},
+        {value: 'appearance', name: '外观设计'},
+      ].map(({value, name}) => {
+        return name + '： ' + this.json.data[value]
+      }).join('<br>')
+    },
+    async getPatentsStatusDimensions(locationId) {
+      this.json = await apiData.getPatentsStatusDimensions({locationId})
+      this.outputText = [
+        {value: 'appCount', name: '专利申请'},
+        {value: 'graCount', name: '专利授权'},
+        {value: 'invAppCount', name: '发明申请'},
+        {value: 'invGraCount', name: '发明授权'},
+      ].map(({value, name}) => {
+        return name + '： ' + this.json.data[value]
+      }).join('<br>')
+    },
+    async getPatentsLegalDimensionsWithAgency(locationId) {
+      this.json = await apiData.getPatentsLegalDimensions({locationId, isWithAgency: 'yes'})
+      this.outputText = [
+        {value: 'pending', name: '审中'},
+        {value: 'valid', name: '有效'},
+        {value: 'invalid', name: '无效'},
+      ].map(({value, name}) => {
+        return name + '： ' + this.json.data[value]
+      }).join('<br>')
+    },
+    async getPatentsLegalDimensionsWithoutAgency(locationId) {
+      this.json = await apiData.getPatentsLegalDimensions({locationId, isWithAgency: 'no'})
+      this.outputText = [
+        {value: 'pending', name: '审中'},
+        {value: 'valid', name: '有效'},
+        {value: 'invalid', name: '无效'},
+      ].map(({value, name}) => {
+        return name + '： ' + this.json.data[value]
+      }).join('<br>')
+    },
+    async getPatentsFamilyDimensions(locationId) {
+      this.json = await apiData.getPatentsFamilyDimensions({locationId})
+      this.outputText = '同族专利： ' + this.json.data.familyCount
+    },
+    async getIndustryPatentsValue(locationId) {
+      this.json = await apiData.getIndustryPatentsValue({locationId, level: 2})
+      if(this.json.data) {
+        this.outputText = this.json.data.map(({industry, assessment}) =>
+          `${industry.nameCn}：${assessment}元`).join('<br>')
       } else {
-        return array[0].text
+        this.outputText = ''
       }
     },
-    async showAgencyPatent(id) {
-      let res = await apiData.getAgencyPatent({
-        agency_id: id,
-      })
-      this.json = res
-      this.dialogVisible = true
-      this.dialogTitle = 'ID: ' + idEncode(id) + ' 代理机构专利'
-      this.dialogText = null
-    },
-    async showAgencyAgent({agents, agency_id: id}) {
-      let res = await apiData.getAgencyAgent({
-        agent_id: agents.join(','),
-      })
-      this.json = res
-      this.dialogVisible = true
-      this.dialogTitle = 'ID: ' + idEncode(id) + ' 代理人'
-      this.dialogText = res.errorCode ? '' : res.map(s => s.agent_name).join(', ')
+    async getIndustryPatentsCount(locationId) {
+      this.json = await apiData.getIndustryPatentsCount({locationId, level: 2})
+      if(this.json.data) {
+        this.outputText = this.json.data.map(({industry, count}) =>
+          `${industry.nameCn}：${count}`).join('<br>')
+      } else {
+        this.outputText = ''
+      }
     },
   },
   filters: {
@@ -178,14 +234,32 @@ export default {
 <style scoped lang="scss">
   @import "~sty/var";
   @import "~sty/components/transform";
-  .el-input{
+  .input{
     width: 210px;
-    margin-right: 20px;
-    margin-bottom: 12px;
+    >.el-autocomplete{
+      width: 100%;
+      margin-bottom: 10px;
+    }
+    >.el-select{
+      width: 100%;
+    }
   }
+
   .translate{
     width: 210px;
-    margin: 0;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+  .out-text{
+    width: 366px;
+    height: 96px;
+    background: #ffffff;
+    border-radius: 4px;
+    font-size: 14px;
+    line-height: 1.5;
+    padding: 6px 16px;
+    box-sizing: border-box;
+    overflow-y: auto;
   }
   section{
     p{

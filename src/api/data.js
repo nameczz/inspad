@@ -147,5 +147,61 @@ export default mapApi({
       return params
     },
   },
+  getValuablePatents: {
+    url: '/statistic/patents/valuable',
+    tpl: 'apiData',
+    transformRequest(params, opt) {
+      return params
+    },
+  },
+  getPatentsValueDimensions: {
+    url: '/statistic/patents/dimensions/value',
+    tpl: 'apiData',
+    transformRequest(params, opt) {
+      return params
+    },
+  },
+  getPatentsTypeDimensions: {
+    url: '/statistic/patents/dimensions/type',
+    tpl: 'apiData',
+    transformRequest(params, opt) {
+      return params
+    },
+  },
+  getPatentsStatusDimensions: {
+    url: '/statistic/patents/dimensions/status',
+    tpl: 'apiData',
+    transformRequest(params, opt) {
+      return params
+    },
+  },
+  getPatentsLegalDimensions: {
+    url: '/statistic/patents/dimensions/legal',
+    tpl: 'apiData',
+    transformRequest(params, opt) {
+      return params
+    },
+  },
+  getPatentsFamilyDimensions: {
+    url: '/statistic/patents/dimensions/family',
+    tpl: 'apiData',
+    transformRequest(params, opt) {
+      return params
+    },
+  },
+  getIndustryPatentsValue: {
+    url: '/statistic/industries/patents/value',
+    tpl: 'apiData',
+    transformRequest(params, opt) {
+      return params
+    },
+  },
+  getIndustryPatentsCount: {
+    url: '/statistic/industries/patents/count',
+    tpl: 'apiData',
+    transformRequest(params, opt) {
+      return params
+    },
+  },
 })
 

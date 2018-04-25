@@ -63,7 +63,11 @@ const apiOptionTpl = {
     opt.headers['content-type'] = 'application/json'
     opt.headers['Authorization'] = Cookies.get(cookieAccessToken)
     if(!opt.headers['Authorization']) {
-      throw new Error('unlogged')
+      if(store.state.user.loginStatus === 'logged') {
+        throw new Error('token expired')
+      } else {
+        throw new Error('unlogged')
+      }
     }
 
     return toTempOption(opt, true)
@@ -74,7 +78,11 @@ const apiOptionTpl = {
     opt.headers['content-type'] = 'application/json'
     opt.headers['Authorization'] = Cookies.get(cookieAccessToken)
     if(!opt.headers['Authorization']) {
-      throw new Error('unlogged')
+      if(store.state.user.loginStatus === 'logged') {
+        throw new Error('token expired')
+      } else {
+        throw new Error('unlogged')
+      }
     }
     return toTempOption(opt)
   },
@@ -137,6 +145,49 @@ function toFormData(data) {
 }
 
 /**
+ * @param {object} opt
+ * @param {object} reqOpts
+ * @return {Promise<*>}
+ */
+async function request(opt, reqOpts) {
+  try {
+    let realOption = apiOptionTpl[opt.tpl](reqOpts)
+    let res = await ai.request(realOption)
+
+    if(typeof res.data === 'string') {
+      res.data = JSON.parse(res.data)
+    }
+    if(res.data.exp === 'token expired') {
+      throw new Error('token expired')
+    } else if(res.data.message === 'No permission for target API!') {
+      throw new Error('no permission')
+    } else {
+      return transformRespondDefault(res)
+    }
+  } catch (e) {
+    switch(e.message) {
+      case 'no permission':
+        Message({
+          message: '您没有权限',
+          type: 'error',
+        })
+        throw e
+      case 'unlogged':
+        Message({
+          message: '请登录',
+          type: 'error',
+        })
+        throw e
+      case 'token expired':
+        await store.dispatch('fetchAccessToken')
+        return request(opt, reqOpts)
+      default:
+        throw e
+    }
+  }
+}
+
+/**
  * @param {Array} apis
  * @param {string} source
  * @return {Object}
@@ -169,34 +220,7 @@ function mapApi(apis) {
         if(opt.config) {
           assign(reqOpts, opt.config)
         }
-
-        try {
-          let realOption = apiOptionTpl[opt.tpl](reqOpts)
-          let res = await ai.request(realOption)
-          if(typeof res.data === 'string') {
-            res.data = JSON.parse(res.data)
-          }
-          if(res.data.exp === 'token expired') {
-            await store.dispatch('fetchAccessToken')
-            realOption = apiOptionTpl[opt.tpl](reqOpts)
-            // 再次请求api
-            let res2 = await ai.request(realOption)
-            if(typeof res2.data === 'string') {
-              res2.data = JSON.parse(res2.data)
-            }
-            return transformRespondDefault(res2)
-          } else {
-            return transformRespondDefault(res)
-          }
-        } catch (e) {
-          if(e.message === 'unlogged') {
-            Message({
-              message: '请登录',
-              type: 'error',
-            })
-          }
-          throw e
-        }
+        return request(opt, reqOpts)
       }
     }
   }
