@@ -112,6 +112,12 @@ export default {
           Cookies.set(cookieToken, res.token)
           await this.$store.dispatch('fetchAccessToken')
           this.dialogVisible = false
+        } catch (e) {
+          if(e.message === 'no client') {
+            this.showError('无法获取client id')
+          } else {
+            throw e
+          }
         } finally {
           this.logging = false
         }

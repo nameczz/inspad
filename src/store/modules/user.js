@@ -30,6 +30,9 @@ const getters = {
 const actions = {
   async fetchAccessToken({commit, state}) {
     let [client] = await apiAuth.getClient()
+    if(!client) {
+      throw new Error('no client')
+    }
     Cookies.set(cookieClientName, client.client_name)
     Cookies.set(cookieClientId, client.id)
     commit('refreshLoggedUser')
