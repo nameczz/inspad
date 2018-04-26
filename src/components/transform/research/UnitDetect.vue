@@ -48,6 +48,7 @@
 import {Input} from 'element-ui'
 import Highlight from 'md/highlight/Highlight'
 import apiResearch from 'api/research'
+import inputText from '@/const/input/unit-detect'
 export default {
   components: {
     [Input.name]: Input,
@@ -55,8 +56,7 @@ export default {
   },
   data() {
     return {
-      /*eslint-disable*/
-      inputText: '本发明公开一种用于钢丝热镀锌的锌基合金，按重量计，锌铝合金的组份及含量如下：铝4.5～5%，镁0.02～0.04%，锶0.003～0.005%，铟0.001～0.002%，余量为锌。采用本发明的锌铝合金一次镀覆合金重量可达到420～450g/m2，镀层致密、均匀，耐腐蚀性能好。',
+      inputText,
       outputText: '',
       json: '',
       loading: false,
@@ -66,12 +66,14 @@ export default {
     async translate() {
       this.loading = true
       try {
-        let res = await apiResearch.unitDetectCn({
+        let {success, data} = await apiResearch.unitDetectCn({
           data: {text: this.inputText},
         })
-        this.json = res
-        if(res['error_code'] === 0) {
-          this.outputText = res.data.entities.join('<br>')
+        if(success) {
+          this.json = data
+          if(data['error_code'] === 0) {
+            this.outputText = data.data.entities.join('<br>')
+          }
         }
       } finally {
         this.loading = false

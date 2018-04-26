@@ -146,29 +146,33 @@ export default {
     async translate() {
       this.loading = true
       try{
-        let res = await apiData.searchPatent(Object.assign({
+        let {success, data} = await apiData.searchPatent(Object.assign({
           offset: 0,
           limit: 10,
         }, this.inputForm))
-        if(res.errorCode) {
-          this.resultList = null
-          return
-        }
-
-        let pv = await apiData.getPatentValuation({
-          patent_id: res.patent.join(','),
-        })
-        let pvMap = arrayToMap(pv, 'patent_id')
-        this.resultList = res.patent.map(id => {
-          if(id in pvMap) {
-            return pvMap[id]
-          } else {
-            return {
-              patent_id: id,
-              patent_value: null,
-            }
+        if(success) {
+          if(data.errorCode) {
+            this.resultList = null
+            return
           }
-        })
+
+          let pv = await apiData.getPatentValuation({
+            patent_id: data.patent.join(','),
+          })
+          if(pv.success) {
+            let pvMap = arrayToMap(pv.data, 'patent_id')
+            this.resultList = data.patent.map(id => {
+              if(id in pvMap) {
+                return pvMap[id]
+              } else {
+                return {
+                  patent_id: id,
+                  patent_value: null,
+                }
+              }
+            })
+          }
+        }
       } finally {
         this.loading = false
       }
@@ -185,41 +189,53 @@ export default {
       }
     },
     async showLegalInfo(id) {
-      let res = await apiData.getPatentLegalInfo({
+      let {success, data} = await apiData.getPatentLegalInfo({
         patent_id: id,
       })
-      this.json = res
+      if(!success) {
+        return
+      }
+      this.json = data
       this.dialogVisible = true
       this.dialogTitle = 'ID: ' + idEncode(id) + ' 法律状态'
-      this.dialogText = res.errorCode ? '' : this.getTextFromArray(res.legal_info.legal_status[0].legal_desc)
+      this.dialogText = data.errorCode ? '' : this.getTextFromArray(data.legal_info.legal_status[0].legal_desc)
     },
     async showPatentDesc(id) {
-      let res = await apiData.getPatentDesc({
+      let {success, data} = await apiData.getPatentDesc({
         patent_id: id,
       })
-      this.json = res
+      if(!success) {
+        return
+      }
+      this.json = data
       this.dialogVisible = true
       this.dialogTitle = 'ID: ' + idEncode(id) + ' 专利说明书'
-      this.dialogText = res.errorCode ? '' : this.getTextFromArray(res.description)
+      this.dialogText = data.errorCode ? '' : this.getTextFromArray(data.description)
     },
     async showPatentClaim(id) {
-      let res = await apiData.getPatentClaim({
+      let {success, data} = await apiData.getPatentClaim({
         patent_id: id,
       })
-      this.json = res
+      if(!success) {
+        return
+      }
+      this.json = data
       this.dialogVisible = true
       this.dialogTitle = 'ID: ' + idEncode(id) + ' 专利要求'
-      this.dialogText = res.errorCode ? '' : this.getTextFromArray(res.claim)
+      this.dialogText = data.errorCode ? '' : this.getTextFromArray(data.claim)
     },
     async showPatentCitation(id) {
-      let res = await apiData.getPatentCitation({
+      let {success, data} = await apiData.getPatentCitation({
         patent_id: id,
         citation_type: 'CITES',
       })
-      this.json = res
+      if(!success) {
+        return
+      }
+      this.json = data
       this.dialogVisible = true
       this.dialogTitle = 'ID: ' + idEncode(id) + ' 专利引用详情'
-      this.dialogText = res.errorCode ? '' : res.citation.map(c => c.patent_number).join('<br>')
+      this.dialogText = data.errorCode ? '' : data.citation.map(c => c.patent_number).join('<br>')
     },
   },
   filters: {

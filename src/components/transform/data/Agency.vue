@@ -70,6 +70,7 @@ import {Input, Dialog} from 'element-ui'
 import Highlight from 'md/highlight/Highlight'
 import {commafy, idEncode} from 'md/filters'
 import apiData from 'api/data'
+import inputAgencyNumber from '@/const/input/agency'
 
 export default {
   components: {
@@ -80,7 +81,7 @@ export default {
   data() {
     return {
       inputForm: {
-        agency_number: '11695',
+        agency_number: inputAgencyNumber,
       },
       json: '',
       resultList: null,
@@ -94,15 +95,19 @@ export default {
     async translate() {
       this.loading = true
       try {
-        let res = await apiData.searchAgency(Object.assign({}, this.inputForm))
-        if(res.errorCode) {
-          this.resultList = null
-          return
+        let {success, data} = await apiData.searchAgency(Object.assign({}, this.inputForm))
+        if(success) {
+          if(data.errorCode) {
+            this.resultList = null
+            return
+          }
+          let {success: success2, data: agencies} = await apiData.getAgency({
+            agency_id: data.agency_id,
+          })
+          if(success2) {
+            this.resultList = agencies
+          }
         }
-        let agencies = await apiData.getAgency({
-          agency_id: res.agency_id,
-        })
-        this.resultList = agencies
       } finally {
         this.loading = false
       }
@@ -119,22 +124,26 @@ export default {
       }
     },
     async showAgencyPatent(id) {
-      let res = await apiData.getAgencyPatent({
+      let {success, data} = await apiData.getAgencyPatent({
         agency_id: id,
       })
-      this.json = res
-      this.dialogVisible = true
-      this.dialogTitle = 'ID: ' + idEncode(id) + ' 代理机构专利'
-      this.dialogText = null
+      if(success) {
+        this.json = data
+        this.dialogVisible = true
+        this.dialogTitle = 'ID: ' + idEncode(id) + ' 代理机构专利'
+        this.dialogText = null
+      }
     },
     async showAgencyAgent({agents, agency_id: id}) {
-      let res = await apiData.getAgencyAgent({
+      let {success, data} = await apiData.getAgencyAgent({
         agent_id: agents.join(','),
       })
-      this.json = res
-      this.dialogVisible = true
-      this.dialogTitle = 'ID: ' + idEncode(id) + ' 代理人'
-      this.dialogText = res.errorCode ? '' : res.map(s => s.agent_name).join(', ')
+      if(success) {
+        this.json = data
+        this.dialogVisible = true
+        this.dialogTitle = 'ID: ' + idEncode(id) + ' 代理人'
+        this.dialogText = data.errorCode ? '' : data.map(s => s.agent_name).join(', ')
+      }
     },
   },
   filters: {

@@ -25,7 +25,11 @@ const TIME_FORMAT = 'yyyymm'
 const METHOD_GET = 'get'
 
 const transformRespondDefault = function(res) {
-  return res.data
+  return {
+    data: res.data,
+    success: true,
+    status: 'success',
+  }
 }
 
 const apiOptionTpl = {
@@ -45,27 +49,20 @@ const apiOptionTpl = {
     opt.headers['Authorization'] = Cookies.get(cookieAccessToken)
     opt.headers['content-type'] = 'application/json'
     opt.headers['Accept'] = 'application/json'
-    // opt.headers['X-Requested-With'] = 'XMLHttpRequest'
     return toTempOption(opt)
-    // if(opt.method === 'post') {
-    //   if(opt.data) {
-    //     opt.data = toFormData(opt.data)
-    //   }
-    // }
-    // return opt
   },
   api(opt) {
     opt.baseURL = process.env.API_DOMAIN_API
     opt.headers['X-PatSnap-Version'] = 'v1'
     opt.headers['content-type'] = 'application/json'
     opt.headers['Authorization'] = Cookies.get(cookieAccessToken)
-    if(!opt.headers['Authorization']) {
-      if(store.state.user.loginStatus === 'logged') {
-        throw new Error('token expired')
-      } else {
-        throw new Error('unlogged')
-      }
-    }
+    // if(!opt.headers['Authorization']) {
+    //   if(store.state.user.loginStatus === 'logged') {
+    //     throw new Error('token expired')
+    //   } else {
+    //     throw new Error('unlogged')
+    //   }
+    // }
 
     return toTempOption(opt, true)
   },
@@ -74,13 +71,13 @@ const apiOptionTpl = {
     opt.headers['X-PatSnap-Version'] = '1.0.0'
     opt.headers['content-type'] = 'application/json'
     opt.headers['Authorization'] = Cookies.get(cookieAccessToken)
-    if(!opt.headers['Authorization']) {
-      if(store.state.user.loginStatus === 'logged') {
-        throw new Error('token expired')
-      } else {
-        throw new Error('unlogged')
-      }
-    }
+    // if(!opt.headers['Authorization']) {
+    //   if(store.state.user.loginStatus === 'logged') {
+    //     throw new Error('token expired')
+    //   } else {
+    //     throw new Error('unlogged')
+    //   }
+    // }
     return toTempOption(opt)
   },
   dev(opt) {
@@ -147,40 +144,44 @@ function toFormData(data) {
  * @return {Promise<*>}
  */
 async function request(opt, reqOpts) {
-  try {
-    let realOption = apiOptionTpl[opt.tpl](reqOpts)
-    let res = await ai.request(realOption)
+  let realOption = apiOptionTpl[opt.tpl](reqOpts)
 
-    if(typeof res.data === 'string') {
-      res.data = JSON.parse(res.data)
-    }
-    if(res.data.exp === 'token expired') {
-      throw new Error('token expired')
-    } else if(res.data.message === 'No permission for target API!') {
-      throw new Error('no permission')
+  if((opt.tpl === 'api' || opt.tpl === 'apiData') && !reqOpts.headers['Authorization']) {
+    if(store.state.user.loginStatus === 'logged') {
+      await store.dispatch('fetchAccessToken')
+      return request(opt, reqOpts)
     } else {
-      return transformRespondDefault(res)
+      Message({
+        message: '请登录',
+        type: 'error',
+      })
+      return {
+        data: null,
+        success: false,
+        status: 'unlogged',
+      }
     }
-  } catch (e) {
-    switch(e.message) {
-      case 'no permission':
-        Message({
-          message: '您没有权限',
-          type: 'error',
-        })
-        throw e
-      case 'unlogged':
-        Message({
-          message: '请登录',
-          type: 'error',
-        })
-        throw e
-      case 'token expired':
-        await store.dispatch('fetchAccessToken')
-        return request(opt, reqOpts)
-      default:
-        throw e
+  }
+  let res = await ai.request(realOption)
+
+  if(typeof res.data === 'string') {
+    res.data = JSON.parse(res.data)
+  }
+  if(res.data.exp === 'token expired') {
+    await store.dispatch('fetchAccessToken')
+    return request(opt, reqOpts)
+  } else if(res.data.message === 'No permission for target API!') {
+    Message({
+      message: '您没有权限',
+      type: 'error',
+    })
+    return {
+      data: null,
+      success: false,
+      status: 'no permission',
     }
+  } else {
+    return transformRespondDefault(res)
   }
 }
 

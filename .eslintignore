@@ -1,4 +1,5 @@
 /build/
+/src/const/
 /config/
 /dist/
 /*.js

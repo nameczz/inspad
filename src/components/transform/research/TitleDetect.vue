@@ -48,6 +48,7 @@
 import {Input} from 'element-ui'
 import Highlight from 'md/highlight/Highlight'
 import apiResearch from 'api/research'
+import inputText from '@/const/input/title-detect'
 export default {
   components: {
     [Input.name]: Input,
@@ -55,7 +56,7 @@ export default {
   },
   data() {
     return {
-      inputText: '温州康荣服饰有限公司',
+      inputText,
       outputText: '',
       json: '',
       loading: false,
@@ -65,12 +66,14 @@ export default {
     async translate() {
       this.loading = true
       try {
-        let res = await apiResearch.cnameParserCn({
+        let {success, data} = await apiResearch.cnameParserCn({
           data: this.inputText,
         })
-        this.json = res
-        if(res['error_code'] === 0) {
-          this.outputText = res.data['name_prefix']
+        if(success) {
+          this.json = data
+          if(data['error_code'] === 0) {
+            this.outputText = data.data['name_prefix']
+          }
         }
       } finally {
         this.loading = false

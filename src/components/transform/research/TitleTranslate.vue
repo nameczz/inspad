@@ -50,6 +50,7 @@
 import {Input} from 'element-ui'
 import Highlight from 'md/highlight/Highlight'
 import apiResearch from 'api/research'
+import inputText from '@/const/input/title-translate'
 export default {
   components: {
     [Input.name]: Input,
@@ -57,7 +58,7 @@ export default {
   },
   data() {
     return {
-      inputText: '具有应用可变电阻值主动固态电解质材料的内存胞元的内存组件及其制造方法',
+      inputText,
       outputText: '',
       json: '',
       loading: false,
@@ -67,12 +68,14 @@ export default {
     async translate() {
       this.loading = true
       try {
-        let res = await apiResearch.transTitleCnEn({
+        let {success, data} = await apiResearch.transTitleCnEn({
           data: {text: this.inputText},
         })
-        this.json = res
-        if(res['error_code'] === 0) {
-          this.outputText = res.data.text
+        if(success) {
+          this.json = data
+          if(data['error_code'] === 0) {
+            this.outputText = data.data.text
+          }
         }
       } finally {
         this.loading = false

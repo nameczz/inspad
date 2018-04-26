@@ -90,28 +90,30 @@ export default {
       if (result) {
         this.logging = true
         try {
-          let res = await apiAuth.login({
+          let {success, data} = await apiAuth.login({
             username: this.username,
             password: this.password,
           })
-          if(res.errcode) {
-            switch(res.errcode) {
-              case '30101':
-                this.showError('无该用户')
-                break
-              case '30103':
-                this.showError('密码错误')
-                break
-              default:
-                this.showError('系统错误')
+          if(success) {
+            if(data.errcode) {
+              switch(data.errcode) {
+                case '30101':
+                  this.showError('无该用户')
+                  break
+                case '30103':
+                  this.showError('密码错误')
+                  break
+                default:
+                  this.showError('系统错误')
+              }
+              this.logging = false
+              return
             }
-            this.logging = false
-            return
+            Cookies.set(cookieRefreshToken, data.refresh_token)
+            Cookies.set(cookieToken, data.token)
+            await this.$store.dispatch('fetchAccessToken')
+            this.dialogVisible = false
           }
-          Cookies.set(cookieRefreshToken, res.refresh_token)
-          Cookies.set(cookieToken, res.token)
-          await this.$store.dispatch('fetchAccessToken')
-          this.dialogVisible = false
         } catch (e) {
           if(e.message === 'no client') {
             this.showError('无法获取client id')
@@ -124,18 +126,22 @@ export default {
       }
     },
     async logout() {
-      await apiAuth.logout()
-      this.$store.commit('removeLoggedUser')
+      let {success} = await apiAuth.logout()
+      if(success) {
+        this.$store.commit('removeLoggedUser')
+      }
     },
   },
   async created() {
-    let res = await apiAuth.checksession()
-    if(res.token) {
-      Cookies.set(cookieRefreshToken, res.refresh_token)
-      Cookies.set(cookieToken, res.token)
-      this.$store.commit('refreshLoggedUser')
-    } else {
-      this.$store.commit('removeLoggedUser')
+    let {success, data} = await apiAuth.checksession()
+    if(success) {
+      if(data.token) {
+        Cookies.set(cookieRefreshToken, data.refresh_token)
+        Cookies.set(cookieToken, data.token)
+        this.$store.commit('refreshLoggedUser')
+      } else {
+        this.$store.commit('removeLoggedUser')
+      }
     }
   },
 }

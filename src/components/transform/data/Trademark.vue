@@ -107,6 +107,7 @@ import {Input, Dialog} from 'element-ui'
 import Highlight from 'md/highlight/Highlight'
 import {commafy, idEncode} from 'md/filters'
 import apiData from 'api/data'
+import trademarkName from '@/const/input/trademark'
 
 export default {
   components: {
@@ -121,7 +122,7 @@ export default {
         reg_num: '',
         ans: '',
         ans_adress: '',
-        ttl: '加多宝',
+        ttl: trademarkName,
         tm_rgno: '',
         country: '',
         ncl: '',
@@ -139,17 +140,23 @@ export default {
     async translate() {
       this.loading = true
       try {
-        let res = await apiData.searchTrademark(Object.assign({
+        let {success, data} = await apiData.searchTrademark(Object.assign({
           limit: 10,
           offset: 0,
         }, this.inputForm))
-        if (res.errorCode) {
+        if(!success) {
+          return
+        }
+        if (data.errorCode) {
           this.resultList = null
           return
         }
-        let trademarks = await apiData.getTrademark({
-          trademark_id: res.trademark_id.join(','),
+        let {success: success2, data: trademarks} = await apiData.getTrademark({
+          trademark_id: data.trademark_id.join(','),
         })
+        if(!success2) {
+          return
+        }
         this.resultList = trademarks
       } finally {
         this.loading = false

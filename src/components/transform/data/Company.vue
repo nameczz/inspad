@@ -86,6 +86,7 @@ import Highlight from 'md/highlight/Highlight'
 import arrayToMap from 'md/array-to-map'
 import {commafy, idEncode, date} from 'md/filters'
 import apiData from 'api/data'
+import inputOrgNumber from '@/const/input/company'
 
 export default {
   components: {
@@ -97,7 +98,7 @@ export default {
     return {
       inputForm: {
         company_name: '',
-        org_number: '355527178',
+        org_number: inputOrgNumber,
         reg_number: '',
       },
       json: '',
@@ -112,16 +113,22 @@ export default {
     async translate() {
       this.loading = true
       try {
-        let res = await apiData.searchCompany(Object.assign({}, this.inputForm))
-        if(res.errorCode) {
+        let {success, data} = await apiData.searchCompany(Object.assign({}, this.inputForm))
+        if(!success) {
+          return
+        }
+        if(data.errorCode) {
           this.resultList = null
           return
         }
-        let cp = await apiData.getCompany({
-          company_id: res.company_id.join(','),
+        let {success: success2, data: cp} = await apiData.getCompany({
+          company_id: data.company_id.join(','),
         })
+        if(!success2) {
+          return
+        }
         let cpMap = arrayToMap(cp, 'company_id')
-        this.resultList = res.company_id.map(id => {
+        this.resultList = data.company_id.map(id => {
           if(id in cpMap) {
             return cpMap[id]
           } else {
@@ -147,49 +154,64 @@ export default {
       }
     },
     async showCompanyInvestment(id) {
-      let res = await apiData.getCompanyInvestment({
+      let {success, data} = await apiData.getCompanyInvestment({
         company_id: id,
       })
-      this.json = res
+      if(!success) {
+        return
+      }
+      this.json = data
       this.dialogVisible = true
       this.dialogTitle = 'ID: ' + idEncode(id) + ' 企业对外投资'
-      this.dialogText = res.errorCode ? '' : res[0].investment.map(s => s.outcompany_name).join(', ')
+      this.dialogText = data.errorCode ? '' : data[0].investment.map(s => s.outcompany_name).join(', ')
     },
     async showCompanyShareholder(id) {
-      let res = await apiData.getCompanyShareholder({
+      let {success, data} = await apiData.getCompanyShareholder({
         company_id: id,
       })
-      this.json = res
+      if(!success) {
+        return
+      }
+      this.json = data
       this.dialogVisible = true
       this.dialogTitle = 'ID: ' + idEncode(id) + ' 股东详情'
-      this.dialogText = res.errorCode ? '' : res.shareholder.map(s => s.investor_name).join(', ')
+      this.dialogText = data.errorCode ? '' : data.shareholder.map(s => s.investor_name).join(', ')
     },
     async showCompanyStaff(id) {
-      let res = await apiData.getCompanyStaff({
+      let {success, data} = await apiData.getCompanyStaff({
         company_id: id,
       })
-      this.json = res
+      if(!success) {
+        return
+      }
+      this.json = data
       this.dialogVisible = true
       this.dialogTitle = 'ID: ' + idEncode(id) + ' 主要人员'
-      this.dialogText = res.errorCode ? '' : res[0].staff.map(s => s.type + ': ' + s.name).join(', ')
+      this.dialogText = data.errorCode ? '' : data[0].staff.map(s => s.type + ': ' + s.name).join(', ')
     },
     async showCompanyChange(id) {
-      let res = await apiData.getCompanyChange({
+      let {success, data} = await apiData.getCompanyChange({
         company_id: id,
       })
-      this.json = res
+      if(!success) {
+        return
+      }
+      this.json = data
       this.dialogVisible = true
       this.dialogTitle = 'ID: ' + idEncode(id) + ' 企业变更'
-      this.dialogText = res.errorCode ? '' : res[0].change.map(s => {
+      this.dialogText = data.errorCode ? '' : data[0].change.map(s => {
         return s.change_item + ' 于 ' + date(s.change_time, 'yyyy年m月d号') + ' 从 ' + s.change_before + ' 变更为 ' +
           s.change_after
       }).join('<br>')
     },
     async showCompanyBranch(id) {
-      let res = await apiData.getCompanyBranch({
+      let {success, data} = await apiData.getCompanyBranch({
         company_id: id,
       })
-      this.json = res
+      if(!success) {
+        return
+      }
+      this.json = data
       this.dialogVisible = true
       this.dialogTitle = 'ID: ' + idEncode(id) + ' 企业分支机构'
       let branches = []
@@ -202,8 +224,8 @@ export default {
           })
         }
       }
-      if(!res.errorCode) {
-        res[0].branch.forEach.map((cp) => {
+      if(!data.errorCode) {
+        data[0].branch.forEach.map((cp) => {
           showBranch(cp, 0)
         })
       }

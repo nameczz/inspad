@@ -50,6 +50,7 @@
 import {Input} from 'element-ui'
 import Highlight from 'md/highlight/Highlight'
 import apiResearch from 'api/research'
+import inputText from '@/const/input/abstract-translate'
 export default {
   components: {
     [Input.name]: Input,
@@ -57,8 +58,7 @@ export default {
   },
   data() {
     return {
-      /*eslint-disable*/
-      inputText: '本发明属于锂离子电池技术领域，具体公开了一种锂离子电池负极材料、负极和锂离子电池。所述锂离子电池负极材料包括水溶性粘结剂，所述水溶性粘结剂为接枝改性魔芋葡甘露聚糖。本发明实施例提供的锂离子电池负极材料，粘结剂采用接枝改性魔芋葡甘露聚糖，由于该粘结剂具有优越的柔顺及粘结性能，因此可降低锂离子电池负极材料中粘结剂的使用量，使得负极活性物质在负极材料中所占的比重增大，进而使得锂离子电池能量密度获得提升，提高了锂离子电池性能。',
+      inputText: inputText,
       outputText: '',
       json: '',
       loading: false,
@@ -68,12 +68,14 @@ export default {
     async translate() {
       this.loading = true
       try {
-        let res = await apiResearch.transAbstrCnen({
+        let {success, data} = await apiResearch.transAbstrCnen({
           data: {text: this.inputText},
         })
-        this.json = res
-        if(res['error_code'] === 0) {
-          this.outputText = res.data
+        if(success) {
+          this.json = data
+          if(data['error_code'] === 0) {
+            this.outputText = data.data
+          }
         }
       } finally {
         this.loading = false

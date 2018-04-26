@@ -48,6 +48,7 @@
 import {Input} from 'element-ui'
 import Highlight from 'md/highlight/Highlight'
 import apiResearch from 'api/research'
+import inputText from '@/const/input/cn-detect'
 export default {
   components: {
     [Input.name]: Input,
@@ -55,7 +56,7 @@ export default {
   },
   data() {
     return {
-      inputText: '图片',
+      inputText: inputText,
       outputText: '',
       json: '',
       loading: false,
@@ -65,12 +66,14 @@ export default {
     async translate() {
       this.loading = true
       try {
-        let res = await apiResearch.kwdHelperCn({
+        let {success, data} = await apiResearch.kwdHelperCn({
           data: {words: this.inputText},
         })
-        this.json = res
-        if(res['error_code'] === 0) {
-          this.outputText = res.data.map(({keyword}) => keyword).join(', ')
+        if(success) {
+          this.json = data
+          if(data['error_code'] === 0) {
+            this.outputText = data.data.map(({keyword}) => keyword).join(', ')
+          }
         }
       } finally {
         this.loading = false

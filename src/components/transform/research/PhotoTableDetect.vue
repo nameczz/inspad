@@ -97,24 +97,24 @@ export default {
     async readFileSuccess(e) {
       try{
         let inputs = e.target.result.replace(/^data:image\/png;base64,/, '')
-        let res = await apiResearch.imageExtract({
+        let {success, data} = await apiResearch.imageExtract({
           data: {
             inputs: `__file__:${inputs}`,
           },
           session: 'string',
         })
-        this.json = res
-        this.uploading = false
-        this.$refs.file.value = null
-        this.drawResult(e.target.result, res.data)
+        if(success) {
+          this.json = data
+          this.uploading = false
+          this.$refs.file.value = null
+          this.drawResult(e.target.result, data.data)
+        }
       }catch (e) {
         this.uploading = false
-        if(e.message !== 'unlogged') {
-          Message({
-            message: '文件上传失败',
-            type: 'error',
-          })
-        }
+        Message({
+          message: '文件上传失败',
+          type: 'error',
+        })
       }
     },
     loadImageEnd() {

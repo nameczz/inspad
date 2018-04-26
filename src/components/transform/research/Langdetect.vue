@@ -49,6 +49,7 @@
 import {Input} from 'element-ui'
 import Highlight from 'md/highlight/Highlight'
 import apiResearch from 'api/research'
+import inputText from '@/const/input/lang-detect'
 export default {
   components: {
     [Input.name]: Input,
@@ -56,8 +57,7 @@ export default {
   },
   data() {
     return {
-      /*eslint-disable*/
-      inputText: 'The National Highway Traffic Safety Administration (NHTSA) announced Thursday that it\'s closed its preliminary investigation into Tesla\'s Automatic Emergency Braking (AEB) or Autopilot systems, finding no defects in design or performance. In fact, according to the report, data from Tesla vehicles shows the vehicle crash rate dropped by almost 40 percent after Autosteer installation. The Office of Defects Investigation (ODI) analyzed mileage and airbag deployment data supplied by Tesla for all 2014 through 2016 Model S cars and 2016 Model X vehicles equipped with the Autopilot Technology Package (either installed when the car was sold or through an update). The office calculated crash rates by miles travelled before after Autopilot installation. Still, the report noted the Autopilot system \\"requires the continual and full attention of the driver... to avoid crashes.\\" While Tesla has provided information to its customers about the system\'s limitations, that information is \\"perhaps not as specific as it could be,\\" the report says. Tesla responded to the report with a brief statement: \\"At Tesla, the safety of our customers comes first, and we appreciate the thoroughness of NHTSA\'s report and its conclusion.\\" The probe was launched in June 2016 after a fatal crash in Williston, Fla., involving a Tesla with the Autopilot feature engaged. The report notes that since the crash, Tesla has updated its Autopilot system \\"to further reinforce the need for driver engagement.\\" Google\'s self-driving technology could power future Honda cars"',
+      inputText: inputText,
       outputText: '',
       json: '',
       loading: false,
@@ -67,15 +67,17 @@ export default {
     async translate() {
       this.loading = true
       try {
-        let res = await apiResearch.langDetect({
+        let {success, data} = await apiResearch.langDetect({
           data: {
             text: this.inputText,
           },
           session: 'string',
         })
-        this.json = res
-        if(res['error_code'] === 0) {
-          this.outputText = res.data.lang
+        if(success) {
+          this.json = data
+          if(data['error_code'] === 0) {
+            this.outputText = data.data.lang
+          }
         }
       } finally {
         this.loading = false
