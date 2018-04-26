@@ -177,8 +177,16 @@ async function request(opt, reqOpts) {
         throw e
       case 'token expired':
         await store.dispatch('checkSession')
-        await store.dispatch('fetchAccessToken')
-        return request(opt, reqOpts)
+        if(store.state.user.loginStatus === 'logged') {
+          await store.dispatch('fetchAccessToken')
+          return request(opt, reqOpts)
+        } else {
+          Message({
+            message: '请登录',
+            type: 'error',
+          })
+          throw new Error('unlogged')
+        }
       default:
         throw e
     }
