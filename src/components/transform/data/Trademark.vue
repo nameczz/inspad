@@ -151,6 +151,10 @@ export default {
         let trademarks = await apiData.getTrademark({
           trademark_id: res.trademark_id.join(','),
         })
+        if (trademarks.errorCode) {
+          this.resultList = null
+          return
+        }
         this.resultList = trademarks
       } finally {
         this.loading = false

@@ -103,6 +103,10 @@ export default {
         let agencies = await apiData.getAgency({
           agency_id: res.agency_id,
         })
+        if(agencies.errorCode) {
+          this.resultList = null
+          return
+        }
         this.resultList = agencies
       } finally {
         this.loading = false

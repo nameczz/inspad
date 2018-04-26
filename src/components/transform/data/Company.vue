@@ -121,6 +121,10 @@ export default {
         let cp = await apiData.getCompany({
           company_id: res.company_id.join(','),
         })
+        if(cp.errorCode) {
+          this.resultList = null
+          return
+        }
         let cpMap = arrayToMap(cp, 'company_id')
         this.resultList = res.company_id.map(id => {
           if(id in cpMap) {
