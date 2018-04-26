@@ -158,6 +158,10 @@ export default {
         let pv = await apiData.getPatentValuation({
           patent_id: res.patent.join(','),
         })
+        if(pv.errorCode) {
+          this.resultList = null
+          return
+        }
         let pvMap = arrayToMap(pv, 'patent_id')
         this.resultList = res.patent.map(id => {
           if(id in pvMap) {
