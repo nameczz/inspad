@@ -95,19 +95,15 @@ export default {
     async translate() {
       this.loading = true
       try {
-        let {success, data} = await apiData.searchAgency(Object.assign({}, this.inputForm))
-        if(success) {
-          if(data.errorCode) {
-            this.resultList = null
-            return
-          }
-          let {success: success2, data: agencies} = await apiData.getAgency({
-            agency_id: data.agency_id,
-          })
-          if(success2) {
-            this.resultList = agencies
-          }
+        let res = await apiData.searchAgency(Object.assign({}, this.inputForm))
+        if(res.errorCode) {
+          this.resultList = null
+          return
         }
+        let agencies = await apiData.getAgency({
+          agency_id: res.agency_id,
+        })
+        this.resultList = agencies
       } finally {
         this.loading = false
       }
@@ -124,26 +120,22 @@ export default {
       }
     },
     async showAgencyPatent(id) {
-      let {success, data} = await apiData.getAgencyPatent({
+      let res = await apiData.getAgencyPatent({
         agency_id: id,
       })
-      if(success) {
-        this.json = data
-        this.dialogVisible = true
-        this.dialogTitle = 'ID: ' + idEncode(id) + ' 代理机构专利'
-        this.dialogText = null
-      }
+      this.json = res
+      this.dialogVisible = true
+      this.dialogTitle = 'ID: ' + idEncode(id) + ' 代理机构专利'
+      this.dialogText = null
     },
     async showAgencyAgent({agents, agency_id: id}) {
-      let {success, data} = await apiData.getAgencyAgent({
+      let res = await apiData.getAgencyAgent({
         agent_id: agents.join(','),
       })
-      if(success) {
-        this.json = data
-        this.dialogVisible = true
-        this.dialogTitle = 'ID: ' + idEncode(id) + ' 代理人'
-        this.dialogText = data.errorCode ? '' : data.map(s => s.agent_name).join(', ')
-      }
+      this.json = res
+      this.dialogVisible = true
+      this.dialogTitle = 'ID: ' + idEncode(id) + ' 代理人'
+      this.dialogText = res.errorCode ? '' : res.map(s => s.agent_name).join(', ')
     },
   },
   filters: {

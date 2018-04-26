@@ -66,14 +66,12 @@ export default {
     async translate() {
       this.loading = true
       try {
-        let {success, data} = await apiResearch.cnameParserCn({
+        let res = await apiResearch.cnameParserCn({
           data: this.inputText,
         })
-        if(success) {
-          this.json = data
-          if(data['error_code'] === 0) {
-            this.outputText = data.data['name_prefix']
-          }
+        this.json = res
+        if(res['error_code'] === 0) {
+          this.outputText = res.data['name_prefix']
         }
       } finally {
         this.loading = false

@@ -140,23 +140,17 @@ export default {
     async translate() {
       this.loading = true
       try {
-        let {success, data} = await apiData.searchTrademark(Object.assign({
+        let res = await apiData.searchTrademark(Object.assign({
           limit: 10,
           offset: 0,
         }, this.inputForm))
-        if(!success) {
-          return
-        }
-        if (data.errorCode) {
+        if (res.errorCode) {
           this.resultList = null
           return
         }
-        let {success: success2, data: trademarks} = await apiData.getTrademark({
-          trademark_id: data.trademark_id.join(','),
+        let trademarks = await apiData.getTrademark({
+          trademark_id: res.trademark_id.join(','),
         })
-        if(!success2) {
-          return
-        }
         this.resultList = trademarks
       } finally {
         this.loading = false
@@ -173,15 +167,6 @@ export default {
         return array[0].text
       }
     },
-    // async showAgencyPatent(id) {
-    //   let res = await apiData.getAgencyPatent({
-    //     agency_id: id,
-    //   })
-    //   this.json = res
-    //   this.dialogVisible = true
-    //   this.dialogTitle = 'ID: ' + idEncode(id) + ' 代理机构专利'
-    //   this.dialogText = null
-    // },
   },
   filters: {
     idEncode,

@@ -68,14 +68,12 @@ export default {
     async translate() {
       this.loading = true
       try {
-        let {success, data} = await apiResearch.transTitleCnEn({
+        let res = await apiResearch.transTitleCnEn({
           data: {text: this.inputText},
         })
-        if(success) {
-          this.json = data
-          if(data['error_code'] === 0) {
-            this.outputText = data.data.text
-          }
+        this.json = res
+        if(res['error_code'] === 0) {
+          this.outputText = res.data.text
         }
       } finally {
         this.loading = false

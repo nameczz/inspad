@@ -1,1 +1,1 @@
-export default 'tooth_brush'
+export default 'tooth brush'

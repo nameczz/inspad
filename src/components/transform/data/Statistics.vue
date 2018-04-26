@@ -99,12 +99,9 @@ export default {
       if(!this.locPromise) {
         this.locPromise = apiData.getLocationMapping()
       }
-      let {success, data} = await this.locPromise
-      if(!success) {
-        return
-      }
+      let {data} = await this.locPromise
       let result = []
-      data.data.forEach(({nameCn, id}) => {
+      data.forEach(({nameCn, id}) => {
         if(nameCn.indexOf(queryString) > -1) {
           result.push({
             value: nameCn,
@@ -128,11 +125,8 @@ export default {
         if(!this.locPromise) {
           this.locPromise = apiData.getLocationMapping()
         }
-        let {success, data} = await this.locPromise
-        if(!success) {
-          return
-        }
-        let loc = data.data.find(item => item.nameCn === this.location)
+        let {data} = await this.locPromise
+        let loc = data.find(item => item.nameCn === this.location)
         if(loc) {
           locationId = loc.id
         }
@@ -147,27 +141,15 @@ export default {
       }
     },
     async getValuablePatent(locationId) {
-      let {success, data} = await apiData.getValuablePatents({locationId})
-      if(!success) {
-        return
-      }
-      this.json = data
+      this.json = await apiData.getValuablePatents({locationId})
       this.outputText = this.json.data.map(item => item.publishedNumber).join('<br>')
     },
     async getPatentsValueDimensions(locationId) {
-      let {success, data} = await apiData.getPatentsValueDimensions({locationId})
-      if(!success) {
-        return
-      }
-      this.json = data
+      this.json = await apiData.getPatentsValueDimensions({locationId})
       this.outputText = `估价：${this.json.data.assessment} 元<br>授权数：${this.json.data.authCount}`
     },
     async getPatentsTypeDimensionsWithAgency(locationId) {
-      let {success, data} = await apiData.getPatentsTypeDimensions({locationId, isWithAgency: 'yes'})
-      if(!success) {
-        return
-      }
-      this.json = data
+      this.json = await apiData.getPatentsTypeDimensions({locationId, isWithAgency: 'yes'})
       this.outputText = [
         {value: 'invention', name: '发明专利'},
         {value: 'utility', name: '实用新型'},
@@ -177,11 +159,7 @@ export default {
       }).join('<br>')
     },
     async getPatentsTypeDimensionsWithoutAgency(locationId) {
-      let {success, data} = await apiData.getPatentsTypeDimensions({locationId, isWithAgency: 'no'})
-      if(!success) {
-        return
-      }
-      this.json = data
+      this.json = await apiData.getPatentsTypeDimensions({locationId, isWithAgency: 'no'})
       this.outputText = [
         {value: 'invention', name: '发明专利'},
         {value: 'utility', name: '实用新型'},
@@ -191,11 +169,7 @@ export default {
       }).join('<br>')
     },
     async getPatentsStatusDimensions(locationId) {
-      let {success, data} = await apiData.getPatentsStatusDimensions({locationId})
-      if(!success) {
-        return
-      }
-      this.json = data
+      this.json = await apiData.getPatentsStatusDimensions({locationId})
       this.outputText = [
         {value: 'appCount', name: '专利申请'},
         {value: 'graCount', name: '专利授权'},
@@ -206,11 +180,7 @@ export default {
       }).join('<br>')
     },
     async getPatentsLegalDimensionsWithAgency(locationId) {
-      let {success, data} = await apiData.getPatentsLegalDimensions({locationId, isWithAgency: 'yes'})
-      if(!success) {
-        return
-      }
-      this.json = data
+      this.json = await apiData.getPatentsLegalDimensions({locationId, isWithAgency: 'yes'})
       this.outputText = [
         {value: 'pending', name: '审中'},
         {value: 'valid', name: '有效'},
@@ -220,11 +190,7 @@ export default {
       }).join('<br>')
     },
     async getPatentsLegalDimensionsWithoutAgency(locationId) {
-      let {success, data} = await apiData.getPatentsLegalDimensions({locationId, isWithAgency: 'no'})
-      if(!success) {
-        return
-      }
-      this.json = data
+      this.json = await apiData.getPatentsLegalDimensions({locationId, isWithAgency: 'no'})
       this.outputText = [
         {value: 'pending', name: '审中'},
         {value: 'valid', name: '有效'},
@@ -234,19 +200,11 @@ export default {
       }).join('<br>')
     },
     async getPatentsFamilyDimensions(locationId) {
-      let {success, data} = await apiData.getPatentsFamilyDimensions({locationId})
-      if(!success) {
-        return
-      }
-      this.json = data
+      this.json = await apiData.getPatentsFamilyDimensions({locationId})
       this.outputText = '同族专利： ' + this.json.data.familyCount
     },
     async getIndustryPatentsValue(locationId) {
-      let {success, data} = await apiData.getIndustryPatentsValue({locationId, level: 2})
-      if(!success) {
-        return
-      }
-      this.json = data
+      this.json = await apiData.getIndustryPatentsValue({locationId, level: 2})
       if(this.json.data) {
         this.outputText = this.json.data.map(({industry, assessment}) =>
           `${industry.nameCn}：${assessment}元`).join('<br>')
@@ -255,11 +213,7 @@ export default {
       }
     },
     async getIndustryPatentsCount(locationId) {
-      let {success, data} = await apiData.getIndustryPatentsCount({locationId, level: 2})
-      if(!success) {
-        return
-      }
-      this.json = data
+      this.json = await apiData.getIndustryPatentsCount({locationId, level: 2})
       if(this.json.data) {
         this.outputText = this.json.data.map(({industry, count}) =>
           `${industry.nameCn}：${count}`).join('<br>')

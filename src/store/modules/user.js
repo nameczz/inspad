@@ -29,21 +29,16 @@ const getters = {
 
 const actions = {
   async fetchAccessToken({commit, state}) {
-    let {success, data} = await apiAuth.getClient()
-    if(success) {
-      let client = data[0]
-      if(!client) {
-        throw new Error('no client')
-      }
-      Cookies.set(cookieClientName, client.client_name)
-      Cookies.set(cookieClientId, client.id)
-      commit('refreshLoggedUser')
-
-      let {success, data: tokenData} = await apiAuth.getToken({clientId: client.id, clientSecret: client.plain_secret})
-      if(success) {
-        Cookies.set(cookieAccessToken, 'Bearer ' + tokenData['access_token'])
-      }
+    let [client] = await apiAuth.getClient()
+    if(!client) {
+      throw new Error('no client')
     }
+    Cookies.set(cookieClientName, client.client_name)
+    Cookies.set(cookieClientId, client.id)
+    commit('refreshLoggedUser')
+
+    let tokenRes = await apiAuth.getToken({clientId: client.id, clientSecret: client.plain_secret})
+    Cookies.set(cookieAccessToken, 'Bearer ' + tokenRes['access_token'])
   },
 }
 

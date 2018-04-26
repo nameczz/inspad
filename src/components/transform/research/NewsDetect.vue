@@ -68,26 +68,24 @@ export default {
       this.loading = true
       try {
         let inputText = this.inputText
-        let {success, data} = await apiResearch.nerNewsCn({
+        let res = await apiResearch.nerNewsCn({
           data: inputText,
         })
-        if(success) {
-          this.json = data
-          if(data['error_code'] === 0) {
-            let lastEnd = 0
-            let outputText = []
-            this.tempCompute(inputText, data.data).forEach(({entity, start, end}) => {
-              if(start < 0 || end < 0) {
-                return
-              }
-              outputText.push(inputText.substring(lastEnd, start))
-              outputText.push('<i style="background: #a0ff00;">' + inputText.substring(start, end) + '</i>')
-              lastEnd = end
-            })
-            outputText.push(inputText.substring(lastEnd, inputText.length))
-            this.outputText = outputText.join('')
-            this.outputEl.scrollTop = this.inputEl.scrollTop = 0
-          }
+        this.json = res
+        if(res['error_code'] === 0) {
+          let lastEnd = 0
+          let outputText = []
+          this.tempCompute(inputText, res.data).forEach(({entity, start, end}) => {
+            if(start < 0 || end < 0) {
+              return
+            }
+            outputText.push(inputText.substring(lastEnd, start))
+            outputText.push('<i style="background: #a0ff00;">' + inputText.substring(start, end) + '</i>')
+            lastEnd = end
+          })
+          outputText.push(inputText.substring(lastEnd, inputText.length))
+          this.outputText = outputText.join('')
+          this.outputEl.scrollTop = this.inputEl.scrollTop = 0
         }
       } finally {
         this.loading = false

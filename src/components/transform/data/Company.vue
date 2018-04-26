@@ -113,22 +113,16 @@ export default {
     async translate() {
       this.loading = true
       try {
-        let {success, data} = await apiData.searchCompany(Object.assign({}, this.inputForm))
-        if(!success) {
-          return
-        }
-        if(data.errorCode) {
+        let res = await apiData.searchCompany(Object.assign({}, this.inputForm))
+        if(res.errorCode) {
           this.resultList = null
           return
         }
-        let {success: success2, data: cp} = await apiData.getCompany({
-          company_id: data.company_id.join(','),
+        let cp = await apiData.getCompany({
+          company_id: res.company_id.join(','),
         })
-        if(!success2) {
-          return
-        }
         let cpMap = arrayToMap(cp, 'company_id')
-        this.resultList = data.company_id.map(id => {
+        this.resultList = res.company_id.map(id => {
           if(id in cpMap) {
             return cpMap[id]
           } else {
@@ -154,64 +148,49 @@ export default {
       }
     },
     async showCompanyInvestment(id) {
-      let {success, data} = await apiData.getCompanyInvestment({
+      let res = await apiData.getCompanyInvestment({
         company_id: id,
       })
-      if(!success) {
-        return
-      }
-      this.json = data
+      this.json = res
       this.dialogVisible = true
       this.dialogTitle = 'ID: ' + idEncode(id) + ' 企业对外投资'
-      this.dialogText = data.errorCode ? '' : data[0].investment.map(s => s.outcompany_name).join(', ')
+      this.dialogText = res.errorCode ? '' : res[0].investment.map(s => s.outcompany_name).join(', ')
     },
     async showCompanyShareholder(id) {
-      let {success, data} = await apiData.getCompanyShareholder({
+      let res = await apiData.getCompanyShareholder({
         company_id: id,
       })
-      if(!success) {
-        return
-      }
-      this.json = data
+      this.json = res
       this.dialogVisible = true
       this.dialogTitle = 'ID: ' + idEncode(id) + ' 股东详情'
-      this.dialogText = data.errorCode ? '' : data.shareholder.map(s => s.investor_name).join(', ')
+      this.dialogText = res.errorCode ? '' : res.shareholder.map(s => s.investor_name).join(', ')
     },
     async showCompanyStaff(id) {
-      let {success, data} = await apiData.getCompanyStaff({
+      let res = await apiData.getCompanyStaff({
         company_id: id,
       })
-      if(!success) {
-        return
-      }
-      this.json = data
+      this.json = res
       this.dialogVisible = true
       this.dialogTitle = 'ID: ' + idEncode(id) + ' 主要人员'
-      this.dialogText = data.errorCode ? '' : data[0].staff.map(s => s.type + ': ' + s.name).join(', ')
+      this.dialogText = res.errorCode ? '' : res[0].staff.map(s => s.type + ': ' + s.name).join(', ')
     },
     async showCompanyChange(id) {
-      let {success, data} = await apiData.getCompanyChange({
+      let res = await apiData.getCompanyChange({
         company_id: id,
       })
-      if(!success) {
-        return
-      }
-      this.json = data
+      this.json = res
       this.dialogVisible = true
       this.dialogTitle = 'ID: ' + idEncode(id) + ' 企业变更'
-      this.dialogText = data.errorCode ? '' : data[0].change.map(s => {
+      this.dialogText = res.errorCode ? '' : res[0].change.map(s => {
         return s.change_item + ' 于 ' + date(s.change_time, 'yyyy年m月d号') + ' 从 ' + s.change_before + ' 变更为 ' +
           s.change_after
       }).join('<br>')
     },
     async showCompanyBranch(id) {
-      let {success, data} = await apiData.getCompanyBranch({
+      let res = await apiData.getCompanyBranch({
         company_id: id,
       })
-      if(!success) {
-        return
-      }
-      this.json = data
+      this.json = res
       this.dialogVisible = true
       this.dialogTitle = 'ID: ' + idEncode(id) + ' 企业分支机构'
       let branches = []
@@ -224,8 +203,8 @@ export default {
           })
         }
       }
-      if(!data.errorCode) {
-        data[0].branch.forEach.map((cp) => {
+      if(!res.errorCode) {
+        res[0].branch.forEach.map((cp) => {
           showBranch(cp, 0)
         })
       }
