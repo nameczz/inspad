@@ -128,15 +128,8 @@ export default {
       this.$store.commit('removeLoggedUser')
     },
   },
-  async created() {
-    let res = await apiAuth.checksession()
-    if(res.token) {
-      Cookies.set(cookieRefreshToken, res.refresh_token)
-      Cookies.set(cookieToken, res.token)
-      this.$store.commit('refreshLoggedUser')
-    } else {
-      this.$store.commit('removeLoggedUser')
-    }
+  created() {
+    this.$store.dispatch('checkSession')
   },
 }
 </script>

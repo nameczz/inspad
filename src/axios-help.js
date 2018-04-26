@@ -176,6 +176,7 @@ async function request(opt, reqOpts) {
         })
         throw e
       case 'token expired':
+        await store.dispatch('checkSession')
         await store.dispatch('fetchAccessToken')
         return request(opt, reqOpts)
       default:

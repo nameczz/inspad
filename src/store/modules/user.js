@@ -40,6 +40,16 @@ const actions = {
     let tokenRes = await apiAuth.getToken({clientId: client.id, clientSecret: client.plain_secret})
     Cookies.set(cookieAccessToken, 'Bearer ' + tokenRes['access_token'])
   },
+  async checkSession({commit}) {
+    let res = await apiAuth.checksession()
+    if(res.token) {
+      Cookies.set(cookieRefreshToken, res.refresh_token)
+      Cookies.set(cookieToken, res.token)
+      commit('refreshLoggedUser')
+    } else {
+      commit('removeLoggedUser')
+    }
+  },
 }
 
 
