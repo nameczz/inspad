@@ -5,7 +5,6 @@ import Router from 'vue-router'
 import 'core-js/fn/array/find'
 
 // const HelloWorld = resolve => require(['@/components/HelloWorld'], resolve)
-const Login = resolve => require(['@/components/Login'], resolve)
 const Content = resolve => require(['@/components/Content'], resolve)
 const Transform = resolve => require(['@/components/Transform'], resolve)
 
@@ -39,14 +38,6 @@ let router = new Router({
       path: '/',
       redirect: {
         name: 'ResearchLangdetect',
-      },
-    },
-    {
-      path: '/login',
-      name: 'Login',
-      component: Login,
-      meta: {
-        allowUnlogged: true,
       },
     },
     {

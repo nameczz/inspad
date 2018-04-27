@@ -1,25 +1,25 @@
 import Cookies from 'js-cookie'
-import {cookieClientName, cookieClientId, cookieAccessToken, cookieRefreshToken, cookieToken} from '@/const/cookies'
+import {cookieUsername, cookieClientId, cookieAccessToken, cookieRefreshToken, cookieToken} from '@/const/cookies'
 import apiAuth from 'api/auth'
 
 const state = {
-  clientName: null,
+  username: null,
   loginStatus: 'pending',
 }
 
 // mutations
 const mutations = {
   refreshLoggedUser(state) {
-    state.clientName = Cookies.get(cookieClientName)
+    state.username = Cookies.get(cookieUsername)
     state.loginStatus = 'logged'
   },
   removeLoggedUser(state) {
-    state.clientName = null
+    state.username = null
     state.loginStatus = 'unlogged'
     Cookies.remove(cookieRefreshToken)
     Cookies.remove(cookieToken)
     Cookies.remove(cookieClientId)
-    Cookies.remove(cookieClientName)
+    Cookies.remove(cookieUsername)
     Cookies.remove(cookieAccessToken)
   },
 }
@@ -33,7 +33,6 @@ const actions = {
     if(!client) {
       throw new Error('no client')
     }
-    Cookies.set(cookieClientName, client.client_name)
     Cookies.set(cookieClientId, client.id)
     commit('refreshLoggedUser')
 

@@ -5,7 +5,7 @@
         <icon class="logo" src="~svg/open-api.svg"/>
       </a>
       <div v-if="loginStatus==='logged'" class="user-name">
-        您好，{{clientName || '用户'}}
+        您好，{{showUsername || '用户'}}
         <a class="logout" @click="logout">退出登录</a>
       </div>
       <el-button v-else-if="loginStatus==='unlogged'"
@@ -51,7 +51,7 @@
 import {Dialog, Input, Message} from 'element-ui'
 import apiAuth from 'api/auth'
 import Cookies from 'js-cookie'
-import {cookieToken, cookieRefreshToken} from '@/const/cookies'
+import {cookieToken, cookieRefreshToken, cookieUsername} from '@/const/cookies'
 import 'md/validate'
 
 export default {
@@ -71,8 +71,8 @@ export default {
     loginStatus() {
       return this.$store.state.user.loginStatus
     },
-    clientName() {
-      return this.$store.state.user.clientName
+    showUsername() {
+      return this.$store.state.user.username
     },
   },
   methods: {
@@ -110,6 +110,7 @@ export default {
           }
           Cookies.set(cookieRefreshToken, res.refresh_token)
           Cookies.set(cookieToken, res.token)
+          Cookies.set(cookieUsername, this.username.trim())
           await this.$store.dispatch('fetchAccessToken')
           this.dialogVisible = false
         } catch (e) {
