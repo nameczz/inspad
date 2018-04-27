@@ -83,7 +83,7 @@ import JsonSchema from '@/components/busi/JsonSchema'
 import arrayToMap from 'md/array-to-map'
 import {commafy, idEncode, date} from 'md/filters'
 import apiData from 'api/data'
-import inputOrgNumber from '@/const/input/company'
+import companyName from '@/const/input/company'
 
 export default {
   components: {
@@ -94,8 +94,8 @@ export default {
   data() {
     return {
       inputForm: {
-        company_name: '',
-        org_number: inputOrgNumber,
+        company_name: companyName,
+        org_number: '',
         reg_number: '',
       },
       json: '',
