@@ -40,10 +40,7 @@
               </div>
             </div>
           </section>
-          <section>
-            <header><icon src="~svg/code.svg"/> Json Schema</header>
-            <highlight :json="json"></highlight>
-          </section>
+          <json-schema :json="json"></json-schema>
         </div>
       </div>
       <copyright/>
@@ -53,16 +50,16 @@
 
 <script>
 import {Autocomplete, Select, Option} from 'element-ui'
-import Highlight from 'md/highlight/Highlight'
 import {commafy, idEncode} from 'md/filters'
 import apiData from 'api/data'
+import JsonSchema from '@/components/busi/JsonSchema'
 
 export default {
   components: {
     [Autocomplete.name]: Autocomplete,
     [Select.name]: Select,
     [Option.name]: Option,
-    Highlight,
+    JsonSchema,
   },
   data() {
     return {
@@ -239,7 +236,6 @@ export default {
 
 <style scoped lang="scss">
   @import "~sty/var";
-  @import "~sty/components/transform";
   .input{
     width: 210px;
     >.el-autocomplete{

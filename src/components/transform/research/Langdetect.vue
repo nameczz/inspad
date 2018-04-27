@@ -34,10 +34,7 @@
              </div>
            </div>
          </section>
-         <section>
-           <header><icon src="~svg/code.svg"/> Json Schema</header>
-           <highlight :json="json"></highlight>
-         </section>
+         <json-schema :json="json"></json-schema>
        </div>
      </div>
      <copyright/>
@@ -47,13 +44,13 @@
 
 <script>
 import {Input} from 'element-ui'
-import Highlight from 'md/highlight/Highlight'
+import JsonSchema from '@/components/busi/JsonSchema'
 import apiResearch from 'api/research'
 import inputText from '@/const/input/lang-detect'
 export default {
   components: {
     [Input.name]: Input,
-    Highlight,
+    JsonSchema,
   },
   data() {
     return {
@@ -87,7 +84,6 @@ export default {
 
 <style scoped lang="scss">
   @import "~sty/var";
-  @import "~sty/components/transform";
   .input-text{
     width: 366px;
   }

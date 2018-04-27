@@ -42,5 +42,12 @@ section{
       vertical-align: top;
       margin-top: 4.5px;
     }
+    >.toggle{
+      margin-left: 2px;
+      >.icon{
+        width: 12px;
+        height: 12px;
+      }
+    }
   }
 }

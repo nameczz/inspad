@@ -63,10 +63,7 @@
               </table>
             </div>
           </section>
-          <section>
-            <header><icon src="~svg/code.svg"/> Json Schema</header>
-            <highlight :json="json"></highlight>
-          </section>
+          <json-schema :json="json"></json-schema>
         </div>
       </div>
       <copyright/>
@@ -82,7 +79,7 @@
 
 <script>
 import {Input, Dialog} from 'element-ui'
-import Highlight from 'md/highlight/Highlight'
+import JsonSchema from '@/components/busi/JsonSchema'
 import arrayToMap from 'md/array-to-map'
 import {commafy, idEncode, date} from 'md/filters'
 import apiData from 'api/data'
@@ -92,7 +89,7 @@ export default {
   components: {
     [Input.name]: Input,
     [Dialog.name]: Dialog,
-    Highlight,
+    JsonSchema,
   },
   data() {
     return {
@@ -224,7 +221,6 @@ export default {
 
 <style scoped lang="scss">
   @import "~sty/var";
-  @import "~sty/components/transform";
   .el-input{
     width: 210px;
     margin-right: 20px;
