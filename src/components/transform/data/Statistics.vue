@@ -96,20 +96,28 @@ export default {
   methods: {
     async search(queryString, cb) {
       this.selected = null
-      if(!this.locPromise) {
-        this.locPromise = apiData.getLocationMapping()
-      }
-      let {data} = await this.locPromise
-      let result = []
-      data.forEach(({nameCn, id}) => {
-        if(nameCn.indexOf(queryString) > -1) {
-          result.push({
-            value: nameCn,
-            id,
-          })
+      try {
+        if(!this.locPromise) {
+          this.locPromise = apiData.getLocationMapping()
         }
-      })
-      cb(result)
+        let {data} = await this.locPromise
+        let result = []
+        data.forEach(({nameCn, id}) => {
+          if(nameCn.indexOf(queryString) > -1) {
+            result.push({
+              value: nameCn,
+              id,
+            })
+          }
+        })
+        cb(result)
+      }catch (e) {
+        if(e.message === 'unlogged') {
+          this.locPromise = null
+        }
+        cb()
+        throw e
+      }
     },
     handleSelect(item) {
       this.selected = item

@@ -10,12 +10,12 @@
       <div class="trans-main">
         <div class="container">
           <div class="info">
-            <div class="info-desc">通过公司名称、组织机构编号或者注册编号获取相关代理机构ID，并使用ID查询到专利价值、法律详情、说明书、要求和引用详情等信息</div>
+            <div class="info-desc">通过代理机构编号获取相关代理机构ID，并使用ID查询到代理机构名称、代理机构专利和代理人等信息</div>
           </div>
           <section>
             <header><icon src="~svg/view.svg"/> 案例演示</header>
             <div>
-              <p>输入任意检索词查询代理机构ID，日期格式为:yyyyMMdd</p>
+              <p>输入任意检索词查询代理机构ID</p>
               <div class="clearfix">
                 <el-input
                   class="input-text float-left"
