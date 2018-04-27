@@ -57,7 +57,7 @@
       :title="dialogTitle"
       :visible.sync="dialogVisible"
       width="30%">
-      <span v-html="dialogText"></span>
+      <span style="word-break: break-all;" v-html="dialogText"></span>
     </el-dialog>
   </div>
 </template>
@@ -126,8 +126,8 @@ export default {
       })
       this.json = res
       this.dialogVisible = true
-      this.dialogTitle = 'ID: ' + idEncode(id) + ' 代理机构专利'
-      this.dialogText = null
+      this.dialogTitle = 'ID: ' + idEncode(id) + ' 代理机构专利ID'
+      this.dialogText = res.errorCode ? '' : res.patent_id.join('<br>')
     },
     async showAgencyAgent({agents, agency_id: id}) {
       let res = await apiData.getAgencyAgent({

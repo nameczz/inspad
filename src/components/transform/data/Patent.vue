@@ -81,7 +81,7 @@
                 <tr v-for="item in resultList"
                     :key="item.patent_id">
                   <td>{{item.patent_id|idEncode}}</td>
-                  <td>¥{{item.patent_value|commafy}}</td>
+                  <td>{{item.patent_value|commafyValue}}</td>
                   <td><a class="view" @click="showLegalInfo(item.patent_id)">点击查看</a></td>
                   <td><a class="view" @click="showPatentDesc(item.patent_id)">点击查看</a></td>
                   <td><a class="view" @click="showPatentClaim(item.patent_id)">点击查看</a></td>
@@ -122,7 +122,7 @@ export default {
     return {
       inputForm: {
         ans: '',
-        ttl: '',
+        ttl: '电子',
         apd_from: '',
         apd_to: '',
         pbd_from: '',
@@ -155,11 +155,7 @@ export default {
         let pv = await apiData.getPatentValuation({
           patent_id: res.patent.join(','),
         })
-        if(pv.errorCode) {
-          this.resultList = null
-          return
-        }
-        let pvMap = arrayToMap(pv, 'patent_id')
+        let pvMap = pv.errorCode ? {} : arrayToMap(pv, 'patent_id')
         this.resultList = res.patent.map(id => {
           if(id in pvMap) {
             return pvMap[id]
@@ -192,7 +188,11 @@ export default {
       this.json = res
       this.dialogVisible = true
       this.dialogTitle = 'ID: ' + idEncode(id) + ' 法律状态'
-      this.dialogText = res.errorCode ? '' : this.getTextFromArray(res.legal_info.legal_status[0].legal_desc)
+      if(res.legal_info && res.legal_info.legal_status && res.legal_info.legal_status.length > 0) {
+        this.dialogText = this.getTextFromArray(res.legal_info.legal_status[0].legal_desc)
+      } else {
+        this.dialogText = ''
+      }
     },
     async showPatentDesc(id) {
       let res = await apiData.getPatentDesc({
@@ -225,7 +225,13 @@ export default {
   },
   filters: {
     idEncode,
-    commafy,
+    commafyValue(val) {
+      if(val) {
+        return '¥' + commafy(val)
+      } else {
+        return '?'
+      }
+    },
   },
 }
 </script>

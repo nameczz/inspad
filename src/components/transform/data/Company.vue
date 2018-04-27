@@ -115,14 +115,11 @@ export default {
           this.resultList = null
           return
         }
+        res.company_id = res.company_id.slice(0, 10)
         let cp = await apiData.getCompany({
           company_id: res.company_id.join(','),
         })
-        if(cp.errorCode) {
-          this.resultList = null
-          return
-        }
-        let cpMap = arrayToMap(cp, 'company_id')
+        let cpMap = cp.errorCode ? {} : arrayToMap(cp, 'company_id')
         this.resultList = res.company_id.map(id => {
           if(id in cpMap) {
             return cpMap[id]
@@ -164,7 +161,13 @@ export default {
       this.json = res
       this.dialogVisible = true
       this.dialogTitle = 'ID: ' + idEncode(id) + ' 股东详情'
-      this.dialogText = res.errorCode ? '' : res.shareholder.map(s => s.investor_name).join(', ')
+      let shareholders = []
+      if(!res.errorCode) {
+        res.forEach((item) => {
+          item.shareholder.forEach((s) => shareholders.push(s.investor_name))
+        })
+      }
+      this.dialogText = shareholders.join(', ')
     },
     async showCompanyStaff(id) {
       let res = await apiData.getCompanyStaff({
@@ -199,13 +202,13 @@ export default {
         branches.push(
           `<span style="width:${level * 10}px;display: inline-block;"></span>${cp.company_name}`)
         if(cp.branch) {
-          cp.branch.forEach.map((cpChild) => {
+          cp.branch.forEach((cpChild) => {
             showBranch(cpChild, level + 1)
           })
         }
       }
       if(!res.errorCode) {
-        res[0].branch.forEach.map((cp) => {
+        res[0].branch.forEach((cp) => {
           showBranch(cp, 0)
         })
       }
