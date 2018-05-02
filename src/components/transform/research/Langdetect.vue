@@ -100,5 +100,6 @@ export default {
     line-height: 1.5;
     padding: 6px 16px;
     box-sizing: border-box;
+    overflow-y: auto;
   }
 </style>

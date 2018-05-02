@@ -61,6 +61,22 @@ export default {
               name: '单位检测',
               path: '/research/unitdetect',
             },
+            {
+              name: 'ans检测',
+              path: '/research/ans',
+            },
+            {
+              name: '相似企业搜索',
+              path: '/research/similarcompany',
+            },
+            {
+              name: '中文相似词',
+              path: '/research/cnsimilarwords',
+            },
+            {
+              name: '英文相似词',
+              path: '/research/ensimilarwords',
+            },
             // {
             //   name: '图像表格提取',
             //   path: '/research/phototabledetect',

@@ -90,5 +90,41 @@ export default mapApi({
       return params
     },
   },
+  getAnsInfo: {
+    method: 'post',
+    url: '/compute/ans_entity_link/',
+    tpl: 'api',
+    body: true,
+    transformRequest(params, opt) {
+      return params
+    },
+  },
+  getSimilarCompanies: {
+    method: 'post',
+    url: '/compute/rcmdt_coms/',
+    tpl: 'api',
+    body: true,
+    transformRequest(params, opt) {
+      return params
+    },
+  },
+  getCnSimilarWords: {
+    method: 'post',
+    url: '/compute/semantic_topc_cn/',
+    tpl: 'api',
+    body: true,
+    transformRequest(params, opt) {
+      return params
+    },
+  },
+  getEnSimilarWords: {
+    method: 'post',
+    url: '/compute/semantic_topc_en/',
+    tpl: 'api',
+    body: true,
+    transformRequest(params, opt) {
+      return params
+    },
+  },
 })
 

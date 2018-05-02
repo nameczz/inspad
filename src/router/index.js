@@ -4,7 +4,6 @@ import Router from 'vue-router'
 // import store from '@/store'
 import 'core-js/fn/array/find'
 
-// const HelloWorld = resolve => require(['@/components/HelloWorld'], resolve)
 const Content = resolve => require(['@/components/Content'], resolve)
 const Transform = resolve => require(['@/components/Transform'], resolve)
 
@@ -18,6 +17,10 @@ const ResearchTitleTranslate = resolve => require(['@/components/transform/resea
 const ResearchAbstractTranslate = resolve => require(['@/components/transform/research/AbstractTranslate'], resolve)
 const ResearchUnitDetect = resolve => require(['@/components/transform/research/UnitDetect'], resolve)
 const ResearchPhotoTableDetect = resolve => require(['@/components/transform/research/PhotoTableDetect'], resolve)
+const ResearchAns = resolve => require(['@/components/transform/research/Ans'], resolve)
+const ResearchSimilarCompany = resolve => require(['@/components/transform/research/SimilarCompany'], resolve)
+const ResearchCnSimilarWords = resolve => require(['@/components/transform/research/CnSimilarWords'], resolve)
+const ResearchEnSimilarWords = resolve => require(['@/components/transform/research/EnSimilarWords'], resolve)
 
 const DataPatent = resolve => require(['@/components/transform/data/Patent'], resolve)
 const DataCompany = resolve => require(['@/components/transform/data/Company'], resolve)
@@ -103,6 +106,26 @@ let router = new Router({
               path: 'research/phototabledetect',
               name: 'ResearchPhotoTableDetect',
               component: ResearchPhotoTableDetect,
+            },
+            {
+              path: 'research/ans',
+              name: 'ResearchAns',
+              component: ResearchAns,
+            },
+            {
+              path: 'research/similarcompany',
+              name: 'ResearchSimilarCompany',
+              component: ResearchSimilarCompany,
+            },
+            {
+              path: 'research/cnsimilarwords',
+              name: 'ResearchCnSimilarWords',
+              component: ResearchCnSimilarWords,
+            },
+            {
+              path: 'research/ensimilarwords',
+              name: 'ResearchEnSimilarWords',
+              component: ResearchEnSimilarWords,
             },
             {
               path: 'data/patent',
