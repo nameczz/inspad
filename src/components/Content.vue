@@ -100,7 +100,13 @@ export default {
                 this.showError('无该用户')
                 break
               case '30103':
-                this.showError('密码错误')
+                this.showError('邮箱地址或密码错误')
+                break
+              case '30104':
+                this.showError('您的账号已在另一处登录使用')
+                break
+              case '30107':
+                this.showError('账号已过期')
                 break
               default:
                 this.showError('系统错误')

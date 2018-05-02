@@ -9,7 +9,7 @@
       <div class="trans-main">
         <div class="container">
           <div class="info">
-            <div class="info-desc"></div>
+            <div class="info-desc">推荐相似的公司，为了结果更精确，请提供要查询公司的所有IPC信息。</div>
           </div>
           <section>
             <header><icon src="~svg/view.svg"/> 案例演示</header>

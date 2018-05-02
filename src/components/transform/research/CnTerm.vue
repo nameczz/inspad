@@ -9,7 +9,7 @@
       <div class="trans-main">
         <div class="container">
           <div class="info">
-            <div class="info-desc"></div>
+            <div class="info-desc">根据用户输入的一段文本进行提取文本中的关键字</div>
           </div>
           <section>
             <header><icon src="~svg/view.svg"/> 案例演示</header>

@@ -9,7 +9,7 @@
       <div class="trans-main">
         <div class="container">
           <div class="info">
-            <div class="info-desc"></div>
+            <div class="info-desc">在Blast Search结果上执行降维，并在PatSnap横向上变换可视化的缩小尺寸。</div>
           </div>
           <section>
             <header><icon src="~svg/view.svg"/> 案例演示</header>
