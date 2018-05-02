@@ -126,5 +126,32 @@ export default mapApi({
       return params
     },
   },
+  getCnTerm: {
+    method: 'post',
+    url: '/compute/semantic_term_cn/',
+    tpl: 'api',
+    body: true,
+    transformRequest(params, opt) {
+      return params
+    },
+  },
+  getEnTerm: {
+    method: 'post',
+    url: '/compute/semantic_term_en/',
+    tpl: 'api',
+    body: true,
+    transformRequest(params, opt) {
+      return params
+    },
+  },
+  getLandscapeBio: {
+    method: 'post',
+    url: '/compute/landscape_bio/',
+    tpl: 'api',
+    body: true,
+    transformRequest(params, opt) {
+      return params
+    },
+  },
 })
 

@@ -29,8 +29,7 @@
              <el-button type="success" size="small" class="translate float-left" :loading="loading" @click="translate">
                识别
              </el-button>
-             <div class="out-text float-left">
-               {{outputText}}
+             <div class="out-text float-left" v-html="outputText">
              </div>
            </div>
          </section>

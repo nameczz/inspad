@@ -77,6 +77,18 @@ export default {
               name: '英文相似词',
               path: '/research/ensimilarwords',
             },
+            {
+              name: '中文关键字',
+              path: '/research/cnterm',
+            },
+            {
+              name: '英文关键字',
+              path: '/research/enterm',
+            },
+            {
+              name: '生物专利地图',
+              path: '/research/landscapebio',
+            },
             // {
             //   name: '图像表格提取',
             //   path: '/research/phototabledetect',

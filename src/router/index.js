@@ -21,6 +21,9 @@ const ResearchAns = resolve => require(['@/components/transform/research/Ans'], 
 const ResearchSimilarCompany = resolve => require(['@/components/transform/research/SimilarCompany'], resolve)
 const ResearchCnSimilarWords = resolve => require(['@/components/transform/research/CnSimilarWords'], resolve)
 const ResearchEnSimilarWords = resolve => require(['@/components/transform/research/EnSimilarWords'], resolve)
+const ResearchCnTerm = resolve => require(['@/components/transform/research/CnTerm'], resolve)
+const ResearchEnTerm = resolve => require(['@/components/transform/research/EnTerm'], resolve)
+const ResearchLandscapeBio = resolve => require(['@/components/transform/research/LandscapeBio'], resolve)
 
 const DataPatent = resolve => require(['@/components/transform/data/Patent'], resolve)
 const DataCompany = resolve => require(['@/components/transform/data/Company'], resolve)
@@ -126,6 +129,21 @@ let router = new Router({
               path: 'research/ensimilarwords',
               name: 'ResearchEnSimilarWords',
               component: ResearchEnSimilarWords,
+            },
+            {
+              path: 'research/cnterm',
+              name: 'ResearchCnTerm',
+              component: ResearchCnTerm,
+            },
+            {
+              path: 'research/enterm',
+              name: 'ResearchEnTerm',
+              component: ResearchEnTerm,
+            },
+            {
+              path: 'research/landscapebio',
+              name: 'ResearchLandscapeBio',
+              component: ResearchLandscapeBio,
             },
             {
               path: 'data/patent',
