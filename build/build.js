@@ -11,6 +11,7 @@ const chalk = require('chalk')
 const webpack = require('webpack')
 const config = require('../config')
 const webpackConfig = require('./webpack.prod.conf')
+const fs = require('fs');
 
 let env = require('../config/prod.env')
 let langs = require('../config/lang')
@@ -57,6 +58,7 @@ function webpackByLang(lang) {
 
 rm(path.join(config.build.assetsRoot, config.build.assetsSubDirectory), async function(err) {
   if (err) throw err
+  fs.createReadStream('redirect.html').pipe(fs.createWriteStream(path.join(config.build.assetsRoot, 'index.html')))
 
   for(let lang of langs) {
     await webpackByLang(lang)
