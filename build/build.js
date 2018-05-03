@@ -27,7 +27,7 @@ function webpackByLang(lang) {
   env.LANG = `"${lang}"`
   webpackConfig.resolve.alias.lang = `@/locale/${lang}`
   webpackConfig.output.path = outputPath + '/' + lang
-  webpackConfig.output.publicPath = outputPublicPath + lang
+  webpackConfig.output.publicPath = outputPublicPath + lang + '/'
 
   return new Promise((resolve, reject) => {
     webpack(webpackConfig, (err, stats) => {
