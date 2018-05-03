@@ -13,11 +13,11 @@
                  @click="openLoginDialog">登录</el-button>
       <el-dropdown @command="selectLang" class="float-right">
         <span class="el-dropdown-link">
-          {{langs[lang]}}<i class="el-icon-arrow-down el-icon--right"></i>
+          {{getLang()}}<i class="el-icon-arrow-down el-icon--right"></i>
         </span>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item command="en">英文</el-dropdown-item>
-          <el-dropdown-item command="zh-CN">中文</el-dropdown-item>
+          <el-dropdown-item command="en">{{getLang('en')}}</el-dropdown-item>
+          <el-dropdown-item command="zh-CN">{{getLang('zh-CN')}}</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </header>
@@ -78,11 +78,6 @@ export default {
       username: '',
       password: '',
       logging: false,
-      langs: {
-        'en': '英文',
-        'zh-CN': '中文',
-      },
-      lang: process.env.LANG,
     }
   },
   computed: {
@@ -94,6 +89,12 @@ export default {
     },
   },
   methods: {
+    getLang(lang) {
+      return {
+        'en': 'English',
+        'zh-CN': '中文',
+      }[lang || process.env.LANG]
+    },
     selectLang(lang) {
       setLang(lang)
     },
