@@ -14,7 +14,10 @@ const webpackConfig = require('./webpack.prod.conf')
 
 let env = require('../config/prod.env')
 let langs = require('../config/lang')
+
+
 let outputPath = webpackConfig.output.path
+let outputPublicPath = webpackConfig.output.publicPath
 
 const spinner = ora('building for production...')
 spinner.start()
@@ -24,6 +27,8 @@ function webpackByLang(lang) {
   env.LANG = `"${lang}"`
   webpackConfig.resolve.alias.lang = `@/locale/${lang}`
   webpackConfig.output.path = outputPath + '/' + lang
+  webpackConfig.output.publicPath = outputPublicPath + lang
+
   return new Promise((resolve, reject) => {
     webpack(webpackConfig, (err, stats) => {
       spinner.stop()
