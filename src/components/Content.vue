@@ -5,7 +5,7 @@
         <icon class="logo" src="~svg/open-api.svg"/>
       </a>
       <div v-if="loginStatus==='logged'" class="user-name">
-        您好，{{showUsername || '用户'}}
+        {{$t('hello')+'，'+(showUsername || $t('user'))}}
         <a class="logout" @click="logout">退出登录</a>
       </div>
       <el-button v-else-if="loginStatus==='unlogged'"
@@ -227,9 +227,8 @@ export default {
   }
   .el-dropdown{
     color: #ffffff;
-    line-height: $headerHeight;
-    height: $headerHeight;
     cursor: pointer;
     margin-right: 15px;
+    margin-top: ($headerHeight - 20px) / 2;
   }
 </style>

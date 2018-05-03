@@ -1,1 +1,4 @@
-export default '测试'
+export default {
+  hello: '您好',
+  user: '用户',
+}

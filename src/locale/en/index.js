@@ -1,1 +1,4 @@
-export default 'test'
+export default {
+  hello: 'hello',
+  user: 'user',
+}
