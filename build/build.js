@@ -58,8 +58,7 @@ function webpackByLang(lang) {
 
 rm(path.join(config.build.assetsRoot, config.build.assetsSubDirectory), async function(err) {
   if (err) throw err
-  fs.createReadStream('redirect.html').pipe(fs.createWriteStream(path.join(config.build.assetsRoot, 'index.html')))
-
+  fs.copyFileSync('redirect.html', path.join(config.build.assetsRoot, 'index.html'))
   for(let lang of langs) {
     await webpackByLang(lang)
   }
