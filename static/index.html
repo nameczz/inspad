@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>patsnap</title>
+</head>
+<body>
+<script>
+  var storeLang = localStorage.getItem('lang')
+  var lang = storeLang
+  if(!lang) {
+    lang = navigator.language
+  }
+  if(lang !== 'zh-CN') {
+    lang = 'en'
+  }
+  if(lang !== storeLang) {
+    localStorage.setItem('lang', lang)
+  }
+  location.href = lang
+</script>
+</body>
+</html>
