@@ -11,6 +11,15 @@
       <el-button v-else-if="loginStatus==='unlogged'"
                  class="login-button float-right"
                  @click="openLoginDialog">登录</el-button>
+      <el-dropdown @command="selectLang" class="float-right">
+        <span class="el-dropdown-link">
+          {{langs[lang]}}<i class="el-icon-arrow-down el-icon--right"></i>
+        </span>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item command="en">英文</el-dropdown-item>
+          <el-dropdown-item command="zh-CN">中文</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
     </header>
     <router-view class="content"></router-view>
     <el-dialog
@@ -48,19 +57,20 @@
 </template>
 
 <script>
-import {Dialog, Input, Message} from 'element-ui'
+import {Dialog, Input, Message, Dropdown, DropdownItem, DropdownMenu} from 'element-ui'
 import apiAuth from 'api/auth'
 import Cookies from 'js-cookie'
+import {setLang} from 'md/lang'
 import {cookieToken, cookieRefreshToken, cookieUsername} from '@/const/cookies'
 import 'md/validate'
-
-import lang from 'lang/index'
-console.log(lang, process.env.LANG)
 
 export default {
   components: {
     [Dialog.name]: Dialog,
     [Input.name]: Input,
+    [Dropdown.name]: Dropdown,
+    [DropdownItem.name]: DropdownItem,
+    [DropdownMenu.name]: DropdownMenu,
   },
   data() {
     return {
@@ -68,6 +78,11 @@ export default {
       username: '',
       password: '',
       logging: false,
+      langs: {
+        'en': '英文',
+        'zh-CN': '中文',
+      },
+      lang: process.env.LANG,
     }
   },
   computed: {
@@ -79,6 +94,9 @@ export default {
     },
   },
   methods: {
+    selectLang(lang) {
+      setLang(lang)
+    },
     openLoginDialog() {
       this.dialogVisible = true
     },
@@ -205,5 +223,12 @@ export default {
     color: $green;
     font-size: 14px;
     margin-left: 12px;
+  }
+  .el-dropdown{
+    color: #ffffff;
+    line-height: $headerHeight;
+    height: $headerHeight;
+    cursor: pointer;
+    margin-right: 15px;
   }
 </style>
