@@ -14,6 +14,7 @@ const portfinder = require('portfinder')
 const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
 
+baseWebpackConfig.resolve.alias.lang = '@/locale/' + JSON.parse(require('../config/dev.env').LANG)
 const devWebpackConfig = merge(baseWebpackConfig, {
   module: {
     rules: utils.styleLoaders({ sourceMap: config.dev.cssSourceMap, usePostCSS: true })

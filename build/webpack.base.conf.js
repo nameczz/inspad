@@ -41,6 +41,7 @@ module.exports = {
       'api': '@/api',
       'svg': '@/assets/svg',
       'md': '@/modules',
+      'lang': ''
     }
   },
   module: {

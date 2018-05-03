@@ -54,6 +54,9 @@ import Cookies from 'js-cookie'
 import {cookieToken, cookieRefreshToken, cookieUsername} from '@/const/cookies'
 import 'md/validate'
 
+import lang from 'lang/index'
+console.log(lang, process.env.LANG)
+
 export default {
   components: {
     [Dialog.name]: Dialog,
