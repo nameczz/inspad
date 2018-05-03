@@ -57,13 +57,10 @@ function webpackByLang(lang) {
 
 rm(path.join(config.build.assetsRoot, config.build.assetsSubDirectory), async function(err) {
   if (err) throw err
+
   for(let lang of langs) {
     await webpackByLang(lang)
   }
-  // let lang = langs[0]
-  // env.LANG = `"${lang}"`
-  // webpackConfig.resolve.alias.lang = `@/locale/${lang}`
-  // console.log(webpackConfig)
   // webpack(webpackConfig, (err, stats) => {
   //   spinner.stop()
   //   if (err) throw err
