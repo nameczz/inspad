@@ -6,6 +6,9 @@ import '@/assets/styles/common.scss'
 import {Button} from 'element-ui'
 import Copyright from '@/components/busi/Copyright'
 import store from './store'
+import Cookies from 'js-cookie'
+
+Cookies.set('lang', process.env.LANG)
 
 Vue.component('icon', Icon)
 Vue.use(Button)
