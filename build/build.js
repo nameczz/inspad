@@ -58,10 +58,10 @@ function webpackByLang(lang) {
 
 rm(path.join(config.build.assetsRoot, config.build.assetsSubDirectory), async function(err) {
   if (err) throw err
-  fs.copyFileSync('redirect.html', path.join(config.build.assetsRoot, 'index.html'))
   for(let lang of langs) {
     await webpackByLang(lang)
   }
+  fs.copyFileSync('redirect.html', path.join(config.build.assetsRoot, 'index.html'))
   // webpack(webpackConfig, (err, stats) => {
   //   spinner.stop()
   //   if (err) throw err
