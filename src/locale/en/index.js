@@ -15,5 +15,7 @@ export default {
   },
   casePresentation: 'Case presentation',
   identifyText: 'Identify',
+  searchText: 'Search',
+  translateText: 'Translate',
   enterContentPlaceholder: 'Please enter content',
 }

@@ -2,33 +2,30 @@
   <div>
     <div class="trans-header">
       <div class="container">
-        新闻实体识别
+        {{$t('menu.newsEntity')}}
       </div>
     </div>
     <div class="trans-body">
       <div class="trans-main">
         <div class="container">
           <div class="info">
-            <div class="info-desc">基于最先进的机器学习算法 ，PatSnap 中文实体识别 API 可以识别人名，机构以及地理位置，整体准确度高达 90%。</div>
+            <div class="info-desc">{{$t('desc')}}</div>
           </div>
           <section>
-            <header><icon src="~svg/view.svg"/> 案例演示</header>
+            <header><icon src="~svg/view.svg"/> {{$t('casePresentation')}}</header>
             <div class="clearfix">
               <el-input
                 class="input-text float-left"
                 type="textarea"
                 resize="none"
                 :rows="12"
-                placeholder="请输入内容"
+                :placeholder="$t('enterContentPlaceholder')"
                 v-model="inputText"
                 name="inputText"
-                v-validate="'required'"
-                ref="inputText"
-                data-vv-as="文本"
-                :class="{'error':errors.has('inputText') }">
+                ref="inputText">
               </el-input>
               <el-button type="success" size="small" class="translate float-left" :loading="loading" @click="translate">
-                识别
+                {{$t('identifyText')}}
               </el-button>
               <div class="out-text float-left" v-html="outputText" ref="outputText" @scroll="scroll">
               </div>
@@ -45,14 +42,14 @@
 <script>
 import JsonSchema from '@/components/busi/JsonSchema'
 import apiResearch from 'api/research'
-import inputText from '@/const/input/news-detect'
+import i18n from 'lang/research/news-detect'
 export default {
   components: {
     JsonSchema,
   },
   data() {
     return {
-      inputText,
+      inputText: this.$t('text'),
       outputText: '',
       json: '',
       loading: false,
@@ -107,6 +104,11 @@ export default {
     this.outputEl = this.$refs.outputText
     this.$refs.inputText.$refs.textarea.addEventListener('scroll', this.scroll, false)
   },
+  i18n: {
+    messages: {
+      [process.env.LANG]: i18n,
+    },
+  },
 }
 </script>
 
@@ -117,6 +119,7 @@ export default {
   }
   .translate{
     margin: 0 20px;
+    width: 96px;
   }
   $rowNum: 12;
   .out-text{

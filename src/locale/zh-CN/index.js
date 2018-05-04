@@ -65,5 +65,7 @@ export default {
   },
   casePresentation: '案例演示',
   identifyText: '识别',
+  searchText: '查询',
+  translateText: '翻译',
   enterContentPlaceholder: '请输入内容',
 }

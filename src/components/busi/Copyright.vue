@@ -1,5 +1,5 @@
 <template>
-  <div class="copyright" :class="position">Copyright © 2007 - 2018 苏州工业园区百纳谱信息科技有限公司 版权所有</div>
+  <div class="copyright" :class="position">Copyright © 2017 Patsnap. All rights reserved</div>
 </template>
 
 <script>

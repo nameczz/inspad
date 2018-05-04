@@ -41,7 +41,6 @@
 <script>
 import JsonSchema from '@/components/busi/JsonSchema'
 import apiResearch from 'api/research'
-import inputText from '@/const/input/lang-detect'
 import i18n from 'lang/research/lang-detect'
 export default {
   components: {
@@ -49,7 +48,7 @@ export default {
   },
   data() {
     return {
-      inputText: inputText,
+      inputText: this.$t('text'),
       outputText: '',
       json: '',
       loading: false,
