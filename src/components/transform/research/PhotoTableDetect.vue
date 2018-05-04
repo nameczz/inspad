@@ -55,13 +55,12 @@
 </template>
 
 <script>
-import {Input, Tooltip, Message} from 'element-ui'
+import {Tooltip, Message} from 'element-ui'
 import JsonSchema from '@/components/busi/JsonSchema'
 import apiResearch from 'api/research'
 import {percent} from 'md/filters'
 export default {
   components: {
-    [Input.name]: Input,
     [Tooltip.name]: Tooltip,
     JsonSchema,
   },

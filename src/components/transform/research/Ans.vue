@@ -39,12 +39,11 @@
 </template>
 
 <script>
-import {Input, InputNumber} from 'element-ui'
+import {InputNumber} from 'element-ui'
 import JsonSchema from '@/components/busi/JsonSchema'
 import apiResearch from 'api/research'
 export default {
   components: {
-    [Input.name]: Input,
     [InputNumber.name]: InputNumber,
     JsonSchema,
   },

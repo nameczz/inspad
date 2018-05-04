@@ -43,13 +43,11 @@
 </template>
 
 <script>
-import {Input} from 'element-ui'
 import JsonSchema from '@/components/busi/JsonSchema'
 import apiResearch from 'api/research'
 import inputText from '@/const/input/news-detect'
 export default {
   components: {
-    [Input.name]: Input,
     JsonSchema,
   },
   data() {

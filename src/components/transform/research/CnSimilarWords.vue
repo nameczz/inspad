@@ -41,12 +41,10 @@
 </template>
 
 <script>
-import {Input} from 'element-ui'
 import JsonSchema from '@/components/busi/JsonSchema'
 import apiResearch from 'api/research'
 export default {
   components: {
-    [Input.name]: Input,
     JsonSchema,
   },
   data() {

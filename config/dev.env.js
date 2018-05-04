@@ -4,7 +4,8 @@ const prodEnv = require('./prod.env')
 
 module.exports = merge(prodEnv, {
   NODE_ENV: '"development"',
-  LANG: '"zh-CN"',
+  LANG: '"en"',
+  // LANG: '"zh-CN"',
   API_DOMAIN: '"http://ranking-webapi.zhihuiya.com"',
   // API_DOMAIN: '"http://192.168.44.127:9999/developer"',
   API_DOMAIN_API: '"https://api.zhihuiya.com"',

@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import {Input, Dialog} from 'element-ui'
+import {Dialog} from 'element-ui'
 import JsonSchema from '@/components/busi/JsonSchema'
 import {commafy, idEncode} from 'md/filters'
 import apiData from 'api/data'
@@ -71,7 +71,6 @@ import inputAgencyNumber from '@/const/input/agency'
 
 export default {
   components: {
-    [Input.name]: Input,
     [Dialog.name]: Dialog,
     JsonSchema,
   },

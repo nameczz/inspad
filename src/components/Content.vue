@@ -6,11 +6,11 @@
       </a>
       <div v-if="loginStatus==='logged'" class="user-name">
         {{$t('hello')+'，'+(showUsername || $t('user'))}}
-        <a class="logout" @click="logout">退出登录</a>
+        <a class="logout" @click="logout">{{$t('signOut')}}</a>
       </div>
       <el-button v-else-if="loginStatus==='unlogged'"
                  class="login-button float-right"
-                 @click="openLoginDialog">登录</el-button>
+                 @click="openLoginDialog">{{$t('signIn')}}</el-button>
       <el-dropdown @command="selectLang" class="float-right">
         <span class="el-dropdown-link">
           {{getLang()}}<i class="el-icon-arrow-down el-icon--right"></i>
@@ -23,7 +23,7 @@
     </header>
     <router-view class="content"></router-view>
     <el-dialog
-      title="登录"
+      :title="$t('signIn')"
       :visible.sync="dialogVisible"
       width="30%">
       <form @submit.prevent="login">
@@ -32,9 +32,9 @@
                     v-model="username"
                     name="username"
                     v-validate="'required|min:3'"
-                    data-vv-as="用户名"
+                    :data-vv-as="$t('userName')"
                     :class="{'error':errors.has('username') }"
-                    placeholder="用户名"></el-input>
+                    :placeholder="$t('userName')"></el-input>
           <span v-show="errors.has('username')"
                 class="help error">{{ errors.first('username') }}</span>
         </div>
@@ -44,30 +44,29 @@
                     name="password"
                     v-model="password"
                     v-validate="'required|min:3'"
-                    data-vv-as="密码"
+                    :data-vv-as="$t('password')"
                     :class="{'error':errors.has('password') }"
-                    placeholder="密码"></el-input>
+                    :placeholder="$t('password')"></el-input>
           <span v-show="errors.has('password')"
                 class="help error">{{ errors.first('password') }}</span>
         </div>
-        <el-button class="login" type="success" native-type="submit" :loading="logging">登录</el-button>
+        <el-button class="login" type="success" native-type="submit" :loading="logging">{{$t('signIn')}}</el-button>
       </form>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import {Dialog, Input, Message, Dropdown, DropdownItem, DropdownMenu} from 'element-ui'
+import {Dialog, Message, Dropdown, DropdownItem, DropdownMenu} from 'element-ui'
 import apiAuth from 'api/auth'
 import Cookies from 'js-cookie'
 import {setLang} from 'md/lang'
 import {cookieToken, cookieRefreshToken, cookieUsername} from '@/const/cookies'
 import 'md/validate'
-
+import i18n from 'lang/content'
 export default {
   components: {
     [Dialog.name]: Dialog,
-    [Input.name]: Input,
     [Dropdown.name]: Dropdown,
     [DropdownItem.name]: DropdownItem,
     [DropdownMenu.name]: DropdownMenu,
@@ -116,22 +115,22 @@ export default {
             username: this.username,
             password: this.password,
           })
-          if(res.errcode) {
-            switch(res.errcode) {
+          if (res.errcode) {
+            switch (res.errcode) {
               case '30101':
-                this.showError('无该用户')
+                this.showError(this.$t('error.noUser'))
                 break
               case '30103':
-                this.showError('邮箱地址或密码错误')
+                this.showError(this.$t('error.wrongPassword'))
                 break
               case '30104':
-                this.showError('您的账号已在另一处登录使用')
+                this.showError(this.$t('error.logged'))
                 break
               case '30107':
-                this.showError('账号已过期')
+                this.showError(this.$t('error.expired'))
                 break
               default:
-                this.showError('系统错误')
+                this.showError(this.$t('error.systemError'))
             }
             this.logging = false
             return
@@ -142,8 +141,8 @@ export default {
           await this.$store.dispatch('fetchAccessToken')
           this.dialogVisible = false
         } catch (e) {
-          if(e.message === 'no client') {
-            this.showError('无法获取client id')
+          if (e.message === 'no client') {
+            this.showError(this.$t('error.noClient'))
           } else {
             throw e
           }
@@ -159,6 +158,11 @@ export default {
   },
   created() {
     this.$store.dispatch('checkSession')
+  },
+  i18n: {
+    messages: {
+      [process.env.LANG]: i18n,
+    },
   },
 }
 </script>
@@ -230,5 +234,7 @@ export default {
     cursor: pointer;
     margin-right: 15px;
     margin-top: ($headerHeight - 20px) / 2;
+    height: 20px;
+    line-height: 20px;
   }
 </style>

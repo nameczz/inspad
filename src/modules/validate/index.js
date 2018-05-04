@@ -1,20 +1,7 @@
-import VeeValidate from 'vee-validate'
+import VeeValidate, {Validator} from 'vee-validate'
 import Vue from 'vue'
+import locale from 'lang/validate'
 
-const dictionary = {
-  zh: {
-    messages: {
-      required(val) {
-        return '请输入 ' + val
-      },
-      min(val, params) {
-        return val + ' 长度不得低于' + params[0]
-      },
-    },
-  },
-}
+Validator.localize(process.env.LANG, locale);
 
-Vue.use(VeeValidate, {
-  locale: 'zh',
-  dictionary,
-})
+Vue.use(VeeValidate);

@@ -1,5 +1,6 @@
 /build/
 /src/const/
+/src/locale/
 /config/
 /dist/
 /*.js
