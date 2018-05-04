@@ -2,19 +2,19 @@
   <div>
     <div class="trans-header">
       <div class="container">
-        专利
+        {{$t('menu.patent')}}
       </div>
     </div>
     <div class="trans-body">
       <div class="trans-main">
         <div class="container">
           <div class="info">
-            <div class="info-desc">通过申请人名称、专利标题或者专利公开号等检索词获取专利ID，并使用ID查询到专利价值、法律详情、说明书、要求和引用详情等信息</div>
+            <div class="info-desc">{{$t('desc')}}</div>
           </div>
           <section>
             <header><icon src="~svg/view.svg"/> {{$t('casePresentation')}}</header>
             <div>
-              <p>输入任意检索词查询专利ID，日期格式为:yyyyMMdd</p>
+              <p>{{$t('notice')}}</p>
               <div class="clearfix">
                 <el-input
                   class="input-text float-left"
@@ -63,9 +63,9 @@
                 </el-input>
               </div>
               <el-button type="success" class="translate" :loading="loading" @click="translate">
-                开始查询
+                {{$t('searchText')}}
               </el-button>
-              <p>查询结果（只显示前10条结果）</p>
+              <p>{{$t('searchResultNotice')}}</p>
               <table class="table">
                 <thead>
                 <tr>
@@ -111,7 +111,7 @@ import JsonSchema from '@/components/busi/JsonSchema'
 import arrayToMap from 'md/array-to-map'
 import {commafy, idEncode} from 'md/filters'
 import apiData from 'api/data'
-
+import i18n from 'lang/data/patent'
 export default {
   components: {
     [Dialog.name]: Dialog,
@@ -230,6 +230,11 @@ export default {
       } else {
         return '?'
       }
+    },
+  },
+  i18n: {
+    messages: {
+      [process.env.LANG]: i18n,
     },
   },
 }

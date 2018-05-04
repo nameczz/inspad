@@ -79,15 +79,15 @@ export default {
               path: '/research/ensimilarwords',
             },
             {
-              name: '中文关键字',
+              name: t('menu.keywordsExtractCn'),
               path: '/research/cnterm',
             },
             {
-              name: '英文关键字',
+              name: t('menu.keywordsExtractEn'),
               path: '/research/enterm',
             },
             {
-              name: '生物专利地图',
+              name: t('menu.landscapeBio'),
               path: '/research/landscapebio',
             },
             // {
@@ -97,26 +97,26 @@ export default {
           ],
         },
         {
-          name: '数据',
+          name: t('menu.data'),
           children: [
             {
-              name: '专利',
+              name: t('menu.patent'),
               path: '/data/patent',
             },
             {
-              name: '企业',
+              name: t('menu.company'),
               path: '/data/company',
             },
             {
-              name: '代理机构',
+              name: t('menu.agency'),
               path: '/data/agency',
             },
             {
-              name: '商标',
+              name: t('menu.trademark'),
               path: '/data/trademark',
             },
             {
-              name: '统计',
+              name: t('menu.statistics'),
               path: '/data/statistics',
             },
           ],

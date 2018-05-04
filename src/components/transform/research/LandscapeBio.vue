@@ -2,14 +2,14 @@
   <div>
     <div class="trans-header">
       <div class="container">
-        生物专利地图
+        {{$t('menu.landscapeBio')}}
       </div>
     </div>
     <div class="trans-body">
       <div class="trans-main">
         <div class="container">
           <div class="info">
-            <div class="info-desc">在Blast Search结果上执行降维，并在PatSnap横向上变换可视化的缩小尺寸。</div>
+            <div class="info-desc">{{$t('desc')}}</div>
           </div>
           <section>
             <header><icon src="~svg/view.svg"/> {{$t('casePresentation')}}</header>
@@ -24,7 +24,7 @@
                 name="inputText">
               </el-input>
               <el-button type="success" size="small" class="translate float-left" :loading="loading" @click="translate">
-                识别
+                {{$t('searchText')}}
               </el-button>
               <div class="out-text float-left" v-html="outputText" />
             </div>
@@ -40,14 +40,14 @@
 <script>
 import JsonSchema from '@/components/busi/JsonSchema'
 import apiResearch from 'api/research'
-import inputText from '@/const/input/landscape-bio'
+import i18n from 'lang/research/landscape-bio'
 export default {
   components: {
     JsonSchema,
   },
   data() {
     return {
-      inputText: JSON.stringify(inputText),
+      inputText: JSON.stringify(this.$t('input')),
       outputText: '',
       json: '',
       loading: false,
@@ -67,6 +67,11 @@ export default {
       } finally {
         this.loading = false
       }
+    },
+  },
+  i18n: {
+    messages: {
+      [process.env.LANG]: i18n,
     },
   },
 }

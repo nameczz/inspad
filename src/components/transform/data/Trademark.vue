@@ -2,14 +2,14 @@
   <div>
     <div class="trans-header">
       <div class="container">
-        商标
+        {{$t('menu.trademark')}}
       </div>
     </div>
     <div class="trans-body">
       <div class="trans-main">
         <div class="container">
           <div class="info">
-            <div class="info-desc">通过企业组织机构编号、申请人名称或者商标名称等检索词获取相关商标ID，并使用ID查询到商标名称和代理人等信息</div>
+            <div class="info-desc">{{$t('desc')}}</div>
           </div>
           <section>
             <header><icon src="~svg/view.svg"/> {{$t('casePresentation')}}</header>
@@ -63,9 +63,9 @@
                 </el-input>
               </div>
               <el-button type="success" class="translate" :loading="loading" @click="translate">
-                开始查询
+                {{$t('searchText')}}
               </el-button>
-              <p>查询结果（只显示前10条结果）</p>
+              <p>{{$t('searchResultNotice')}}</p>
               <table class="table">
                 <thead>
                 <tr>
@@ -105,7 +105,7 @@ import JsonSchema from '@/components/busi/JsonSchema'
 import {commafy, idEncode} from 'md/filters'
 import apiData from 'api/data'
 import trademarkName from '@/const/input/trademark'
-
+import i18n from 'lang/data/trademark'
 export default {
   components: {
     [Dialog.name]: Dialog,
@@ -171,6 +171,11 @@ export default {
   filters: {
     idEncode,
     commafy,
+  },
+  i18n: {
+    messages: {
+      [process.env.LANG]: i18n,
+    },
   },
 }
 </script>

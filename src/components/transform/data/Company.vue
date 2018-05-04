@@ -2,14 +2,14 @@
   <div>
     <div class="trans-header">
       <div class="container">
-        企业
+        {{$t('menu.company')}}
       </div>
     </div>
     <div class="trans-body">
       <div class="trans-main">
         <div class="container">
           <div class="info">
-            <div class="info-desc">通过公司名称、组织机构编码或者注册编码获取相关企业ID，并使用ID查询到企业名称、主要人员、股东详情、对外投资、变更和分支机构等信息</div>
+            <div class="info-desc">{{$t('desc')}}</div>
           </div>
           <section>
             <header><icon src="~svg/view.svg"/> {{$t('casePresentation')}}</header>
@@ -33,9 +33,9 @@
                 </el-input>
               </div>
               <el-button type="success" class="translate" :loading="loading" @click="translate">
-                开始查询
+                {{$t('searchText')}}
               </el-button>
-              <p>查询结果（只显示前10条结果）</p>
+              <p>{{$t('searchResultNotice')}}</p>
               <table class="table">
                 <thead>
                 <tr>
@@ -84,7 +84,7 @@ import arrayToMap from 'md/array-to-map'
 import {commafy, idEncode, date} from 'md/filters'
 import apiData from 'api/data'
 import companyName from '@/const/input/company'
-
+import i18n from 'lang/data/company'
 export default {
   components: {
     [Dialog.name]: Dialog,
@@ -217,6 +217,11 @@ export default {
   filters: {
     idEncode,
     commafy,
+  },
+  i18n: {
+    messages: {
+      [process.env.LANG]: i18n,
+    },
   },
 }
 </script>

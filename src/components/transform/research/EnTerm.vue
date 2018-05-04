@@ -2,14 +2,14 @@
   <div>
     <div class="trans-header">
       <div class="container">
-        英文关键字
+        {{$t('menu.keywordsExtractEn')}}
       </div>
     </div>
     <div class="trans-body">
       <div class="trans-main">
         <div class="container">
           <div class="info">
-            <div class="info-desc">根据用户输入的一段文本进行提取文本中的关键字</div>
+            <div class="info-desc">{{$t('desc')}}</div>
           </div>
           <section>
             <header><icon src="~svg/view.svg"/> {{$t('casePresentation')}}</header>
@@ -24,7 +24,7 @@
                 name="inputText">
               </el-input>
               <el-button type="success" size="small" class="translate float-left" :loading="loading" @click="translate">
-                识别
+                {{$t('extractText')}}
               </el-button>
               <div class="out-text float-left" v-html="outputText" />
             </div>
@@ -40,14 +40,14 @@
 <script>
 import JsonSchema from '@/components/busi/JsonSchema'
 import apiResearch from 'api/research'
-import inputText from '@/const/input/en-term'
+import i18n from 'lang/research/en-term'
 export default {
   components: {
     JsonSchema,
   },
   data() {
     return {
-      inputText,
+      inputText: this.$t('text'),
       outputText: '',
       json: '',
       loading: false,
@@ -70,6 +70,11 @@ export default {
       } finally {
         this.loading = false
       }
+    },
+  },
+  i18n: {
+    messages: {
+      [process.env.LANG]: i18n,
     },
   },
 }

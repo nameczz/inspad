@@ -3,14 +3,14 @@
   <div>
     <div class="trans-header">
       <div class="container">
-        统计
+        {{$t('menu.statistics')}}
       </div>
     </div>
     <div class="trans-body">
       <div class="trans-main">
         <div class="container">
           <div class="info">
-            <div class="info-desc"></div>
+            <div class="info-desc">{{$t('desc')}}</div>
           </div>
           <section>
             <header><icon src="~svg/view.svg"/> {{$t('casePresentation')}}</header>
@@ -33,7 +33,7 @@
                   </el-select>
                 </div>
                 <el-button type="success" class="translate float-left" :loading="loading" @click="translate">
-                  开始查询
+                  {{$t('searchText')}}
                 </el-button>
                 <div class="out-text float-left" v-html="outputText">
                 </div>
@@ -53,7 +53,7 @@ import {Autocomplete, Select, Option} from 'element-ui'
 import {commafy, idEncode} from 'md/filters'
 import apiData from 'api/data'
 import JsonSchema from '@/components/busi/JsonSchema'
-
+import i18n from 'lang/data/statistics'
 export default {
   components: {
     [Autocomplete.name]: Autocomplete,
@@ -230,6 +230,11 @@ export default {
   filters: {
     idEncode,
     commafy,
+  },
+  i18n: {
+    messages: {
+      [process.env.LANG]: i18n,
+    },
   },
 }
 </script>

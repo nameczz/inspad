@@ -14,53 +14,22 @@ export default {
     similarCompany: '相似企业搜索',
     similarWordsCn: '中文相似词',
     similarWordsEn: '英文相似词',
-//     {
-//       name: '中文关键字',
-//       path: '/research/cnterm',
-//     },
-//     {
-//       name: '英文关键字',
-//       path: '/research/enterm',
-//     },
-//     {
-//       name: '生物专利地图',
-//       path: '/research/landscapebio',
-//     },
-//     // {
-//     //   name: '图像表格提取',
-//     //   path: '/research/phototabledetect',
-//     // },
-//   ],
-// },
-// {
-//   name: '数据',
-//     children: [
-//   {
-//     name: '专利',
-//     path: '/data/patent',
-//   },
-//   {
-//     name: '企业',
-//     path: '/data/company',
-//   },
-//   {
-//     name: '代理机构',
-//     path: '/data/agency',
-//   },
-//   {
-//     name: '商标',
-//     path: '/data/trademark',
-//   },
-//   {
-//     name: '统计',
-//     path: '/data/statistics',
-//   },
-// ],
+    keywordsExtractCn: '中文关键字提取',
+    keywordsExtractEn: '英文关键字提取',
+    landscapeBio: '生物专利地图',
+    data: '数据',
+    patent: '专利',
+    company: '企业',
+    agency: '代理机构',
+    trademark: '商标',
+    statistics: '统计',
   },
   casePresentation: '案例演示',
   identifyText: '识别',
   searchText: '查询',
   translateText: '翻译',
   parseText: '解析',
+  extractText: '提取',
   enterContentPlaceholder: '请输入内容',
+  searchResultNotice: '查询结果（只显示前10条结果）',
 }
