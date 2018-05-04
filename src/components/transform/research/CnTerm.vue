@@ -84,7 +84,6 @@ export default {
     width: 366px;
   }
   .translate{
-    width: 80px;
     margin: 0 20px;
   }
   .out-text{

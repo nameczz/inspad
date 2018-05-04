@@ -20,53 +20,54 @@
 <script>
 export default {
   data() {
+    let t = this.$t
     return {
       nav: [
         {
-          name: '研发',
+          name: t('menu.research'),
           children: [
             {
-              name: '语言检测',
+              name: t('menu.langDetect'),
               path: '/research/langdetect',
             },
             {
-              name: '化学实体识别',
+              name: t('menu.chemEntity'),
               path: '/research/chemdetect',
             },
             {
-              name: '新闻实体识别',
+              name: t('menu.newsEntity'),
               path: '/research/newsdetect',
             },
             {
-              name: '英文近似关键词',
+              name: t('menu.keywordsEn'),
               path: '/research/endetect',
             },
             {
-              name: '中文近似关键词',
+              name: t('menu.keywordsCn'),
               path: '/research/cndetect',
             },
             {
-              name: '标准名称提取',
+              name: t('menu.companyName'),
               path: '/research/titledetect',
             },
             {
-              name: '标题翻译',
+              name: t('menu.titleTrans'),
               path: '/research/titletranslate',
             },
             {
-              name: '摘要翻译',
+              name: t('menu.abstractTrans'),
               path: '/research/abstracttranslate',
             },
             {
-              name: '单位检测',
+              name: t('menu.unitDetect'),
               path: '/research/unitdetect',
             },
             {
-              name: 'ans检测',
+              name: t('menu.ansDetect'),
               path: '/research/ans',
             },
             {
-              name: '相似企业搜索',
+              name: t('menu.similarCompany'),
               path: '/research/similarcompany',
             },
             {
@@ -161,7 +162,7 @@ export default {
       color: #ffffff;
       line-height: 36px;
       display: block;
-      padding-left: 44px;
+      padding-left: 40px;
       overflow: hidden;
       &.router-link-active{
         background-color: #3f4546;

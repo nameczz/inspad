@@ -103,7 +103,6 @@ export default {
     }
   }
   .translate{
-    width: 80px;
     margin: 0 20px;
   }
   $rowNum: 12;

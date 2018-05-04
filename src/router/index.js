@@ -7,7 +7,7 @@ import 'core-js/fn/array/find'
 const Content = resolve => require(['@/components/Content'], resolve)
 const Transform = resolve => require(['@/components/Transform'], resolve)
 
-const ResearchLangdetect = resolve => require(['@/components/transform/research/Langdetect'], resolve)
+const ResearchLangdetect = resolve => require(['@/components/transform/research/LangDetect'], resolve)
 const ResearchChemDetect = resolve => require(['@/components/transform/research/ChemDetect'], resolve)
 const ResearchNewsDetect = resolve => require(['@/components/transform/research/NewsDetect'], resolve)
 const ResearchEnDetect = resolve => require(['@/components/transform/research/EnDetect'], resolve)

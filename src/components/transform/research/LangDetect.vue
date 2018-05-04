@@ -2,32 +2,29 @@
   <div>
    <div class="trans-header">
      <div class="container">
-       语言检测
+       {{$t('menu.langDetect')}}
      </div>
    </div>
    <div class="trans-body">
      <div class="trans-main">
        <div class="container">
          <div class="info">
-           <div class="info-desc">基于最先进的神经网络算法 ，PatSnap 语言检测 API 可以识别多达 38 种语言，而且整体准确率高达 99%。</div>
+           <div class="info-desc">{{$t('desc')}}</div>
          </div>
          <section>
-           <header><icon src="~svg/view.svg"/> 案例演示</header>
+           <header><icon src="~svg/view.svg"/> {{$t('casePresentation')}}</header>
            <div class="clearfix">
              <el-input
                class="input-text float-left"
                type="textarea"
                resize="none"
                :rows="4"
-               placeholder="请输入内容"
+               :placeholder="$t('enterContentPlaceholder')"
                v-model="inputText"
-               name="inputText"
-               v-validate="'required'"
-               data-vv-as="文本"
-               :class="{'error':errors.has('inputText') }">
+               name="inputText">
              </el-input>
              <el-button type="success" size="small" class="translate float-left" :loading="loading" @click="translate">
-               识别
+               {{$t('identifyText')}}
              </el-button>
              <div class="out-text float-left" v-html="outputText">
              </div>
@@ -45,6 +42,7 @@
 import JsonSchema from '@/components/busi/JsonSchema'
 import apiResearch from 'api/research'
 import inputText from '@/const/input/lang-detect'
+import i18n from 'lang/research/lang-detect'
 export default {
   components: {
     JsonSchema,
@@ -59,6 +57,9 @@ export default {
   },
   methods: {
     async translate() {
+      if(!this.inputText) {
+        return
+      }
       this.loading = true
       try {
         let res = await apiResearch.langDetect({
@@ -76,6 +77,11 @@ export default {
       }
     },
   },
+  i18n: {
+    messages: {
+      [process.env.LANG]: i18n,
+    },
+  },
 }
 </script>
 
@@ -85,7 +91,7 @@ export default {
     width: 366px;
   }
   .translate{
-    width: 80px;
+    width: 96px;
     margin: 0 20px;
   }
   .out-text{

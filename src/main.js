@@ -23,6 +23,7 @@ Vue.config.productionTip = false
 
 const i18n = new VueI18n({
   locale: process.env.LANG,
+  silentTranslationWarn: true,
   messages: {
     [process.env.LANG]: lang,
   },
