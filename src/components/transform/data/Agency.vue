@@ -13,7 +13,7 @@
             <div class="info-desc">通过代理机构编号获取相关代理机构ID，并使用ID查询到代理机构名称、代理机构专利和代理人等信息</div>
           </div>
           <section>
-            <header><icon src="~svg/view.svg"/> 案例演示</header>
+            <header><icon src="~svg/view.svg"/> {{$t('casePresentation')}}</header>
             <div>
               <p>输入任意检索词查询代理机构ID</p>
               <div class="clearfix">

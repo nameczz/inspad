@@ -12,7 +12,7 @@ const ResearchChemDetect = resolve => require(['@/components/transform/research/
 const ResearchNewsDetect = resolve => require(['@/components/transform/research/NewsDetect'], resolve)
 const ResearchEnDetect = resolve => require(['@/components/transform/research/EnDetect'], resolve)
 const ResearchCnDetect = resolve => require(['@/components/transform/research/CnDetect'], resolve)
-const ResearchTitleDetect = resolve => require(['@/components/transform/research/TitleDetect'], resolve)
+const ResearchCompanyNameParser = resolve => require(['@/components/transform/research/CompanyNameParser'], resolve)
 const ResearchTitleTranslate = resolve => require(['@/components/transform/research/TitleTranslate'], resolve)
 const ResearchAbstractTranslate = resolve => require(['@/components/transform/research/AbstractTranslate'], resolve)
 const ResearchUnitDetect = resolve => require(['@/components/transform/research/UnitDetect'], resolve)
@@ -86,9 +86,9 @@ let router = new Router({
               component: ResearchCnDetect,
             },
             {
-              path: 'research/titledetect',
-              name: 'ResearchTitleDetect',
-              component: ResearchTitleDetect,
+              path: 'research/companynameparser',
+              name: 'ResearchCompanyNameParser',
+              component: ResearchCompanyNameParser,
             },
             {
               path: 'research/titletranslate',

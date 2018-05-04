@@ -2,32 +2,29 @@
   <div>
     <div class="trans-header">
       <div class="container">
-        中文相似词
+        {{$t('menu.similarWordsCn')}}
       </div>
     </div>
     <div class="trans-body">
       <div class="trans-main">
         <div class="container">
           <div class="info">
-            <div class="info-desc">用于对提取的关键字进行对应的相似的words/phrases搜索</div>
+            <div class="info-desc">{{$t('desc')}}</div>
           </div>
           <section>
-            <header><icon src="~svg/view.svg"/> 案例演示</header>
+            <header><icon src="~svg/view.svg"/> {{$t('casePresentation')}}</header>
             <div class="clearfix">
               <el-input
                 class="input-text float-left"
                 type="textarea"
                 resize="none"
                 :rows="4"
-                placeholder="请输入内容"
+                :placeholder="$t('enterContentPlaceholder')"
                 v-model="inputText"
-                name="inputText"
-                v-validate="'required'"
-                data-vv-as="文本"
-                :class="{'error':errors.has('inputText') }">
+                name="inputText">
               </el-input>
               <el-button type="success" size="small" class="translate float-left" :loading="loading" @click="translate">
-                识别
+                {{$t('searchText')}}
               </el-button>
               <div class="out-text float-left" v-html="outputText" />
             </div>
@@ -43,13 +40,14 @@
 <script>
 import JsonSchema from '@/components/busi/JsonSchema'
 import apiResearch from 'api/research'
+import i18n from 'lang/research/cn-similar-words'
 export default {
   components: {
     JsonSchema,
   },
   data() {
     return {
-      inputText: '智慧芽是一家科技公司.',
+      inputText: this.$t('text'),
       outputText: '',
       json: '',
       loading: false,
@@ -77,6 +75,11 @@ export default {
       }
     },
   },
+  i18n: {
+    messages: {
+      [process.env.LANG]: i18n,
+    },
+  },
 }
 </script>
 
@@ -87,6 +90,7 @@ export default {
   }
   .translate{
     margin: 0 20px;
+    width: 96px;
   }
   .out-text{
     width: 366px;

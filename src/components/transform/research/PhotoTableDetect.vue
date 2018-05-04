@@ -12,7 +12,7 @@
             <div class="info-desc"></div>
           </div>
           <section>
-            <header><icon src="~svg/view.svg"/> 案例演示</header>
+            <header><icon src="~svg/view.svg"/> {{$t('casePresentation')}}</header>
             <div class="clearfix">
               <div class="input-image">
                 <el-button type="success"

@@ -2,32 +2,29 @@
   <div>
     <div class="trans-header">
       <div class="container">
-        相似企业搜索
+        {{$t('menu.similarCompany')}}
       </div>
     </div>
     <div class="trans-body">
       <div class="trans-main">
         <div class="container">
           <div class="info">
-            <div class="info-desc">推荐相似的公司，为了结果更精确，请提供要查询公司的所有IPC信息。</div>
+            <div class="info-desc">{{$t('desc')}}</div>
           </div>
           <section>
-            <header><icon src="~svg/view.svg"/> 案例演示</header>
+            <header><icon src="~svg/view.svg"/> {{$t('casePresentation')}}</header>
             <div class="clearfix">
               <el-input
                 class="input-text float-left"
                 type="textarea"
                 resize="none"
                 :rows="4"
-                placeholder="请输入内容"
+                :placeholder="$t('enterContentPlaceholder')"
                 v-model="inputText"
-                name="inputText"
-                v-validate="'required'"
-                data-vv-as="文本"
-                :class="{'error':errors.has('inputText') }">
+                name="inputText">
               </el-input>
               <el-button type="success" size="small" class="translate float-left" :loading="loading" @click="translate">
-                识别
+                {{$t('searchText')}}
               </el-button>
               <div class="out-text float-left">
                 {{outputText}}
@@ -45,14 +42,14 @@
 <script>
 import JsonSchema from '@/components/busi/JsonSchema'
 import apiResearch from 'api/research'
-import inputText from '@/const/input/similar-company'
+import i18n from 'lang/research/similar-company'
 export default {
   components: {
     JsonSchema,
   },
   data() {
     return {
-      inputText: JSON.stringify(inputText),
+      inputText: JSON.stringify(this.$t('input')),
       outputText: '',
       json: '',
       loading: false,
@@ -74,6 +71,11 @@ export default {
       }
     },
   },
+  i18n: {
+    messages: {
+      [process.env.LANG]: i18n,
+    },
+  },
 }
 </script>
 
@@ -83,8 +85,8 @@ export default {
     width: 366px;
   }
   .translate{
-    width: 80px;
     margin: 0 20px;
+    width: 96px;
   }
   .out-text{
     width: 366px;

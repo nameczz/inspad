@@ -12,7 +12,7 @@
             <div class="info-desc">通过公司名称、组织机构编码或者注册编码获取相关企业ID，并使用ID查询到企业名称、主要人员、股东详情、对外投资、变更和分支机构等信息</div>
           </div>
           <section>
-            <header><icon src="~svg/view.svg"/> 案例演示</header>
+            <header><icon src="~svg/view.svg"/> {{$t('casePresentation')}}</header>
             <div>
               <p>输入任意检索词查询企业ID</p>
               <div class="clearfix">

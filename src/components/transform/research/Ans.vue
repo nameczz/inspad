@@ -2,29 +2,29 @@
   <div>
     <div class="trans-header">
       <div class="container">
-        ans检测
+        {{$t('menu.ansDetect')}}
       </div>
     </div>
     <div class="trans-body">
       <div class="trans-main">
         <div class="container">
           <div class="info">
-            <div class="info-desc">将实体名称精确匹配ans表中的实体。输入一个名称的list, 返回名称与匹配到的ans_id的映射，若没有匹配到,则不会输出。</div>
+            <div class="info-desc"></div>
           </div>
           <section>
-            <header><icon src="~svg/view.svg"/> 案例演示</header>
+            <header><icon src="~svg/view.svg"/> {{$t('casePresentation')}}</header>
             <div class="clearfix">
               <div class="float-left input-texts">
                 <el-input-number v-model="num" ></el-input-number>
                 <el-input
-                  placeholder="请输入内容"
+                  :placeholder="$t('enterContentPlaceholder')"
                   v-for="(text,i) in inputTexts"
                   :key="i"
                   v-model="text.value">
                 </el-input>
               </div>
               <el-button type="success" size="small" class="translate float-left" :loading="loading" @click="translate">
-                识别
+                {{$t('searchText')}}
               </el-button>
               <div class="out-text float-left" v-html="outputText" >
               </div>
@@ -42,6 +42,7 @@
 import {InputNumber} from 'element-ui'
 import JsonSchema from '@/components/busi/JsonSchema'
 import apiResearch from 'api/research'
+import i18n from 'lang/research/ans'
 export default {
   components: {
     [InputNumber.name]: InputNumber,
@@ -49,7 +50,7 @@ export default {
   },
   data() {
     return {
-      inputTexts: [{value: 'apple'}, {value: 'Apple'}, {value: 'google'}, {value: 'I cannot be matched'}],
+      inputTexts: this.$t('input').map((value) => ({value})),
       outputText: '',
       json: '',
       loading: false,
@@ -91,6 +92,11 @@ export default {
       }
     },
   },
+  i18n: {
+    messages: {
+      [process.env.LANG]: i18n,
+    },
+  },
 }
 </script>
 
@@ -104,6 +110,7 @@ export default {
   }
   .translate{
     margin: 0 20px;
+    width: 96px;
   }
   $rowNum: 12;
   .out-text{

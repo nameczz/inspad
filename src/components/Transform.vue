@@ -48,7 +48,7 @@ export default {
             },
             {
               name: t('menu.companyName'),
-              path: '/research/titledetect',
+              path: '/research/companynameparser',
             },
             {
               name: t('menu.titleTrans'),
@@ -71,11 +71,11 @@ export default {
               path: '/research/similarcompany',
             },
             {
-              name: '中文相似词',
+              name: t('menu.similarWordsCn'),
               path: '/research/cnsimilarwords',
             },
             {
-              name: '英文相似词',
+              name: t('menu.similarWordsEn'),
               path: '/research/ensimilarwords',
             },
             {

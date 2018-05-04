@@ -12,19 +12,16 @@
             <div class="info-desc">在Blast Search结果上执行降维，并在PatSnap横向上变换可视化的缩小尺寸。</div>
           </div>
           <section>
-            <header><icon src="~svg/view.svg"/> 案例演示</header>
+            <header><icon src="~svg/view.svg"/> {{$t('casePresentation')}}</header>
             <div class="clearfix">
               <el-input
                 class="input-text float-left"
                 type="textarea"
                 resize="none"
                 :rows="4"
-                placeholder="请输入内容"
+                :placeholder="$t('enterContentPlaceholder')"
                 v-model="inputText"
-                name="inputText"
-                v-validate="'required'"
-                data-vv-as="文本"
-                :class="{'error':errors.has('inputText') }">
+                name="inputText">
               </el-input>
               <el-button type="success" size="small" class="translate float-left" :loading="loading" @click="translate">
                 识别
@@ -82,6 +79,7 @@ export default {
   }
   .translate{
     margin: 0 20px;
+    width: 96px;
   }
   .out-text{
     width: 366px;

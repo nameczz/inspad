@@ -6,20 +6,14 @@ export default {
     newsEntity: '新闻实体识别',
     keywordsEn: '英文近似关键词',
     keywordsCn: '中文近似关键词',
-    companyName: '企业名称提取',
+    companyName: '企业名称解析',
     titleTrans: '标题翻译',
     abstractTrans: '摘要翻译',
     unitDetect: '单位检测',
     ansDetect: 'Ans 检测',
     similarCompany: '相似企业搜索',
-    //     {
-//       name: '中文相似词',
-//       path: '/research/cnsimilarwords',
-//     },
-//     {
-//       name: '英文相似词',
-//       path: '/research/ensimilarwords',
-//     },
+    similarWordsCn: '中文相似词',
+    similarWordsEn: '英文相似词',
 //     {
 //       name: '中文关键字',
 //       path: '/research/cnterm',
@@ -67,5 +61,6 @@ export default {
   identifyText: '识别',
   searchText: '查询',
   translateText: '翻译',
+  parseText: '解析',
   enterContentPlaceholder: '请输入内容',
 }

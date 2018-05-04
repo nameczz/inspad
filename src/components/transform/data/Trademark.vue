@@ -12,7 +12,7 @@
             <div class="info-desc">通过企业组织机构编号、申请人名称或者商标名称等检索词获取相关商标ID，并使用ID查询到商标名称和代理人等信息</div>
           </div>
           <section>
-            <header><icon src="~svg/view.svg"/> 案例演示</header>
+            <header><icon src="~svg/view.svg"/> {{$t('casePresentation')}}</header>
             <div>
               <p>输入任意检索词查询商标ID</p>
               <div class="clearfix">

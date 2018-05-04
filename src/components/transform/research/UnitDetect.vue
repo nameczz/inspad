@@ -2,7 +2,7 @@
   <div>
     <div class="trans-header">
       <div class="container">
-        单位检测
+        {{$t('menu.unitDetect')}}
       </div>
     </div>
     <div class="trans-body">
@@ -12,22 +12,19 @@
             <div class="info-desc"></div>
           </div>
           <section>
-            <header><icon src="~svg/view.svg"/> 案例演示</header>
+            <header><icon src="~svg/view.svg"/> {{$t('casePresentation')}}</header>
             <div class="clearfix">
               <el-input
                 class="input-text float-left"
                 type="textarea"
                 resize="none"
                 :rows="4"
-                placeholder="请输入内容"
+                :placeholder="$t('enterContentPlaceholder')"
                 v-model="inputText"
-                name="inputText"
-                v-validate="'required'"
-                data-vv-as="文本"
-                :class="{'error':errors.has('inputText') }">
+                name="inputText">
               </el-input>
               <el-button type="success" size="small" class="translate float-left" :loading="loading" @click="translate">
-                提取
+                {{$t('identifyText')}}
               </el-button>
               <div class="out-text float-left" v-html="outputText">
               </div>
@@ -44,14 +41,14 @@
 <script>
 import JsonSchema from '@/components/busi/JsonSchema'
 import apiResearch from 'api/research'
-import inputText from '@/const/input/unit-detect'
+import i18n from 'lang/research/unit-detect'
 export default {
   components: {
     JsonSchema,
   },
   data() {
     return {
-      inputText,
+      inputText: this.$t('text'),
       outputText: '',
       json: '',
       loading: false,
@@ -73,6 +70,11 @@ export default {
       }
     },
   },
+  i18n: {
+    messages: {
+      [process.env.LANG]: i18n,
+    },
+  },
 }
 </script>
 
@@ -83,6 +85,7 @@ export default {
   }
   .translate{
     margin: 0 20px;
+    width: 96px;
   }
   .out-text{
     width: 366px;

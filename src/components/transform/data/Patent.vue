@@ -12,7 +12,7 @@
             <div class="info-desc">通过申请人名称、专利标题或者专利公开号等检索词获取专利ID，并使用ID查询到专利价值、法律详情、说明书、要求和引用详情等信息</div>
           </div>
           <section>
-            <header><icon src="~svg/view.svg"/> 案例演示</header>
+            <header><icon src="~svg/view.svg"/> {{$t('casePresentation')}}</header>
             <div>
               <p>输入任意检索词查询专利ID，日期格式为:yyyyMMdd</p>
               <div class="clearfix">
