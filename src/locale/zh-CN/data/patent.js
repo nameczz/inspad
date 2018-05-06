@@ -10,6 +10,14 @@ export default {
     publicEndDate: '专利公开查询结束日期(包含)',
     publicNo: '专利公开号',
     applyNo: '专利申请号',
-    IPCNo : '专利IPC编码',
+    IPCCode : '专利IPC编码',
   },
+  table: {
+    patentVal: '专利价值',
+    patentLegalInfo: '专利法律状态',
+    patentDesc: '专利说明书',
+    patentClaim: '专利要求',
+    patentCitation: '专利引用详情',
+  },
+  patentTitleInput: '电子',
 }

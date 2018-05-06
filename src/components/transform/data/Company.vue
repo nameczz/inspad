@@ -53,11 +53,11 @@
                     :key="item.company_id">
                   <td>{{item.company_id|idEncode}}</td>
                   <td>{{item.company_name}}</td>
-                  <td><a class="view" @click="showCompanyStaff(item.company_id)">点击查看</a></td>
-                  <td><a class="view" @click="showCompanyShareholder(item.company_id)">点击查看</a></td>
-                  <td><a class="view" @click="showCompanyInvestment(item.company_id)">点击查看</a></td>
-                  <td><a class="view" @click="showCompanyChange(item.company_id)">点击查看</a></td>
-                  <td><a class="view" @click="showCompanyBranch(item.company_id)">点击查看</a></td>
+                  <td><a class="view" @click="showCompanyStaff(item.company_id)">{{$t('viewText')}}</a></td>
+                  <td><a class="view" @click="showCompanyShareholder(item.company_id)">{{$t('viewText')}}</a></td>
+                  <td><a class="view" @click="showCompanyInvestment(item.company_id)">{{$t('viewText')}}</a></td>
+                  <td><a class="view" @click="showCompanyChange(item.company_id)">{{$t('viewText')}}</a></td>
+                  <td><a class="view" @click="showCompanyBranch(item.company_id)">{{$t('viewText')}}</a></td>
                 </tr>
                 </tbody>
               </table>

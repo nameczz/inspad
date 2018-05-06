@@ -32,4 +32,5 @@ export default {
   extractText: '提取',
   enterContentPlaceholder: '请输入内容',
   searchResultNotice: '查询结果（只显示前10条结果）',
+  viewText: '点击查看',
 }

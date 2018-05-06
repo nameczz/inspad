@@ -31,5 +31,6 @@ export default {
   parseText: 'Parse',
   extractText: 'Extract',
   enterContentPlaceholder: 'Please enter content',
-  searchResultNotice: 'Query results (only the top 10 results are displayed)',
+  searchResultNotice: 'Search results (only the top 10 results are displayed)',
+  viewText: 'View',
 }

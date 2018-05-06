@@ -18,47 +18,47 @@
               <div class="clearfix">
                 <el-input
                   class="input-text float-left"
-                  placeholder="申请人名称"
+                  :placeholder="$t('input.applicant')"
                   v-model="inputForm.ans">
                 </el-input>
                 <el-input
                   class="input-text float-left"
-                  placeholder="专利标题"
+                  :placeholder="$t('input.patentTitle')"
                   v-model="inputForm.ttl">
                 </el-input>
                 <el-input
                   class="input-text float-left"
-                  placeholder="专利申请查询开始日期(包含)"
+                  :placeholder="$t('input.applyStartDate')"
                   v-model="inputForm.apd_from">
                 </el-input>
                 <el-input
                   class="input-text float-left"
-                  placeholder="专利申请查询结束日期(包含)"
+                  :placeholder="$t('input.applyEndDate')"
                   v-model="inputForm.apd_to">
                 </el-input>
                 <el-input
                   class="input-text float-left"
-                  placeholder="专利公开查询开始日期(包含)"
+                  :placeholder="$t('input.publicStartDate')"
                   v-model="inputForm.pbd_from">
                 </el-input>
                 <el-input
                   class="input-text float-left"
-                  placeholder="专利公开查询结束日期(包含)"
+                  :placeholder="$t('input.publicEndDate')"
                   v-model="inputForm.pbd_to">
                 </el-input>
                 <el-input
                   class="input-text float-left"
-                  placeholder="专利公开号"
+                  :placeholder="$t('input.publicNo')"
                   v-model="inputForm.pn">
                 </el-input>
                 <el-input
                   class="input-text float-left"
-                  placeholder="专利申请号"
+                  :placeholder="$t('input.applyNo')"
                   v-model="inputForm.apn">
                 </el-input>
                 <el-input
                   class="input-text float-left"
-                  placeholder="专利IPC编码"
+                  :placeholder="$t('input.IPCCode')"
                   v-model="inputForm.ipc">
                 </el-input>
               </div>
@@ -70,11 +70,11 @@
                 <thead>
                 <tr>
                   <th>ID</th>
-                  <th>专利价值</th>
-                  <th>专利法律状态</th>
-                  <th>专利说明书</th>
-                  <th>专利要求</th>
-                  <th>专利引用详情</th>
+                  <th>{{$t('table.patentVal')}}</th>
+                  <th>{{$t('table.patentLegalInfo')}}</th>
+                  <th>{{$t('table.patentDesc')}}</th>
+                  <th>{{$t('table.patentClaim')}}</th>
+                  <th>{{$t('table.patentCitation')}}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -82,10 +82,10 @@
                     :key="item.patent_id">
                   <td>{{item.patent_id|idEncode}}</td>
                   <td>{{item.patent_value|commafyValue}}</td>
-                  <td><a class="view" @click="showLegalInfo(item.patent_id)">点击查看</a></td>
-                  <td><a class="view" @click="showPatentDesc(item.patent_id)">点击查看</a></td>
-                  <td><a class="view" @click="showPatentClaim(item.patent_id)">点击查看</a></td>
-                  <td><a class="view" @click="showPatentCitation(item.patent_id)">点击查看</a></td>
+                  <td><a class="view" @click="showLegalInfo(item.patent_id)">{{$t('viewText')}}</a></td>
+                  <td><a class="view" @click="showPatentDesc(item.patent_id)">{{$t('viewText')}}</a></td>
+                  <td><a class="view" @click="showPatentClaim(item.patent_id)">{{$t('viewText')}}</a></td>
+                  <td><a class="view" @click="showPatentCitation(item.patent_id)">{{$t('viewText')}}</a></td>
                 </tr>
                 </tbody>
               </table>
@@ -121,7 +121,7 @@ export default {
     return {
       inputForm: {
         ans: '',
-        ttl: '电子',
+        ttl: this.$t('patentTitleInput'),
         apd_from: '',
         apd_to: '',
         pbd_from: '',
@@ -173,11 +173,11 @@ export default {
       if(!array || array.length === 0) {
         return ''
       }
-      let cn = array.find(({lang}) => lang === 'CN')
-      if(cn) {
-        return cn.text
+      let item = array.find(({lang}) => lang === this.$store.state.user.langForBackend)
+      if(item) {
+        return item.text
       } else {
-        return array[0].text
+        return ''
       }
     },
     async showLegalInfo(id) {
@@ -186,7 +186,7 @@ export default {
       })
       this.json = res
       this.dialogVisible = true
-      this.dialogTitle = 'ID: ' + idEncode(id) + ' 法律状态'
+      this.dialogTitle = 'ID: ' + idEncode(id) + ' ' + this.$t('table.patentLegalInfo')
       if(res.legal_info && res.legal_info.legal_status && res.legal_info.legal_status.length > 0) {
         this.dialogText = this.getTextFromArray(res.legal_info.legal_status[0].legal_desc)
       } else {
@@ -199,7 +199,7 @@ export default {
       })
       this.json = res
       this.dialogVisible = true
-      this.dialogTitle = 'ID: ' + idEncode(id) + ' 专利说明书'
+      this.dialogTitle = 'ID: ' + idEncode(id) + ' ' + this.$t('table.patentDesc')
       this.dialogText = res.errorCode ? '' : this.getTextFromArray(res.description)
     },
     async showPatentClaim(id) {
@@ -208,7 +208,7 @@ export default {
       })
       this.json = res
       this.dialogVisible = true
-      this.dialogTitle = 'ID: ' + idEncode(id) + ' 专利要求'
+      this.dialogTitle = 'ID: ' + idEncode(id) + ' ' + this.$t('table.patentClaim')
       this.dialogText = res.errorCode ? '' : this.getTextFromArray(res.claim)
     },
     async showPatentCitation(id) {
@@ -218,7 +218,7 @@ export default {
       })
       this.json = res
       this.dialogVisible = true
-      this.dialogTitle = 'ID: ' + idEncode(id) + ' 专利引用详情'
+      this.dialogTitle = 'ID: ' + idEncode(id) + ' ' + this.$t('table.patentCitation')
       this.dialogText = res.errorCode ? '' : res.citation.map(c => c.patent_number).join('<br>')
     },
   },

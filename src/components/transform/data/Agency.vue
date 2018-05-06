@@ -41,8 +41,8 @@
                     :key="item.agency_id">
                   <td>{{item.agency_id|idEncode}}</td>
                   <td>{{item.agency_name}}</td>
-                  <td><a class="view" @click="showAgencyPatent(item.agency_id)">点击查看</a></td>
-                  <td><a class="view" @click="showAgencyAgent(item)">点击查看</a></td>
+                  <td><a class="view" @click="showAgencyPatent(item.agency_id)">{{$t('viewText')}}</a></td>
+                  <td><a class="view" @click="showAgencyAgent(item)">{{$t('viewText')}}</a></td>
                 </tr>
                 </tbody>
               </table>
