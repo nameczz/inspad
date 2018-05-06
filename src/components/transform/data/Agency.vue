@@ -15,11 +15,11 @@
           <section>
             <header><icon src="~svg/view.svg"/> {{$t('casePresentation')}}</header>
             <div>
-              <p>输入任意检索词查询代理机构ID</p>
+              <p>{{$t('notice')}}</p>
               <div class="clearfix">
                 <el-input
                   class="input-text float-left"
-                  placeholder="代理机构编号"
+                  :placeholder="$t('input.agencyNo')"
                   v-model="inputForm.agency_number">
                 </el-input>
               </div>
@@ -31,9 +31,9 @@
                 <thead>
                 <tr>
                   <th>ID</th>
-                  <th>代理机构名称</th>
-                  <th>代理机构专利</th>
-                  <th>代理人</th>
+                  <th>{{$t('table.agencyName')}}</th>
+                  <th>{{$t('table.agencyPatent')}}</th>
+                  <th>{{$t('table.agent')}}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -67,7 +67,6 @@ import {Dialog} from 'element-ui'
 import JsonSchema from '@/components/busi/JsonSchema'
 import {commafy, idEncode} from 'md/filters'
 import apiData from 'api/data'
-import inputAgencyNumber from '@/const/input/agency'
 import i18n from 'lang/data/agency'
 
 export default {
@@ -78,7 +77,7 @@ export default {
   data() {
     return {
       inputForm: {
-        agency_number: inputAgencyNumber,
+        agency_number: this.$t('agencyNumberInput'),
       },
       json: '',
       resultList: null,
@@ -109,24 +108,13 @@ export default {
         this.loading = false
       }
     },
-    getTextFromArray(array) {
-      if(!array || array.length === 0) {
-        return ''
-      }
-      let cn = array.find(({lang}) => lang === 'CN')
-      if(cn) {
-        return cn.text
-      } else {
-        return array[0].text
-      }
-    },
     async showAgencyPatent(id) {
       let res = await apiData.getAgencyPatent({
         agency_id: id,
       })
       this.json = res
       this.dialogVisible = true
-      this.dialogTitle = 'ID: ' + idEncode(id) + ' 代理机构专利ID'
+      this.dialogTitle = 'ID: ' + idEncode(id) + ' ' + this.$t('table.agencyPatent')
       this.dialogText = res.errorCode ? '' : res.patent_id.join('<br>')
     },
     async showAgencyAgent({agents, agency_id: id}) {
@@ -135,7 +123,7 @@ export default {
       })
       this.json = res
       this.dialogVisible = true
-      this.dialogTitle = 'ID: ' + idEncode(id) + ' 代理人'
+      this.dialogTitle = 'ID: ' + idEncode(id) + ' ' + this.$t('table.agent')
       this.dialogText = res.errorCode ? '' : res.map(s => s.agent_name).join(', ')
     },
   },
