@@ -14,21 +14,21 @@
           <section>
             <header><icon src="~svg/view.svg"/> {{$t('casePresentation')}}</header>
             <div>
-              <p>输入任意检索词查询企业ID</p>
+              <p>{{$t('notice')}}</p>
               <div class="clearfix">
                 <el-input
                   class="input-text float-left"
-                  placeholder="公司名称"
+                  :placeholder="$t('input.companyName')"
                   v-model="inputForm.company_name">
                 </el-input>
                 <el-input
                   class="input-text float-left"
-                  placeholder="组织机构编码"
+                  :placeholder="$t('input.orgNo')"
                   v-model="inputForm.org_number">
                 </el-input>
                 <el-input
                   class="input-text float-left"
-                  placeholder="注册编码"
+                  :placeholder="$t('input.regNo')"
                   v-model="inputForm.reg_number">
                 </el-input>
               </div>
@@ -40,12 +40,12 @@
                 <thead>
                 <tr>
                   <th>ID</th>
-                  <th>企业名称</th>
-                  <th>企业主要人员</th>
-                  <th>企业股东详情</th>
-                  <th>企业对外投资</th>
-                  <th>企业变更</th>
-                  <th>企业分支机构</th>
+                  <th>{{$t('table.companyName')}}</th>
+                  <th>{{$t('table.staff')}}</th>
+                  <th>{{$t('table.shareholder')}}</th>
+                  <th>{{$t('table.investment')}}</th>
+                  <th>{{$t('table.change')}}</th>
+                  <th>{{$t('table.branch')}}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -133,24 +133,13 @@ export default {
         this.loading = false
       }
     },
-    getTextFromArray(array) {
-      if(!array || array.length === 0) {
-        return ''
-      }
-      let cn = array.find(({lang}) => lang === 'CN')
-      if(cn) {
-        return cn.text
-      } else {
-        return array[0].text
-      }
-    },
     async showCompanyInvestment(id) {
       let res = await apiData.getCompanyInvestment({
         company_id: id,
       })
       this.json = res
       this.dialogVisible = true
-      this.dialogTitle = 'ID: ' + idEncode(id) + ' 企业对外投资'
+      this.dialogTitle = 'ID: ' + idEncode(id) + ' ' + this.$t('table.investment')
       this.dialogText = res.errorCode ? '' : res[0].investment.map(s => s.outcompany_name).join(', ')
     },
     async showCompanyShareholder(id) {
@@ -159,7 +148,7 @@ export default {
       })
       this.json = res
       this.dialogVisible = true
-      this.dialogTitle = 'ID: ' + idEncode(id) + ' 股东详情'
+      this.dialogTitle = 'ID: ' + idEncode(id) + ' ' + this.$t('table.shareholder')
       let shareholders = []
       if(!res.errorCode) {
         res.forEach((item) => {
@@ -174,7 +163,7 @@ export default {
       })
       this.json = res
       this.dialogVisible = true
-      this.dialogTitle = 'ID: ' + idEncode(id) + ' 主要人员'
+      this.dialogTitle = 'ID: ' + idEncode(id) + ' ' + this.$t('table.staff')
       this.dialogText = res.errorCode ? '' : res[0].staff.map(s => s.type + ': ' + s.name).join(', ')
     },
     async showCompanyChange(id) {
@@ -183,10 +172,14 @@ export default {
       })
       this.json = res
       this.dialogVisible = true
-      this.dialogTitle = 'ID: ' + idEncode(id) + ' 企业变更'
+      this.dialogTitle = 'ID: ' + idEncode(id) + ' ' + this.$t('table.change')
       this.dialogText = res.errorCode ? '' : res[0].change.map(s => {
-        return s.change_item + ' 于 ' + date(s.change_time, 'yyyy年m月d号') + ' 从 ' + s.change_before + ' 变更为 ' +
-          s.change_after
+        return this.$t('changeText', {
+          name: s.change_item,
+          date: date(s.change_time, 'yyyy-m-d'),
+          from: s.change_before,
+          to: s.change_after,
+        })
       }).join('<br>')
     },
     async showCompanyBranch(id) {
@@ -195,7 +188,7 @@ export default {
       })
       this.json = res
       this.dialogVisible = true
-      this.dialogTitle = 'ID: ' + idEncode(id) + ' 企业分支机构'
+      this.dialogTitle = 'ID: ' + idEncode(id) + ' ' + this.$t('table.branch')
       let branches = []
       let showBranch = (cp, level) => {
         branches.push(
