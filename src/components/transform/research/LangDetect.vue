@@ -62,10 +62,7 @@ export default {
       this.loading = true
       try {
         let res = await apiResearch.langDetect({
-          data: {
-            text: this.inputText,
-          },
-          session: 'string',
+          text: this.inputText,
         })
         this.json = res
         if(res['error_code'] === 0) {

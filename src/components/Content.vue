@@ -138,14 +138,8 @@ export default {
           Cookies.set(cookieRefreshToken, res.refresh_token)
           Cookies.set(cookieToken, res.token)
           Cookies.set(cookieUsername, this.username.trim())
-          await this.$store.dispatch('fetchAccessToken')
+          this.$store.commit('refreshLoggedUser')
           this.dialogVisible = false
-        } catch (e) {
-          if (e.message === 'no client') {
-            this.showError(this.$t('error.noClient'))
-          } else {
-            throw e
-          }
         } finally {
           this.logging = false
         }

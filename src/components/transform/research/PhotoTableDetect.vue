@@ -94,10 +94,7 @@ export default {
       try{
         let inputs = e.target.result.replace(/^data:image\/png;base64,/, '')
         let res = await apiResearch.imageExtract({
-          data: {
-            inputs: `__file__:${inputs}`,
-          },
-          session: 'string',
+          inputs: `__file__:${inputs}`,
         })
         this.json = res
         this.uploading = false

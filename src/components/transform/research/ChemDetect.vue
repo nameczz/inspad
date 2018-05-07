@@ -61,10 +61,7 @@ export default {
       try {
         let inputText = this.inputText
         let res = await apiResearch.nerChem({
-          data: {
-            text: inputText,
-          },
-          session: 'string',
+          text: inputText,
         })
         this.json = res
         if(res['error_code'] === 0) {

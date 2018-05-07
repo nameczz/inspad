@@ -60,9 +60,7 @@ export default {
       this.loading = true
       try {
         let inputText = this.inputText
-        let res = await apiResearch.nerNewsCn({
-          data: inputText,
-        })
+        let res = await apiResearch.nerNewsCn(inputText)
         this.json = res
         if(res['error_code'] === 0) {
           let lastEnd = 0

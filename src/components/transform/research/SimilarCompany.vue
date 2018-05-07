@@ -59,9 +59,7 @@ export default {
     async translate() {
       this.loading = true
       try {
-        let res = await apiResearch.getSimilarCompanies({
-          data: JSON.parse(this.inputText),
-        })
+        let res = await apiResearch.getSimilarCompanies(JSON.parse(this.inputText))
         this.json = res
         if(res['error_code'] === 0) {
           this.outputText = JSON.stringify(res.data)

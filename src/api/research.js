@@ -3,8 +3,6 @@ export default mapApi({
   langDetect: {
     method: 'post',
     url: '/compute/lang_detect/',
-    tpl: 'api',
-    body: true,
     transformRequest(params, opt) {
       return params
     },
@@ -12,8 +10,6 @@ export default mapApi({
   nerChem: {
     method: 'post',
     url: '/compute/ner_chem/',
-    tpl: 'api',
-    body: true,
     transformRequest(params, opt) {
       return params
     },
@@ -21,8 +17,6 @@ export default mapApi({
   nerNewsCn: {
     method: 'post',
     url: '/compute/ner_news_cn/',
-    tpl: 'api',
-    body: true,
     transformRequest(params, opt) {
       return params
     },
@@ -30,8 +24,6 @@ export default mapApi({
   kwdHelperEn: {
     method: 'post',
     url: '/compute/kwd_helper_en/',
-    tpl: 'api',
-    body: true,
     transformRequest(params, opt) {
       return params
     },
@@ -39,8 +31,6 @@ export default mapApi({
   kwdHelperCn: {
     method: 'post',
     url: '/compute/kwd_helper_cn/',
-    tpl: 'api',
-    body: true,
     transformRequest(params, opt) {
       return params
     },
@@ -48,8 +38,6 @@ export default mapApi({
   cnameParserCn: {
     method: 'post',
     url: '/compute/cname_parser_cn/',
-    tpl: 'api',
-    body: true,
     transformRequest(params, opt) {
       return params
     },
@@ -57,8 +45,6 @@ export default mapApi({
   transTitleCnEn: {
     method: 'post',
     url: '/compute/trans_title_cnen/',
-    tpl: 'api',
-    body: true,
     transformRequest(params, opt) {
       return params
     },
@@ -66,8 +52,6 @@ export default mapApi({
   unitDetectCn: {
     method: 'post',
     url: '/compute/unit_detect_cn/',
-    tpl: 'api',
-    body: true,
     transformRequest(params, opt) {
       return params
     },
@@ -75,8 +59,6 @@ export default mapApi({
   transAbstrCnen: {
     method: 'post',
     url: '/compute/trans_abstr_cnen/',
-    tpl: 'api',
-    body: true,
     transformRequest(params, opt) {
       return params
     },
@@ -84,8 +66,6 @@ export default mapApi({
   imageExtract: {
     method: 'post',
     url: '/compute/image_extract/',
-    tpl: 'api',
-    body: true,
     transformRequest(params, opt) {
       return params
     },
@@ -93,8 +73,6 @@ export default mapApi({
   getAnsInfo: {
     method: 'post',
     url: '/compute/ans_entity_link/',
-    tpl: 'api',
-    body: true,
     transformRequest(params, opt) {
       return params
     },
@@ -102,8 +80,6 @@ export default mapApi({
   getSimilarCompanies: {
     method: 'post',
     url: '/compute/rcmdt_coms/',
-    tpl: 'api',
-    body: true,
     transformRequest(params, opt) {
       return params
     },
@@ -111,8 +87,6 @@ export default mapApi({
   getCnSimilarWords: {
     method: 'post',
     url: '/compute/semantic_topc_cn/',
-    tpl: 'api',
-    body: true,
     transformRequest(params, opt) {
       return params
     },
@@ -120,8 +94,6 @@ export default mapApi({
   getEnSimilarWords: {
     method: 'post',
     url: '/compute/semantic_topc_en/',
-    tpl: 'api',
-    body: true,
     transformRequest(params, opt) {
       return params
     },
@@ -129,8 +101,6 @@ export default mapApi({
   getCnTerm: {
     method: 'post',
     url: '/compute/semantic_term_cn/',
-    tpl: 'api',
-    body: true,
     transformRequest(params, opt) {
       return params
     },
@@ -138,8 +108,6 @@ export default mapApi({
   getEnTerm: {
     method: 'post',
     url: '/compute/semantic_term_en/',
-    tpl: 'api',
-    body: true,
     transformRequest(params, opt) {
       return params
     },
@@ -147,8 +115,6 @@ export default mapApi({
   getLandscapeBio: {
     method: 'post',
     url: '/compute/landscape_bio/',
-    tpl: 'api',
-    body: true,
     transformRequest(params, opt) {
       return params
     },

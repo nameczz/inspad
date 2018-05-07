@@ -1,5 +1,5 @@
 import Cookies from 'js-cookie'
-import {cookieUsername, cookieClientId, cookieAccessToken, cookieRefreshToken, cookieToken} from '@/const/cookies'
+import {cookieUsername, cookieRefreshToken, cookieToken} from '@/const/cookies'
 import apiAuth from 'api/auth'
 import langBackendMap from '@/const/lang-backend'
 
@@ -20,9 +20,7 @@ const mutations = {
     state.loginStatus = 'unlogged'
     Cookies.remove(cookieRefreshToken)
     Cookies.remove(cookieToken)
-    Cookies.remove(cookieClientId)
     Cookies.remove(cookieUsername)
-    Cookies.remove(cookieAccessToken)
   },
 }
 
@@ -30,17 +28,17 @@ const getters = {
 }
 
 const actions = {
-  async fetchAccessToken({commit, state}) {
-    let [client] = await apiAuth.getClient()
-    if(!client) {
-      throw new Error('no client')
-    }
-    Cookies.set(cookieClientId, client.id)
-    commit('refreshLoggedUser')
-
-    let tokenRes = await apiAuth.getToken({clientId: client.id, clientSecret: client.plain_secret})
-    Cookies.set(cookieAccessToken, 'Bearer ' + tokenRes['access_token'])
-  },
+  // async fetchAccessToken({commit, state}) {
+  //   let [client] = await apiAuth.getClient()
+  //   if(!client) {
+  //     throw new Error('no client')
+  //   }
+  //   Cookies.set(cookieClientId, client.id)
+  //   commit('refreshLoggedUser')
+  //
+  //   let tokenRes = await apiAuth.getToken({clientId: client.id, clientSecret: client.plain_secret})
+  //   Cookies.set(cookieAccessToken, 'Bearer ' + tokenRes['access_token'])
+  // },
   async checkSession({commit}) {
     let res = await apiAuth.checksession()
     if(res.token) {

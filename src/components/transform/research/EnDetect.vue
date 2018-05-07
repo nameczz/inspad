@@ -59,7 +59,7 @@ export default {
       this.loading = true
       try {
         let res = await apiResearch.kwdHelperEn({
-          data: {words: this.inputText.replace(/ /g, '_')},
+          words: this.inputText.replace(/ /g, '_'),
         })
         this.json = res
         if(res['error_code'] === 0) {

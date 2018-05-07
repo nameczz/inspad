@@ -2,7 +2,7 @@ import axios from 'axios'
 import dateFormat from 'dateformat'
 // import router from './router'
 import assign from 'core-js/library/modules/_object-assign'
-import {cookieAccessToken} from '@/const/cookies'
+import {cookieToken} from '@/const/cookies'
 import Cookies from 'js-cookie'
 import store from './store'
 import {Message} from 'element-ui'
@@ -41,83 +41,22 @@ const apiOptionTpl = {
     return opt
   },
   platform(opt) {
-    opt.baseURL = process.env.API_DOMAIN_PLATFORM
-    opt.headers['Authorization'] = Cookies.get(cookieAccessToken)
-    opt.headers['content-type'] = 'application/json'
-    opt.headers['Accept'] = 'application/json'
-    return toTempOption(opt)
-  },
-  api(opt) {
-    opt.baseURL = process.env.API_DOMAIN_API
-    opt.headers['X-PatSnap-Version'] = 'v1'
-    opt.headers['content-type'] = 'application/json'
-    opt.headers['Authorization'] = Cookies.get(cookieAccessToken)
-    if(!opt.headers['Authorization']) {
-      if(store.state.user.loginStatus === 'logged') {
-        throw new Error('token expired')
-      } else {
-        throw new Error('unlogged')
-      }
-    }
-
-    return toTempOption(opt, true)
-  },
-  apiData(opt) {
-    opt.baseURL = process.env.API_DOMAIN_API
-    opt.headers['X-PatSnap-Version'] = '1.0.0'
-    opt.headers['content-type'] = 'application/json'
-    opt.headers['Authorization'] = Cookies.get(cookieAccessToken)
-    if(!opt.headers['Authorization']) {
-      if(store.state.user.loginStatus === 'logged') {
-        throw new Error('token expired')
-      } else {
-        throw new Error('unlogged')
-      }
-    }
-    return toTempOption(opt)
+    // opt.baseURL = process.env.API_DOMAIN_PLATFORM
+    // opt.headers['Authorization'] = Cookies.get(cookieAccessToken)
+    // opt.headers['content-type'] = 'application/json'
+    // opt.headers['Accept'] = 'application/json'
+    // return toTempOption(opt)
   },
   dev(opt) {
-    opt.baseURL = process.env.API_DOMAIN_DEV_CENTER
-    return toTempOption(opt)
-  },
-  con(opt) {
-    opt.baseURL = process.env.API_DOMAIN_CON
-    return toTempOption(opt)
-  },
-}
-
-/**
- * @param {object} json
- * @return {string}
- */
-function toUrlData(json) {
-  let array = []
-  for(let key in json) {
-    if(json.hasOwnProperty(key)) {
-      array.push(key + '=' + encodeURIComponent(json[key]))
+    opt.baseURL = process.env.API_DOMAIN_DEV_CENTER + '/developer/api/openapi/common'
+    opt.headers['Authorization'] = 'Bearer ' + Cookies.get(cookieToken)
+    if(opt.data) {
+      let fd = new FormData()
+      fd.append('data', JSON.stringify(opt.data))
+      opt.data = fd
     }
-  }
-  return (array.length > 0 ? '?' : '') + array.join('&')
-}
-
-/**
- * @param {object} opt
- * @param {boolean?} body
- * @return {object}
- */
-function toTempOption(opt, body) {
-  let sp = new URLSearchParams()
-  sp.append('data', JSON.stringify({
-    method: opt.method.toUpperCase(),
-    url: opt.baseURL + opt.url + toUrlData(opt.params),
-    headers: opt.headers,
-    [body ? 'body' : 'params']: opt.data,
-  }))
-  return {
-    method: 'post',
-    url: '/api/openapi/common',
-    data: sp,
-  }
+    return opt
+  },
 }
 
 /**
@@ -206,7 +145,9 @@ function mapApi(apis) {
             // 'Authorization': Cookies.get(cookieAccessToken),
           },
         }
-
+        if(!opt.tpl) {
+          opt.tpl = 'dev'
+        }
         if(opt.transformRequest) {
           params = opt.transformRequest(params || {}, reqOpts)
           if(params === false) {

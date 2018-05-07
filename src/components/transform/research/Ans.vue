@@ -80,9 +80,7 @@ export default {
       this.loading = true
       try {
         let input = this.inputTexts.map(t => t.value)
-        let res = await apiResearch.getAnsInfo({
-          data: input,
-        })
+        let res = await apiResearch.getAnsInfo(input)
         this.json = res
         if(res['error_code'] === 0) {
           this.outputText = input.map(name => ('<b>' + name + '</b>: ' + (res.data[name] || '~'))).join('<br>')

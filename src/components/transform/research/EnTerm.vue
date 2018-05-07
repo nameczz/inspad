@@ -58,10 +58,8 @@ export default {
       this.loading = true
       try {
         let res = await apiResearch.getEnTerm({
-          data: {
-            topn: 10,
-            text: this.inputText,
-          },
+          topn: 10,
+          text: this.inputText,
         })
         this.json = res
         if(res['error_code'] === 0) {

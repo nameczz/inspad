@@ -1,6 +1,6 @@
 import {mapApi} from '@/axios-help'
 import Cookies from 'js-cookie'
-import {cookieToken, cookieRefreshToken} from '@/const/cookies'
+import {cookieRefreshToken} from '@/const/cookies'
 export default mapApi({
   login: {
     method: 'post',
@@ -32,24 +32,6 @@ export default mapApi({
       params.client_id = process.env.CLIENT_ID
       params.response_type = 'TOKEN'
       return params
-    },
-  },
-  getClient: {
-    url: '/developer/api/clients',
-    tpl: 'dev',
-    transformRequest(params, opt) {
-      opt.headers.Authorization = 'Bearer ' + Cookies.get(cookieToken)
-      return params
-    },
-  },
-  getToken: {
-    method: 'post',
-    url: '/connector/oauth/token',
-    tpl: 'con',
-    transformRequest(params, opt) {
-      opt.headers['Authorization'] = 'Basic ' +
-        btoa(params.clientId + ':' + params.clientSecret)
-      return {'grant_type': 'client_credentials'}
     },
   },
   refreshToken: {

@@ -1,6 +1,3 @@
 export const cookieToken = 'token'
 export const cookieRefreshToken = 'refreshToken'
-export const cookieClientId = 'clientId'
-export const cookieClientSecret = 'clientSecret'
-export const cookieAccessToken = 'accessToken'
 export const cookieUsername = 'username'

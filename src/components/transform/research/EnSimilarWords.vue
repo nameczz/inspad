@@ -58,11 +58,9 @@ export default {
       this.loading = true
       try {
         let res = await apiResearch.getEnSimilarWords({
-          data: {
-            nterms: this.inputText.length,
-            ntopics: 5,
-            text: this.inputText,
-          },
+          nterms: this.inputText.length,
+          ntopics: 5,
+          text: this.inputText,
         })
         this.json = res
         if(res['error_code'] === 0) {
