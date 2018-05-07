@@ -83,7 +83,6 @@ import JsonSchema from '@/components/busi/JsonSchema'
 import arrayToMap from 'md/array-to-map'
 import {commafy, idEncode, date} from 'md/filters'
 import apiData from 'api/data'
-import companyName from '@/const/input/company'
 import i18n from 'lang/data/company'
 export default {
   components: {
@@ -93,7 +92,7 @@ export default {
   data() {
     return {
       inputForm: {
-        company_name: companyName,
+        company_name: this.$t('companyNameInput'),
         org_number: '',
         reg_number: '',
       },

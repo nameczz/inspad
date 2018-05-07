@@ -173,7 +173,8 @@ export default {
       if(!array || array.length === 0) {
         return ''
       }
-      let item = array.find(({lang}) => lang === this.$store.state.user.langForBackend)
+      let curLang = this.$store.state.user.langForBackend.toUpperCase()
+      let item = array.find(({lang}) => lang === curLang)
       if(item) {
         return item.text
       } else {

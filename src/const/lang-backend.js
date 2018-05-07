@@ -1,4 +1,4 @@
 export default {
-  'en': 'EN',
-  'zh-CN': 'CN',
+  'en': 'En',
+  'zh-CN': 'Cn',
 }

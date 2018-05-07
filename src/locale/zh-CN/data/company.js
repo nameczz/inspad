@@ -14,5 +14,6 @@ export default {
     change: '企业变更',
     branch: '企业分支机构',
   },
+  companyNameInput: '阿里巴巴(中国)有限公司',
   changeText: '<b>{name}</b> 于 {date}<br>变更前： {from}<br>变更后： {to}',
 }

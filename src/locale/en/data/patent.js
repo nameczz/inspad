@@ -1,5 +1,5 @@
 export default {
-  desc: 'Obtain patent IDs by search terms such as the applicant’s name, patent title, or patent public number, and use the ID to find information such as patent value, legal information, description, claim, and citation information.',
+  desc: 'Get related patent IDs by search terms such as the applicant’s name, patent title, or patent public number, and use the ID to find information such as patent value, legal information, description, claim, and citation information.',
   notice: 'Enter any keywords to query the patent ID, the date format is: yyyyMMdd',
   input: {
     applicant: 'Applicant',

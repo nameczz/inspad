@@ -14,51 +14,51 @@
           <section>
             <header><icon src="~svg/view.svg"/> {{$t('casePresentation')}}</header>
             <div>
-              <p>输入任意检索词查询商标ID</p>
+              <p>{{$t('notice')}}</p>
               <div class="clearfix">
                 <el-input
                   class="input-text float-left"
-                  placeholder="企业组织机构编号"
+                  :placeholder="$t('input.companyOrgNo')"
                   v-model="inputForm.org_num">
                 </el-input>
                 <el-input
                   class="input-text float-left"
-                  placeholder="企业注册编号"
+                  :placeholder="$t('input.companyRegNo')"
                   v-model="inputForm.reg_num">
                 </el-input>
                 <el-input
                   class="input-text float-left"
-                  placeholder="申请人名称"
+                  :placeholder="$t('input.applicantName')"
                   v-model="inputForm.ans">
                 </el-input>
                 <el-input
                   class="input-text float-left"
-                  placeholder="申请人地址"
+                  :placeholder="$t('input.applicantAddr')"
                   v-model="inputForm.ans_adress">
                 </el-input>
                 <el-input
                   class="input-text float-left"
-                  placeholder="商标名称"
+                  :placeholder="$t('input.trademarkName')"
                   v-model="inputForm.ttl">
                 </el-input>
                 <el-input
                   class="input-text float-left"
-                  placeholder="商标注册编号"
+                  :placeholder="$t('input.trademarkRegNo')"
                   v-model="inputForm.tm_rgno">
                 </el-input>
                 <el-input
                   class="input-text float-left"
-                  placeholder="商标申请国家"
+                  :placeholder="$t('input.trademarkApplicationCountry')"
                   v-model="inputForm.country">
                 </el-input>
                 <el-input
                   class="input-text float-left"
-                  placeholder="商标尼斯分类号"
+                  :placeholder="$t('input.trademarkNice')"
                   v-model="inputForm.ncl">
                 </el-input>
                 <el-input
                   class="input-text float-left"
-                  placeholder="商标申请编号"
+                  :placeholder="$t('input.trademarkApplicationNo')"
                   v-model="inputForm.tm_apno">
                 </el-input>
               </div>
@@ -70,8 +70,8 @@
                 <thead>
                 <tr>
                   <th>ID</th>
-                  <th>商标名称</th>
-                  <th>代理人</th>
+                  <th>{{$t('table.trademarkName')}}</th>
+                  <th>{{$t('table.agent')}}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -104,7 +104,6 @@ import {Dialog} from 'element-ui'
 import JsonSchema from '@/components/busi/JsonSchema'
 import {commafy, idEncode} from 'md/filters'
 import apiData from 'api/data'
-import trademarkName from '@/const/input/trademark'
 import i18n from 'lang/data/trademark'
 export default {
   components: {
@@ -118,7 +117,7 @@ export default {
         reg_num: '',
         ans: '',
         ans_adress: '',
-        ttl: trademarkName,
+        ttl: this.$t('trademarkNameInput'),
         tm_rgno: '',
         country: '',
         ncl: '',

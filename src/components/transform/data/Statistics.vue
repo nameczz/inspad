@@ -20,10 +20,10 @@
                   <el-autocomplete
                     v-model="location"
                     :fetch-suggestions="search"
-                    placeholder="请输入地址"
+                    :placeholder="$t('enterAddrPlaceholder')"
                     :trigger-on-focus="false"
                     @select="handleSelect"></el-autocomplete>
-                  <el-select v-model="statType" placeholder="请选择数据类型">
+                  <el-select v-model="statType" :placeholder="$t('selectDataTypePlaceholder')">
                     <el-option
                       v-for="item in statTypes"
                       :key="item.value"
@@ -62,10 +62,9 @@ export default {
     JsonSchema,
   },
   data() {
+    let t = this.$t
     return {
-      inputForm: {
-        agency_number: '11695',
-      },
+      langNameKey: 'name' + this.$store.state.user.langForBackend,
       location: '',
       selected: null,
       json: '',
@@ -76,16 +75,16 @@ export default {
       statType: '',
       loading: false,
       statTypes: [
-        {value: 'getValuablePatent', label: '价值最高专利'},
-        {value: 'getPatentsValueDimensions', label: '价值维度'},
-        {value: 'getPatentsTypeDimensionsWithAgency', label: '类型维度(代理机构)'},
-        {value: 'getPatentsTypeDimensionsWithoutAgency', label: '类型维度(非代理机构)'},
-        {value: 'getPatentsStatusDimensions', label: '状态维度'},
-        {value: 'getPatentsLegalDimensionsWithAgency', label: '法律维度(代理机构)'},
-        {value: 'getPatentsLegalDimensionsWithoutAgency', label: '法律维度(非代理机构)'},
-        {value: 'getPatentsFamilyDimensions', label: '同族维度'},
-        {value: 'getIndustryPatentsValue', label: '产业专利价值'},
-        {value: 'getIndustryPatentsCount', label: '产业专利数量'},
+        {value: 'getValuablePatent', label: t('types.highestValuePatent')},
+        {value: 'getPatentsValueDimensions', label: t('types.valueDimen')},
+        {value: 'getPatentsTypeDimensionsWithAgency', label: t('types.typeDimenWithAgency')},
+        {value: 'getPatentsTypeDimensionsWithoutAgency', label: t('types.typeDimenWithoutAgency')},
+        {value: 'getPatentsStatusDimensions', label: t('types.statusDimen')},
+        {value: 'getPatentsLegalDimensionsWithAgency', label: t('types.legalDimenWithAgency')},
+        {value: 'getPatentsLegalDimensionsWithoutAgency', label: t('types.legalDimenWithoutAgency')},
+        {value: 'getPatentsFamilyDimensions', label: t('types.familyDimen')},
+        {value: 'getIndustryPatentsValue', label: t('types.industryPatentValue')},
+        {value: 'getIndustryPatentsCount', label: t('types.industryPatentCount')},
       ],
       outputText: '',
     }
@@ -99,11 +98,12 @@ export default {
         }
         let {data} = await this.locPromise
         let result = []
-        data.forEach(({nameCn, id}) => {
-          if(nameCn.indexOf(queryString) > -1) {
+        let name = this.langNameKey
+        data.forEach((item) => {
+          if(item[name].indexOf(queryString) > -1) {
             result.push({
-              value: nameCn,
-              id,
+              value: item[name],
+              id: item.id,
             })
           }
         })
@@ -131,7 +131,7 @@ export default {
           this.locPromise = apiData.getLocationMapping()
         }
         let {data} = await this.locPromise
-        let loc = data.find(item => item.nameCn === this.location)
+        let loc = data.find(item => item[this.langNameKey] === this.location)
         if(loc) {
           locationId = loc.id
         }
@@ -151,14 +151,14 @@ export default {
     },
     async getPatentsValueDimensions(locationId) {
       this.json = await apiData.getPatentsValueDimensions({locationId})
-      this.outputText = `估价：${this.json.data.assessment} 元<br>授权数：${this.json.data.authCount}`
+      this.outputText = this.$t('valueDimenOutput', this.json.data)
     },
     async getPatentsTypeDimensionsWithAgency(locationId) {
       this.json = await apiData.getPatentsTypeDimensions({locationId, isWithAgency: 'yes'})
       this.outputText = [
-        {value: 'invention', name: '发明专利'},
-        {value: 'utility', name: '实用新型'},
-        {value: 'appearance', name: '外观设计'},
+        {value: 'invention', name: this.$t('patentTypes.invention')},
+        {value: 'utility', name: this.$t('patentTypes.utility')},
+        {value: 'appearance', name: this.$t('patentTypes.appearance')},
       ].map(({value, name}) => {
         return name + '： ' + this.json.data[value]
       }).join('<br>')
@@ -166,9 +166,9 @@ export default {
     async getPatentsTypeDimensionsWithoutAgency(locationId) {
       this.json = await apiData.getPatentsTypeDimensions({locationId, isWithAgency: 'no'})
       this.outputText = [
-        {value: 'invention', name: '发明专利'},
-        {value: 'utility', name: '实用新型'},
-        {value: 'appearance', name: '外观设计'},
+        {value: 'invention', name: this.$t('patentTypes.invention')},
+        {value: 'utility', name: this.$t('patentTypes.utility')},
+        {value: 'appearance', name: this.$t('patentTypes.appearance')},
       ].map(({value, name}) => {
         return name + '： ' + this.json.data[value]
       }).join('<br>')
@@ -176,20 +176,20 @@ export default {
     async getPatentsStatusDimensions(locationId) {
       this.json = await apiData.getPatentsStatusDimensions({locationId})
       this.outputText = [
-        {value: 'appCount', name: '专利申请'},
-        {value: 'graCount', name: '专利授权'},
-        {value: 'invAppCount', name: '发明申请'},
-        {value: 'invGraCount', name: '发明授权'},
+        {value: 'appCount', name: this.$t('statusDimen.applicationCount')},
+        {value: 'graCount', name: this.$t('statusDimen.authorizationCount')},
+        {value: 'invAppCount', name: this.$t('statusDimen.invApplicationCount')},
+        {value: 'invGraCount', name: this.$t('statusDimen.invAuthorizationCount')},
       ].map(({value, name}) => {
-        return name + '： ' + this.json.data[value]
+        return name + ': ' + this.json.data[value]
       }).join('<br>')
     },
     async getPatentsLegalDimensionsWithAgency(locationId) {
       this.json = await apiData.getPatentsLegalDimensions({locationId, isWithAgency: 'yes'})
       this.outputText = [
-        {value: 'pending', name: '审中'},
-        {value: 'valid', name: '有效'},
-        {value: 'invalid', name: '无效'},
+        {value: 'pending', name: this.$t('legal.pending')},
+        {value: 'valid', name: this.$t('legal.valid')},
+        {value: 'invalid', name: this.$t('legal.invalid')},
       ].map(({value, name}) => {
         return name + '： ' + this.json.data[value]
       }).join('<br>')
@@ -197,22 +197,22 @@ export default {
     async getPatentsLegalDimensionsWithoutAgency(locationId) {
       this.json = await apiData.getPatentsLegalDimensions({locationId, isWithAgency: 'no'})
       this.outputText = [
-        {value: 'pending', name: '审中'},
-        {value: 'valid', name: '有效'},
-        {value: 'invalid', name: '无效'},
+        {value: 'pending', name: this.$t('legal.pending')},
+        {value: 'valid', name: this.$t('legal.valid')},
+        {value: 'invalid', name: this.$t('legal.invalid')},
       ].map(({value, name}) => {
         return name + '： ' + this.json.data[value]
       }).join('<br>')
     },
     async getPatentsFamilyDimensions(locationId) {
       this.json = await apiData.getPatentsFamilyDimensions({locationId})
-      this.outputText = '同族专利： ' + this.json.data.familyCount
+      this.outputText = this.$t('familyText') + ': ' + this.json.data.familyCount
     },
     async getIndustryPatentsValue(locationId) {
       this.json = await apiData.getIndustryPatentsValue({locationId, level: 2})
       if(this.json.data) {
         this.outputText = this.json.data.map(({industry, assessment}) =>
-          `${industry.nameCn}：${assessment}元`).join('<br>')
+          `${industry[this.langNameKey]}：¥ ${assessment}`).join('<br>')
       } else {
         this.outputText = ''
       }
@@ -221,7 +221,7 @@ export default {
       this.json = await apiData.getIndustryPatentsCount({locationId, level: 2})
       if(this.json.data) {
         this.outputText = this.json.data.map(({industry, count}) =>
-          `${industry.nameCn}：${count}`).join('<br>')
+          `${industry[this.langNameKey]}：${count}`).join('<br>')
       } else {
         this.outputText = ''
       }

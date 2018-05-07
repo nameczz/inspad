@@ -1,3 +1,35 @@
 export default {
-  desc: '',
+  desc: 'Get related statistics by address, data type',
+  enterAddrPlaceholder: 'Please enter the address',
+  selectDataTypePlaceholder: 'Please select the data type',
+  types: {
+    highestValuePatent: 'Highest value patents',
+    valueDimen: 'Value dimensions',
+    typeDimenWithAgency: 'Type dimensions with agency',
+    typeDimenWithoutAgency: 'Type dimensions without agency',
+    statusDimen: 'Status dimensions',
+    legalDimenWithAgency: 'Legal dimensions with agency',
+    legalDimenWithoutAgency: 'Legal dimensions without agency',
+    familyDimen: 'Family dimensions',
+    industryPatentValue: 'Industry patent value',
+    industryPatentCount: 'Industry patent count',
+  },
+  valueDimenOutput: 'Valuation：¥ {assessment}<br>Authorization count：{authCount}',
+  patentTypes: {
+    invention: 'Invention',
+    utility: 'Utility',
+    appearance: 'Appearance',
+  },
+  statusDimen: {
+    applicationCount: 'Application count',
+    authorizationCount: 'Authorization count',
+    invApplicationCount: 'Invention application count',
+    invAuthorizationCount: 'Invention authorization count',
+  },
+  legal: {
+    pending: 'Pending',
+    valid: 'Valid',
+    invalid: 'Invalid',
+  },
+  familyText: 'Family',
 }
