@@ -1,5 +1,5 @@
 export default {
-  desc: 'Get related company IDs by company name, organization number, or registration number, and use the ID to find out the company name, staffs, shareholders, investment, change, and branch information.',
+  desc: 'This series of APIs provide power to get company IDs with search terms (e.g. company name, organization number and registration number). With the company ID, multidimensional information of a company can be retrieved, such as the company name, staffs, shareholders, investment, change, and branch information.',
   notice: 'Enter any keywords to search the company ID',
   input: {
     companyName: 'Company name',

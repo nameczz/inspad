@@ -1,5 +1,5 @@
 export default {
-  desc: 'Get related statistics by address, data type',
+  desc: 'This series of APIs provide power to get related statistics by address and data type.',
   enterAddrPlaceholder: 'Please enter the address',
   selectDataTypePlaceholder: 'Please select the data type',
   types: {

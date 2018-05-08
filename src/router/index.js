@@ -19,8 +19,8 @@ const ResearchUnitDetect = resolve => require(['@/components/transform/research/
 const ResearchPhotoTableDetect = resolve => require(['@/components/transform/research/PhotoTableDetect'], resolve)
 const ResearchAns = resolve => require(['@/components/transform/research/Ans'], resolve)
 const ResearchSimilarCompany = resolve => require(['@/components/transform/research/SimilarCompany'], resolve)
-const ResearchCnSimilarWords = resolve => require(['@/components/transform/research/CnSimilarWords'], resolve)
-const ResearchEnSimilarWords = resolve => require(['@/components/transform/research/EnSimilarWords'], resolve)
+const ResearchCnSemanticTopic = resolve => require(['@/components/transform/research/CnSemanticTopic'], resolve)
+const ResearchEnSemanticTopic = resolve => require(['@/components/transform/research/EnSemanticTopic'], resolve)
 const ResearchCnTerm = resolve => require(['@/components/transform/research/CnTerm'], resolve)
 const ResearchEnTerm = resolve => require(['@/components/transform/research/EnTerm'], resolve)
 const ResearchLandscapeBio = resolve => require(['@/components/transform/research/LandscapeBio'], resolve)
@@ -121,14 +121,14 @@ let router = new Router({
               component: ResearchSimilarCompany,
             },
             {
-              path: 'research/cnsimilarwords',
-              name: 'ResearchCnSimilarWords',
-              component: ResearchCnSimilarWords,
+              path: 'research/cnsemantictopic',
+              name: 'ResearchCnSemanticTopic',
+              component: ResearchCnSemanticTopic,
             },
             {
-              path: 'research/ensimilarwords',
-              name: 'ResearchEnSimilarWords',
-              component: ResearchEnSimilarWords,
+              path: 'research/ensemantictopic',
+              name: 'ResearchEnSemanticTopic',
+              component: ResearchEnSemanticTopic,
             },
             {
               path: 'research/cnterm',

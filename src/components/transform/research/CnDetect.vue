@@ -2,7 +2,7 @@
   <div>
     <div class="trans-header">
       <div class="container">
-        {{$t('menu.keywordsCn')}}
+        {{$t('menu.similarWordsCn')}}
       </div>
     </div>
     <div class="trans-body">

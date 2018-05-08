@@ -2,7 +2,7 @@
   <div>
     <div class="trans-header">
       <div class="container">
-        {{$t('menu.similarWordsCn')}}
+        {{$t('menu.semanticTopicEn')}}
       </div>
     </div>
     <div class="trans-body">
@@ -24,7 +24,7 @@
                 name="inputText">
               </el-input>
               <el-button type="success" size="small" class="translate float-left" :loading="loading" @click="translate">
-                {{$t('searchText')}}
+                {{$t('extractText')}}
               </el-button>
               <div class="out-text float-left" v-html="outputText" />
             </div>
@@ -40,7 +40,7 @@
 <script>
 import JsonSchema from '@/components/busi/JsonSchema'
 import apiResearch from 'api/research'
-import i18n from 'lang/research/cn-similar-words'
+import i18n from 'lang/research/en-semantic-topic'
 export default {
   components: {
     JsonSchema,
@@ -57,7 +57,7 @@ export default {
     async translate() {
       this.loading = true
       try {
-        let res = await apiResearch.getCnSimilarWords({
+        let res = await apiResearch.getEnSimilarWords({
           nterms: this.inputText.length,
           ntopics: 5,
           text: this.inputText,

@@ -1,5 +1,5 @@
 export default {
-  desc: 'Recommend similar companies. For accurate results, please provide ALL the IPCs of a company.',
+  desc: 'This API can search for similar companies for a given company with IPCs provided.',
   input: {
     "CATEGORY": "COMPANY",
     "IPC": [

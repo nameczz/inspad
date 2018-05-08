@@ -1,5 +1,5 @@
 export default {
-  desc: 'Get related trademark IDs by search keywords such as company organization number, applicant name, or trademark name, and use IDs to find out information such as trademark names and agents.',
+  desc: 'This series of APIs provide power to get trademark IDs with search terms (e.g. company organization number, applicant name and trademark name). With the company ID, multidimensional information of a company can be retrieved, such as trademark names and agents.',
   notice: 'Enter any keywords to search the trademark ID',
   input: {
     companyOrgNo: 'Company organization number',

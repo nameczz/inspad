@@ -1,5 +1,5 @@
 export default {
-  desc: 'Perform dimension reduction on Blast Search results and transform reduced dimension for visualisation on PatSnap landscape.',
+  desc: 'This API can perform dimension reduction on Blast Search results and transform them into reduction size for visualisation on PatSnap landscape.',
   input: [
     {
       "bitscore": 30.8,

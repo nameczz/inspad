@@ -39,11 +39,11 @@ export default {
               path: '/research/newsdetect',
             },
             {
-              name: t('menu.keywordsEn'),
+              name: t('menu.similarWordsEn'),
               path: '/research/endetect',
             },
             {
-              name: t('menu.keywordsCn'),
+              name: t('menu.similarWordsCn'),
               path: '/research/cndetect',
             },
             {
@@ -71,12 +71,12 @@ export default {
               path: '/research/similarcompany',
             },
             {
-              name: t('menu.similarWordsCn'),
-              path: '/research/cnsimilarwords',
+              name: t('menu.semanticTopicCn'),
+              path: '/research/cnsemantictopic',
             },
             {
-              name: t('menu.similarWordsEn'),
-              path: '/research/ensimilarwords',
+              name: t('menu.semanticTopicEn'),
+              path: '/research/ensemantictopic',
             },
             {
               name: t('menu.keywordsExtractCn'),
