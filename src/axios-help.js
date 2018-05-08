@@ -2,10 +2,11 @@ import axios from 'axios'
 import dateFormat from 'dateformat'
 // import router from './router'
 import assign from 'core-js/library/modules/_object-assign'
-import {cookieToken} from '@/const/cookies'
+import apiAuth from 'api/auth'
+import {cookieToken, cookieRefreshToken} from '@/const/cookies'
 import Cookies from 'js-cookie'
-import store from './store'
 import {Message} from 'element-ui'
+import store from '@/store'
 
 let ai = axios.create({
   // baseURL: process.env.API_ORIGIN + process.env.API_PATH,
@@ -40,16 +41,24 @@ const apiOptionTpl = {
     }
     return opt
   },
-  platform(opt) {
-    // opt.baseURL = process.env.API_DOMAIN_PLATFORM
-    // opt.headers['Authorization'] = Cookies.get(cookieAccessToken)
-    // opt.headers['content-type'] = 'application/json'
-    // opt.headers['Accept'] = 'application/json'
-    // return toTempOption(opt)
-  },
   dev(opt) {
+    opt = Object.assign({}, opt)
+    opt.baseURL = process.env.API_DOMAIN_DEV_CENTER + '/developer/api'
+    if(opt.data) {
+      let fd = new FormData()
+      fd.append('data', JSON.stringify(opt.data))
+      opt.data = fd
+    }
+    return opt
+  },
+  openapi(opt) {
+    opt = Object.assign({}, opt)
     opt.baseURL = process.env.API_DOMAIN_DEV_CENTER + '/developer/api/openapi/common'
-    opt.headers['Authorization'] = 'Bearer ' + Cookies.get(cookieToken)
+    let token = Cookies.get(cookieToken)
+    if(!token) {
+      throw new Error('unlogged')
+    }
+    opt.headers['Authorization'] = 'Bearer ' + token
     if(opt.data) {
       let fd = new FormData()
       fd.append('data', JSON.stringify(opt.data))
@@ -86,42 +95,43 @@ async function request(opt, reqOpts) {
     if(typeof res.data === 'string') {
       res.data = JSON.parse(res.data)
     }
-    if(res.data.exp === 'token expired') {
-      throw new Error('token expired')
-    } else if(res.data.message === 'No permission for target API!') {
-      throw new Error('no permission')
-    } else {
-      return transformRespondDefault(res)
-    }
+    return transformRespondDefault(res)
   } catch (e) {
-    switch(e.message) {
-      case 'no permission':
-        Message({
-          message: '您没有权限',
-          type: 'error',
-        })
-        throw e
-      case 'unlogged':
-        Message({
-          message: '请登录',
-          type: 'error',
-        })
-        throw e
-      case 'token expired':
-        await store.dispatch('checkSession')
-        if(store.state.user.loginStatus === 'logged') {
-          await store.dispatch('fetchAccessToken')
-          return request(opt, reqOpts)
-        } else {
+    if(e.response) {
+      switch(e.response.data.error_code) {
+        case 10:
           Message({
-            message: '请登录',
+            message: '错误的用户名或密码',
             type: 'error',
           })
-          throw new Error('unlogged')
-        }
-      default:
-        throw e
+          throw e
+        case 11:
+          try{
+            let res = await apiAuth.refreshToken()
+            Cookies.set(cookieRefreshToken, res.refresh_token)
+            Cookies.set(cookieToken, res.token)
+            return request(opt, reqOpts)
+          }catch (e) {
+            Message({
+              message: '请登录',
+              type: 'error',
+            })
+            store.commit('removeLoggedUser')
+            throw new Error('unlogged')
+          }
+      }
+    } else if(e.message === 'unlogged') {
+      Message({
+        message: '请登录',
+        type: 'error',
+      })
+      throw e
     }
+    Message({
+      message: '系统错误',
+      type: 'error',
+    })
+    throw e
   }
 }
 
@@ -146,7 +156,7 @@ function mapApi(apis) {
           },
         }
         if(!opt.tpl) {
-          opt.tpl = 'dev'
+          opt.tpl = 'openapi'
         }
         if(opt.transformRequest) {
           params = opt.transformRequest(params || {}, reqOpts)

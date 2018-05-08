@@ -35,11 +35,11 @@ export default mapApi({
     },
   },
   refreshToken: {
-    method: 'post',
-    url: '/identity/sso/token/refresh',
-    tpl: 'platform',
+    url: '/auth/token',
+    tpl: 'dev',
     transformRequest(params, opt) {
-      return {'refresh_token': Cookies.get(cookieRefreshToken)}
+      opt.headers['Authorization'] = 'Bearer ' + Cookies.get(cookieRefreshToken)
+      return params
     },
   },
 })
