@@ -1,13 +1,11 @@
 import axios from 'axios'
 import dateFormat from 'dateformat'
-// import router from './router'
-import assign from 'core-js/library/modules/_object-assign'
 import apiAuth from 'api/auth'
 import {cookieToken, cookieRefreshToken} from '@/const/cookies'
 import Cookies from 'js-cookie'
 import {Message} from 'element-ui'
 import store from '@/store'
-
+import i18n from '@/i18n'
 let ai = axios.create({
   // baseURL: process.env.API_ORIGIN + process.env.API_PATH,
   baseURL: process.env.API_DOMAIN,
@@ -101,7 +99,7 @@ async function request(opt, reqOpts) {
       switch(e.response.data.error_code) {
         case 10:
           Message({
-            message: '错误的用户名或密码',
+            message: i18n.t('error.wrongUsernameOrPassword'),
             type: 'error',
           })
           throw e
@@ -113,7 +111,7 @@ async function request(opt, reqOpts) {
             return request(opt, reqOpts)
           }catch (e) {
             Message({
-              message: '请登录',
+              message: i18n.t('error.unlogged'),
               type: 'error',
             })
             store.commit('removeLoggedUser')
@@ -122,13 +120,13 @@ async function request(opt, reqOpts) {
       }
     } else if(e.message === 'unlogged') {
       Message({
-        message: '请登录',
+        message: i18n.t('error.unlogged'),
         type: 'error',
       })
       throw e
     }
     Message({
-      message: '系统错误',
+      message: i18n.t('error.systemError'),
       type: 'error',
     })
     throw e
@@ -168,7 +166,7 @@ function mapApi(apis) {
         reqOpts[methodKey] = params
 
         if(opt.config) {
-          assign(reqOpts, opt.config)
+          Object.assign(reqOpts, opt.config)
         }
         return request(opt, reqOpts)
       }

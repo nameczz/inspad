@@ -7,12 +7,10 @@ import {Button, Input} from 'element-ui'
 import Copyright from '@/components/busi/Copyright'
 import store from './store'
 import Cookies from 'js-cookie'
-import VueI18n from 'vue-i18n'
-import lang from 'lang'
+import i18n from './i18n'
 
 Cookies.set('lang', process.env.LANG)
 
-Vue.use(VueI18n)
 Vue.use(Button)
 Vue.use(Input)
 
@@ -20,14 +18,6 @@ Vue.component('icon', Icon)
 Vue.component('Copyright', Copyright)
 
 Vue.config.productionTip = false
-
-const i18n = new VueI18n({
-  locale: process.env.LANG,
-  silentTranslationWarn: true,
-  messages: {
-    [process.env.LANG]: lang,
-  },
-})
 
 /* eslint-disable no-new */
 new Vue({
