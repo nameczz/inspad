@@ -18,6 +18,7 @@ Vue.component('icon', Icon)
 Vue.component('Copyright', Copyright)
 
 Vue.config.productionTip = false
+store.dispatch('checkSession')
 
 /* eslint-disable no-new */
 new Vue({

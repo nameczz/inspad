@@ -1,25 +1,32 @@
 <template>
   <div>
     <header class="header">
-      <a class="float-left header-left">
-        <icon class="logo" src="~svg/open-api.svg"/>
-      </a>
-      <div v-if="loginStatus==='logged'" class="user-name">
-        {{$t('hello')+'，'+(showUsername || $t('user'))}}
-        <a class="logout" @click="logout">{{$t('signOut')}}</a>
-      </div>
-      <el-button v-else-if="loginStatus==='unlogged'"
-                 class="login-button float-right"
-                 @click="openLoginDialog">{{$t('signIn')}}</el-button>
-      <el-dropdown @command="selectLang" class="float-right">
+      <div class="container">
+        <a class="float-left header-left">
+          <icon class="logo" src="~svg/logo.svg"/>
+        </a>
+        <div v-if="loginStatus==='logged'" class="user-name">
+          {{$t('hi')+','+(showUsername || $t('user'))}}
+          <!--<a class="logout" @click="logout">{{$t('signOut')}}</a>-->
+        </div>
+        <el-button v-else-if="loginStatus==='unlogged'"
+                   class="login-button float-right"
+                   @click="openLoginDialog">{{$t('signIn')}}</el-button>
+        <el-dropdown @command="selectLang" class="float-right">
         <span class="el-dropdown-link">
-          {{getLang()}}<i class="el-icon-arrow-down el-icon--right"></i>
+          {{getLang()}}<i class="el-icon-caret-bottom el-icon--right"></i>
         </span>
-        <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item command="en">{{getLang('en')}}</el-dropdown-item>
-          <el-dropdown-item command="zh-CN">{{getLang('zh-CN')}}</el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item command="en">{{getLang('en')}}</el-dropdown-item>
+            <el-dropdown-item command="zh-CN">{{getLang('zh-CN')}}</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+        <ul class="nav-list">
+          <li><a>{{$t('nav.tutorials')}}</a></li>
+          <li><a>{{$t('nav.docs')}}</a></li>
+          <li><a>{{$t('nav.support')}}</a></li>
+        </ul>
+      </div>
     </header>
     <router-view class="content"></router-view>
     <el-dialog
@@ -90,8 +97,8 @@ export default {
   methods: {
     getLang(lang) {
       return {
-        'en': 'English',
-        'zh-CN': '中文',
+        'en': 'EN',
+        'zh-CN': 'CN',
       }[lang || process.env.LANG]
     },
     selectLang(lang) {
@@ -150,9 +157,6 @@ export default {
       this.$store.commit('removeLoggedUser')
     },
   },
-  created() {
-    this.$store.dispatch('checkSession')
-  },
   i18n: {
     messages: {
       [process.env.LANG]: i18n,
@@ -165,7 +169,7 @@ export default {
   @import "~sty/var";
   .header{
     height: $headerHeight;
-    background: #2e3436;
+    background: #002b33;
     position: absolute;
     top: 0;
     left: 0;
@@ -173,12 +177,11 @@ export default {
     z-index: 300;
   }
   .header-left{
-    margin-left: 24px;
     >.logo{
       vertical-align: top;
-      width: 214px;
-      height: 37px;
-      margin-top: ($headerHeight - 37px) / 2;
+      width: 152px;
+      height: 33px;
+      margin-top: ($headerHeight - 33px) / 2;
     }
   }
   .login-button{
@@ -214,9 +217,13 @@ export default {
   .user-name{
     float: right;
     color: #ffffff;
-    margin-right: 20px;
-    line-height: 30px;
-    margin-top: 15px;
+    margin-top: ($headerHeight - 32px) / 2;
+    height: 32px;
+    line-height: 32px;
+    border-radius: 18px;
+    background-color: #237483;
+    padding: 0 16px;
+    font-size: 14px;
   }
   .logout{
     color: $green;
@@ -224,11 +231,33 @@ export default {
     margin-left: 12px;
   }
   .el-dropdown{
-    color: #ffffff;
+    color: #237483;
     cursor: pointer;
-    margin-right: 15px;
+    margin-right: 18px;
     margin-top: ($headerHeight - 20px) / 2;
     height: 20px;
     line-height: 20px;
+    font-size: 16px;
+  }
+  .nav-list{
+    float: right;
+    color: #62a9b6;
+    white-space: nowrap;
+    margin-top: ($headerHeight - 20px) / 2;
+    margin-right: 144px;
+    >li{
+      display: inline-block;
+      margin-left: 60px;
+      >a{
+        line-height: 20px;
+        font-family: Lato;
+        font-size: 18px;
+        font-weight: bold;
+        color: #62a9b6;
+      }
+      &:first-child{
+        margin-left: 0;
+      }
+    }
   }
 </style>
