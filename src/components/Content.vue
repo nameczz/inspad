@@ -64,11 +64,11 @@
 </template>
 
 <script>
-import {Dialog, Message, Dropdown, DropdownItem, DropdownMenu} from 'element-ui'
+import { Dialog, Message, Dropdown, DropdownItem, DropdownMenu } from 'element-ui'
 import apiAuth from 'api/auth'
 import Cookies from 'js-cookie'
-import {setLang} from 'md/lang'
-import {cookieToken, cookieRefreshToken, cookieUsername} from '@/const/cookies'
+import { setLang } from 'md/lang'
+import { cookieToken, cookieRefreshToken, cookieUsername } from '@/const/cookies'
 import 'md/validate'
 import i18n from 'lang/content'
 export default {
@@ -97,7 +97,7 @@ export default {
   methods: {
     getLang(lang) {
       return {
-        'en': 'EN',
+        en: 'EN',
         'zh-CN': 'CN',
       }[lang || process.env.LANG]
     },
@@ -114,11 +114,11 @@ export default {
       })
     },
     async login() {
-      let result = await this.$validator.validateAll()
+      const result = await this.$validator.validateAll()
       if (result) {
         this.logging = true
         try {
-          let res = await apiAuth.login({
+          const res = await apiAuth.login({
             username: this.username,
             password: this.password,
           })

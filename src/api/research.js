@@ -1,4 +1,4 @@
-import {mapApi} from '@/axios-help'
+import { mapApi } from '@/axios-help'
 export default mapApi({
   langDetect: {
     method: 'post',
@@ -120,4 +120,3 @@ export default mapApi({
     },
   },
 })
-

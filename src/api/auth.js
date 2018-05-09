@@ -1,6 +1,6 @@
-import {mapApi} from '@/axios-help'
+import { mapApi } from '@/axios-help'
 import Cookies from 'js-cookie'
-import {cookieRefreshToken} from '@/const/cookies'
+import { cookieRefreshToken } from '@/const/cookies'
 export default mapApi({
   login: {
     method: 'post',
@@ -12,7 +12,7 @@ export default mapApi({
       return params
     },
     config: {
-      validateStatus: function(status) {
+      validateStatus(status) {
         return status >= 200 && status <= 404
       },
     },
@@ -38,9 +38,8 @@ export default mapApi({
     url: '/auth/token',
     tpl: 'dev',
     transformRequest(params, opt) {
-      opt.headers['Authorization'] = 'Bearer ' + Cookies.get(cookieRefreshToken)
+      opt.headers.Authorization = `Bearer ${Cookies.get(cookieRefreshToken)}`
       return params
     },
   },
 })
-

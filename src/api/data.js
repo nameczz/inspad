@@ -1,4 +1,4 @@
-import {mapApi} from '@/axios-help'
+import { mapApi } from '@/axios-help'
 export default mapApi({
   searchPatent: {
     url: '/patent/simple/search',
@@ -175,4 +175,3 @@ export default mapApi({
     },
   },
 })
-
