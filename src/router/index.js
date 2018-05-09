@@ -3,14 +3,12 @@ import Router from 'vue-router'
 import 'core-js/fn/array/find'
 
 const Content = resolve => require(['@/components/Content'], resolve)
-const Transform = resolve => require(['@/components/Transform'], resolve)
 
 const Index = resolve => require(['@/components/Index'], resolve)
-const ResearchLangdetect = resolve => require(['@/components/transform/research/LangDetect'], resolve)
 
 Vue.use(Router)
 
-let router = new Router({
+const router = new Router({
   routes: [
     {
       path: '/',
@@ -27,7 +25,8 @@ let router = new Router({
           name: 'Index',
           component: Index,
         },
-        {
+
+        /* {
           path: 'transform',
           name: 'Transform',
           component: Transform,
@@ -38,14 +37,13 @@ let router = new Router({
               component: ResearchLangdetect,
             },
           ],
-        },
+        }, */
       ],
     },
   ],
 })
 
-
-if(process.env.NODE_ENV !== 'testing') {
+if (process.env.NODE_ENV !== 'testing') {
   router.beforeEach((to, from, next) => {
     next()
   })
