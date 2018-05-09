@@ -167,6 +167,7 @@ export default {
 
 <style scoped lang="scss">
   @import "~sty/var";
+  @import "~sty/mixins";
   .header{
     height: $headerHeight;
     background: #002b33;
@@ -215,6 +216,8 @@ export default {
     margin-bottom: 20px;
   }
   .user-name{
+    width: 96px;
+    @include text-truncate;
     float: right;
     color: #ffffff;
     margin-top: ($headerHeight - 32px) / 2;
@@ -258,6 +261,11 @@ export default {
       &:first-child{
         margin-left: 0;
       }
+    }
+  }
+  @media (max-width: 999px){
+    .nav-list {
+      margin-right: 20px;
     }
   }
 </style>
