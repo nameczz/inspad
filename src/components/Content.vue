@@ -71,8 +71,8 @@
 import { Dialog, Message, Dropdown, DropdownItem, DropdownMenu } from 'element-ui'
 import apiAuth from 'api/auth'
 import Cookies from 'js-cookie'
-import { setLang } from 'md/lang'
 import { cookieToken, cookieRefreshToken, cookieUsername } from '@/const/cookies'
+import { setLang } from '@/i18n'
 export default {
   components: {
     [Dialog.name]: Dialog,
