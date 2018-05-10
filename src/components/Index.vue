@@ -1,5 +1,5 @@
 <template>
-  <div class="index">
+  <div>
     <div class="banner">
       <div class="mask"></div>
       <div class="banner-content">
@@ -91,9 +91,7 @@ export default {
 <style scoped lang="scss">
   @import "~sty/var";
   $panelColors: #9cd9e5 #9ce5d0 #acf1bb;
-  .index{
-    font-family: Lato;
-  }
+
   .banner{
     height: 500px;
     background: url("~img/index/banner.jpeg") no-repeat;

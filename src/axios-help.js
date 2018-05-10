@@ -184,22 +184,3 @@ function getTimeStr(time) {
 }
 
 export { ai, mapApi, getTimeStr }
-
-/*eslint-disable*/
-export class ApiBox {
-  fetchFn = null
-  results = null
-
-  constructor(fetchFn) {
-    this.fetchFn = fetchFn
-  }
-
-  fetch() {
-    this.results = this.fetchFn.call()
-    return this
-  }
-
-  get(name) {
-    return this.results[name]
-  }
-}

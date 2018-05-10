@@ -5,17 +5,21 @@
         <a class="float-left header-left">
           <icon class="logo" src="~svg/logo.svg"/>
         </a>
-        <div v-if="loginStatus==='logged'" class="user-name">
-          {{$t('hi')+','+(showUsername || $t('user'))}}
-          <!--<a class="logout" @click="logout">{{$t('signOut')}}</a>-->
-        </div>
+        <el-dropdown @command="handleUserCommand" v-if="loginStatus==='logged'" class="user-name">
+          <a class="el-dropdown-link">
+           {{$t('hi')+','+(showUsername || $t('user'))}}
+          </a>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item command="logout">{{$t('signOut')}}</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
         <el-button v-else-if="loginStatus==='unlogged'"
                    class="login-button float-right"
                    @click="openLoginDialog">{{$t('signIn')}}</el-button>
-        <el-dropdown @command="selectLang" class="float-right">
-        <span class="el-dropdown-link">
-          {{getLang()}}<i class="el-icon-caret-bottom el-icon--right"></i>
-        </span>
+        <el-dropdown @command="selectLang" class="float-right lang">
+          <span class="el-dropdown-link">
+            {{getLang()}}<i class="el-icon-caret-bottom el-icon--right"></i>
+          </span>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item command="en">{{getLang('en')}}</el-dropdown-item>
             <el-dropdown-item command="zh-CN">{{getLang('zh-CN')}}</el-dropdown-item>
@@ -100,6 +104,9 @@ export default {
         en: 'EN',
         'zh-CN': 'CN',
       }[lang || process.env.LANG]
+    },
+    handleUserCommand(command) {
+      this[command]()
     },
     selectLang(lang) {
       setLang(lang)
@@ -216,24 +223,29 @@ export default {
     margin-bottom: 20px;
   }
   .user-name{
-    width: 96px;
-    @include text-truncate;
-    float: right;
     color: #ffffff;
     margin-top: ($headerHeight - 32px) / 2;
     height: 32px;
-    line-height: 32px;
-    border-radius: 18px;
-    background-color: #237483;
-    padding: 0 16px;
-    font-size: 14px;
+    float: right;
+
+    >.el-dropdown-link{
+      display: block;
+      border-radius: 18px;
+      background-color: #237483;
+      padding: 0 16px;
+      font-size: 14px;
+      width: 96px;
+      height: 32px;
+      line-height: 32px;
+      @include text-truncate;
+    }
   }
   .logout{
     color: $green;
     font-size: 14px;
     margin-left: 12px;
   }
-  .el-dropdown{
+  .el-dropdown.lang{
     color: #237483;
     cursor: pointer;
     margin-right: 18px;
@@ -253,7 +265,6 @@ export default {
       margin-left: 60px;
       >a{
         line-height: 20px;
-        font-family: Lato;
         font-size: 18px;
         font-weight: bold;
         color: #62a9b6;
