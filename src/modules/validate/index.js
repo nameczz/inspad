@@ -1,7 +1,15 @@
 import VeeValidate, {Validator} from 'vee-validate'
 import Vue from 'vue'
-import locale from 'lang/validate'
+import i18n from '@/i18n'
 
-Validator.localize(process.env.LANG, locale);
+import en from '@/locale/en/validate'
+import cn from '@/locale/zh-CN/validate'
 
-Vue.use(VeeValidate);
+// Validator.localize('en', en);
+Vue.use(VeeValidate, {
+  locale: i18n.locale,
+  dictionary: {
+    en,
+    'zh-CN': cn,
+  }
+})

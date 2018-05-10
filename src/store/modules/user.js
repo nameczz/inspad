@@ -1,12 +1,10 @@
 import Cookies from 'js-cookie'
 import { cookieUsername, cookieRefreshToken, cookieToken } from '@/const/cookies'
 import apiAuth from 'api/auth'
-import langBackendMap from '@/const/lang-backend'
 
 const state = {
   username: null,
   loginStatus: 'pending',
-  langForBackend: langBackendMap[process.env.LANG],
 }
 
 // mutations

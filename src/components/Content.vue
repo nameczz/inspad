@@ -73,8 +73,6 @@ import apiAuth from 'api/auth'
 import Cookies from 'js-cookie'
 import { setLang } from 'md/lang'
 import { cookieToken, cookieRefreshToken, cookieUsername } from '@/const/cookies'
-import 'md/validate'
-import i18n from 'lang/content'
 export default {
   components: {
     [Dialog.name]: Dialog,
@@ -103,7 +101,7 @@ export default {
       return {
         en: 'EN',
         'zh-CN': 'CN',
-      }[lang || process.env.LANG]
+      }[lang || this.$i18n.locale]
     },
     handleUserCommand(command) {
       this[command]()
@@ -162,11 +160,6 @@ export default {
     async logout() {
       await apiAuth.logout()
       this.$store.commit('removeLoggedUser')
-    },
-  },
-  i18n: {
-    messages: {
-      [process.env.LANG]: i18n,
     },
   },
 }

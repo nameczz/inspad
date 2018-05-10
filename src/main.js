@@ -6,10 +6,8 @@ import '@/assets/styles/common.scss'
 import { Button, Input } from 'element-ui'
 import Copyright from '@/components/busi/Copyright'
 import store from './store'
-import Cookies from 'js-cookie'
-import i18n from './i18n'
-
-Cookies.set('lang', process.env.LANG)
+import i18n from '@/i18n'
+import 'md/validate'
 
 Vue.use(Button)
 Vue.use(Input)
