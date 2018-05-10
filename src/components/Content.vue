@@ -107,7 +107,9 @@ export default {
       this[command]()
     },
     selectLang(lang) {
-      setLang(lang)
+      setLang(lang, () => {
+        this.errors.clear()
+      })
     },
     openLoginDialog() {
       this.dialogVisible = true
