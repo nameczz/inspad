@@ -3,5 +3,5 @@ import validate from './validate'
 
 export default {
   base: i18n,
-  validate: validate
+  validate,
 }
