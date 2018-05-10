@@ -34,15 +34,16 @@ export default {
     unlogged: '请登录',
     wrongUsernameOrPassword: '错误的用户名或密码',
   },
+  nav: {
+    tutorials: '教程',
+    docs: '文档',
+    support: '支持',
+  },
   hi: '您好',
   user: '用户',
   signIn: '登录',
   signOut: '退出登录',
   userName: '用户名',
   password: '密码',
-  nav: {
-    tutorials: '教程',
-    docs: '文档',
-    support: '支持',
-  },
+  getStart: '开始使用',
 }

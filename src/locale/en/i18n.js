@@ -34,15 +34,16 @@ export default {
     unlogged: 'Please sign in',
     wrongUsernameOrPassword: 'Wrong username or password',
   },
+  nav: {
+    tutorials: 'TUTORIALS',
+    docs: 'DOCS',
+    support: 'SUPPORT',
+  },
   hi: 'Hi',
   user: 'user',
   signIn: 'Sign in',
   signOut: 'Sign out',
   userName: 'User name',
   password: 'Password',
-  nav: {
-    tutorials: 'TUTORIALS',
-    docs: 'DOCS',
-    support: 'SUPPORT',
-  },
+  getStart: 'GET START',
 }

@@ -10,7 +10,7 @@
           You can rely on PatSnap api to make your business even better
         </p>
         <div class="text-center">
-          <el-button round plain class="plain-green">GET START</el-button>
+          <el-button round plain class="plain-green">{{$t('getStart')}}</el-button>
         </div>
       </div>
     </div>
