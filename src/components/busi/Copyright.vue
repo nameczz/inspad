@@ -1,5 +1,5 @@
 <template>
-  <div class="copyright" :class="position">Copyright © 2017 Patsnap. All rights reserved</div>
+  <div class="copyright" :class="position">Copyright © 2018 Patsnap. All rights reserved</div>
 </template>
 
 <script>
@@ -15,12 +15,13 @@ export default {
 <style scoped lang="scss">
   @import "~sty/var";
   .copyright{
-    margin: 20px 0;
-    line-height: 17px;
-    opacity: 0.3;
-    font-size: 12px;
+    height: 80px;
+    background-color: #133c44;
+    line-height: 80px;
     text-align: center;
     color: #000000;
+    font-size: 18px;
+    color: rgba(255,255,255,0.5);
 
     &.absolute{
       position: absolute;
