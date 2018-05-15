@@ -3,6 +3,7 @@ const path = require('path')
 const utils = require('./utils')
 const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf')
+const webpack = require('webpack')
 
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
@@ -43,6 +44,9 @@ module.exports = {
       'md': '@/modules',
     }
   },
+  plugins: [
+    new webpack.NormalModuleReplacementPlugin(/element-ui[\/\\]lib[\/\\]locale[\/\\]lang[\/\\]zh-CN/, resolve('empty'))
+  ],
   module: {
     rules: [
       ...(config.dev.useEslint ? [createLintingRule()] : []),
