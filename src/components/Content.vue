@@ -73,7 +73,7 @@ import apiAuth from 'api/auth'
 import Cookies from 'js-cookie'
 import { cookieToken, cookieRefreshToken, cookieUsername } from '@/const/cookies'
 import { setLang } from '@/i18n'
-import langShortMap from '@/const/lang-short-map'
+import languages from '@/const/languages'
 export default {
   components: {
     [Dialog.name]: Dialog,
@@ -99,7 +99,7 @@ export default {
   },
   methods: {
     getLang(lang) {
-      return langShortMap[lang || this.$i18n.locale].toUpperCase()
+      return languages[lang || this.$i18n.locale].short.toUpperCase()
     },
     handleUserCommand(command) {
       this[command]()

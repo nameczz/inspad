@@ -3,15 +3,13 @@ import Vue from 'vue'
 import Cookies from 'js-cookie'
 import { Validator } from 'vee-validate'
 import locale from 'element-ui/lib/locale'
-export const langRequire = {
-  en: resolve => require(['@/locale/en'], resolve),
-  'zh-CN': resolve => require(['@/locale/zh-CN'], resolve),
-}
+import languages from '@/const/languages'
+
 let lang = Cookies.get('lang')
 if (!lang) {
   lang = navigator.language
 }
-if (Object.keys(langRequire).indexOf(lang) < 0) {
+if (Object.keys(languages).indexOf(lang) < 0) {
   lang = 'en'
 }
 Vue.use(VueI18n)
@@ -22,7 +20,7 @@ const i18n = new VueI18n({
 })
 
 export function setLang(lang, callback) {
-  langRequire[lang](res => {
+  languages[lang].file(res => {
     Cookies.set('lang', lang)
     Validator.localize(lang, res.default.validate)
     i18n.setLocaleMessage(lang, res.default.base)
