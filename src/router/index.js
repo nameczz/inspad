@@ -14,22 +14,22 @@ const router = new Router({
     },
     {
       path: '',
-      component: require('@/pages/index.vue').default,
+      component: () => import('@/pages/index.vue'),
       children: [
         {
           path: 'home',
           name: 'home',
-          component: require('@/pages/home/index.vue').default,
+          component: () => import('@/pages/home/index.vue'),
         },
         {
           path: 'document',
           name: 'document',
-          component: require('@/pages/document/index.vue').default,
+          component: () => import('@/pages/document/index.vue'),
         },
         {
           path: 'sandbox',
           name: 'sandbox',
-          component: require('@/pages/sandbox/index.vue').default,
+          component: () => import('@/pages/sandbox/index.vue'),
         },
 
         /* {
