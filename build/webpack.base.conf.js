@@ -89,7 +89,11 @@ module.exports = {
         test: /\.svg/,
         loader: 'raw-loader',
         include: [resolve('src/assets/svg')]
-      }
+      },
+      {
+        test: /\.pug$/,
+        loader: 'pug-loader'
+      },
     ]
   },
   node: {

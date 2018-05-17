@@ -16,6 +16,8 @@ Vue.use(VeeValidate)
 Vue.component('icon', Icon)
 Vue.component('Copyright', Copyright)
 
+require('./modules/mock/mockdata.js')
+
 Vue.config.productionTip = false
 store.dispatch('checkSession')
 

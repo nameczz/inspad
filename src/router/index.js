@@ -2,10 +2,6 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import 'core-js/fn/array/find'
 
-const Content = resolve => require(['@/components/Content'], resolve)
-
-const Index = resolve => require(['@/components/Index'], resolve)
-
 Vue.use(Router)
 
 const router = new Router({
@@ -13,17 +9,27 @@ const router = new Router({
     {
       path: '/',
       redirect: {
-        name: 'Index',
+        name: 'home',
       },
     },
     {
       path: '',
-      component: Content,
+      component: () => import('@/pages/index.vue'),
       children: [
         {
-          path: 'index',
-          name: 'Index',
-          component: Index,
+          path: 'home',
+          name: 'home',
+          component: () => import('@/pages/home/index.vue'),
+        },
+        {
+          path: 'document',
+          name: 'document',
+          component: () => import('@/pages/document/index.vue'),
+        },
+        {
+          path: 'sandbox',
+          name: 'sandbox',
+          component: () => import('@/pages/sandbox/index.vue'),
         },
 
         /* {
