@@ -27,7 +27,7 @@
         </el-dropdown>
         <ul class="nav-list">
           <li><a>{{$t('nav.tutorials')}}</a></li>
-          <li><a>{{$t('nav.docs')}}</a></li>
+          <li><router-link :to="{name: 'document'}">{{$t('nav.docs')}}</router-link></li>
           <li><a>{{$t('nav.support')}}</a></li>
         </ul>
       </div>
@@ -171,7 +171,7 @@ export default {
   .header{
     height: $headerHeight;
     background: #002b33;
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
