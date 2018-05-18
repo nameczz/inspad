@@ -1,6 +1,7 @@
 import { Validator } from 'vee-validate';
 const lineReg = /-/g
 const mobileReg = /^\d[\d-]+\d$/
+// 手机验证
 Validator.extend('mobile',  (value, args) => {
   if(!mobileReg.test(value)) {
     return false

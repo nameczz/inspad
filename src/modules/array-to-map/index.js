@@ -5,7 +5,7 @@ function getValue(target, key) {
     return target[key]
   }
 }
-
+// 数组转对象 [{a:'u'},{a:'c'}] => {u:{a:'u'},c:{a:'c'}}
 export default function(array, key, value ) {
   let map = {}
   if(array) {

@@ -8,6 +8,7 @@ function toDigitNumber(num) {
   return num
 }
 
+// num: 小数点几位
 export function percent(val, num) {
   if(!val) {
     val = 0
@@ -15,6 +16,7 @@ export function percent(val, num) {
   return (num === undefined ? val * 100 : fixed(val * 100 , num)) + '%'
 }
 
+// 小数点几位
 export function fixed(val, num) {
   val = toDigitNumber(val)
   if(num === undefined) {
@@ -38,6 +40,7 @@ export function commafy(val) {
   return localize(val)
 }
 
+// '20110304' 'yyyy-mm-dd'
 const dateReg = /^(\d{4})(\d{2})(\d{2})?$/
 export function date(val, format) {
   let type = typeof val
@@ -52,7 +55,7 @@ export function date(val, format) {
     return dateformat(val, format)
   }
 }
-
+// 1239029402940234  123***0234
 const patentIdHideReg = /^(\w{3})\w+(\w{4})$/
 export function idEncode(val) {
   return val.replace(patentIdHideReg, '$1****$2')
