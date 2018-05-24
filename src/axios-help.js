@@ -1,9 +1,15 @@
 import axios from 'axios'
 import dateFormat from 'dateformat'
 import apiAuth from 'api/auth'
-import { cookieToken, cookieRefreshToken } from '@/const/cookies'
+import {
+  cookieToken,
+  cookieRefreshToken,
+  cookieUserId
+} from '@/const/cookies'
 import Cookies from 'js-cookie'
-import { Message } from 'element-ui'
+import {
+  Message
+} from 'element-ui'
 import store from '@/store'
 import i18n from '@/i18n'
 const ai = axios.create({
@@ -12,13 +18,14 @@ const ai = axios.create({
   withCredentials: true,
   timeout: 10000,
 })
+const jwtDecode = require('jwt-decode')
 
 // tools
 const TIME_FORMAT = 'yyyymm'
 
 const METHOD_GET = 'get'
 
-const transformRespondDefault = function(res) {
+const transformRespondDefault = function (res) {
   return res.data
 }
 
@@ -101,8 +108,11 @@ async function request(opt, reqOpts) {
         case 11:
           try {
             const res = await apiAuth.refreshToken()
+            const info = jwtDecode(res.token)
+
             Cookies.set(cookieRefreshToken, res.refresh_token)
             Cookies.set(cookieToken, res.token)
+            Cookies.set(cookieUserId, info.sub)
             return request(opt, reqOpts)
           } catch (e) {
             Message({
@@ -137,7 +147,7 @@ function mapApi(apis) {
   for (const name in apis) {
     if (apis.hasOwnProperty(name)) {
       const opt = apis[name]
-      apis[name] = async function(params) {
+      apis[name] = async function (params) {
         const method = opt.method || METHOD_GET
         const reqOpts = {
           method,
@@ -158,10 +168,10 @@ function mapApi(apis) {
         }
         const methodKey = (method === 'put' || method === 'post' || method === 'patch') ? 'data' : 'params'
         reqOpts[methodKey] = params
-
         if (opt.config) {
           Object.assign(reqOpts, opt.config)
         }
+
         return request(opt, reqOpts)
       }
     }
@@ -183,4 +193,27 @@ function getTimeStr(time) {
   }
 }
 
-export { ai, mapApi, getTimeStr }
+export {
+  ai,
+  mapApi,
+  getTimeStr
+}
+
+/*eslint-disable*/
+export class ApiBox {
+  fetchFn = null
+  results = null
+
+  constructor(fetchFn) {
+    this.fetchFn = fetchFn
+  }
+
+  fetch() {
+    this.results = this.fetchFn.call()
+    return this
+  }
+
+  get(name) {
+    return this.results[name]
+  }
+}

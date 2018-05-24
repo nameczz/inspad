@@ -1,21 +1,21 @@
 // Toggles
 //
 // Used in conjunction with global variables to enable certain theme features.
-
 @mixin box-shadow($shadow...) {
-  @if $enable-shadows {
-    box-shadow: $shadow;
-  }
+    @if $enable-shadows {
+        box-shadow: $shadow;
+    }
 }
 
 @mixin transition($transition...) {
-  @if $enable-transitions {
-    @if length($transition) == 0 {
-      transition: $transition-base;
-    } @else {
-      transition: $transition;
+    @if $enable-transitions {
+        @if length($transition)==0 {
+            transition: $transition-base;
+        }
+        @else {
+            transition: $transition;
+        }
     }
-  }
 }
 
 // Utilities
@@ -29,22 +29,31 @@
 @import "mixins/text-truncate";
 @import "mixins/transforms";
 @import "mixins/visibility";
-
 // // Components
 @import "mixins/buttons";
 @import "mixins/list-group";
 @import "mixins/forms";
 @import "mixins/progress";
 @import "mixins/table-row";
-
 // // Skins
 @import "mixins/background-variant";
 @import "mixins/border-radius";
 @import "mixins/gradients";
-
 // // Layout
 @import "mixins/clearfix";
 @import "mixins/grid-framework";
 @import "mixins/grid";
 @import "mixins/float";
-
+@mixin card-item($color, $width) {
+    .edit_item {
+        display: inline-block;
+        height: $width;
+        width: $width;
+        margin-right: 1rem;
+        font-size: 14px;
+        color: $color;
+        overflow: hidden;
+        padding: 14px;
+        cursor: pointer;
+    }
+}

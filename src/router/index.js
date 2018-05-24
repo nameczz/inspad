@@ -9,7 +9,7 @@ const router = new Router({
     {
       path: '/',
       redirect: {
-        name: 'home',
+        name: 'subjects',
       },
     },
     {
@@ -17,33 +17,33 @@ const router = new Router({
       component: () => import('@/pages/index.vue'),
       children: [
         {
-          path: 'home',
-          name: 'home',
-          component: () => import('@/pages/home/index.vue'),
+          path: 'tags',
+          name: 'tags',
+          component: () => import('@/pages/tags/index.vue'),
         },
         {
-          path: 'document',
-          name: 'document',
-          component: () => import('@/pages/document/index.vue'),
+          path: 'subjects',
+          name: 'subjects',
+          component: () => import('@/pages/subjects/index.vue'),
         },
         {
-          path: 'sandbox',
-          name: 'sandbox',
-          component: () => import('@/pages/sandbox/index.vue'),
+          path: 'note/:noteId',
+          name: 'noteDetail',
+          component: () => import('@/pages/noteDetail/index.vue'),
         },
-
-        /* {
-          path: 'transform',
-          name: 'Transform',
-          component: Transform,
+        {
+          path: 'subject/:subjectId',
+          name: 'subjectDetail',
+          component: () => import('@/pages/subjectDetail/index.vue'),
+          redirect: 'subject/:subjectId/search',
           children: [
             {
-              path: 'research/langdetect',
-              name: 'ResearchLangdetect',
-              component: ResearchLangdetect,
+              path: 'search',
+              name: 'subjectSearch',
+              component: () => import('@/pages/search/index.vue'),
             },
-          ],
-        }, */
+          ]
+        }
       ],
     },
   ],

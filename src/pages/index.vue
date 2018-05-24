@@ -1,85 +1,90 @@
 <template>
   <div>
-    <header class="header">
-      <div class="container">
+    <el-container>
+      <el-header class="header">
         <a class="float-left header-left">
-          <icon class="logo" src="~svg/logo.svg"/>
+          INSPAD
         </a>
-        <el-dropdown @command="handleUserCommand" v-if="loginStatus==='logged'" class="user-name">
-          <a class="el-dropdown-link">
-           {{$t('hi')+','+(showUsername || $t('user'))}}
-          </a>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item command="logout">{{$t('signOut')}}</el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
+        <div v-if="loginStatus==='logged'" class="user-name">
+          <span>T</span>
+          <a class="logout" @click="logout">logout</a>
+        </div>
         <el-button v-else-if="loginStatus==='unlogged'"
-                   class="login-button float-right"
-                   @click="openLoginDialog">{{$t('signIn')}}</el-button>
-        <el-dropdown @command="selectLang" class="float-right lang">
-          <span class="el-dropdown-link">
-            {{getLang()}}<i class="el-icon-caret-bottom el-icon--right"></i>
-          </span>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item command="en">{{getLang('en')}}</el-dropdown-item>
-            <el-dropdown-item command="zh-CN">{{getLang('zh-CN')}}</el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
-        <ul class="nav-list">
-          <li><a>{{$t('nav.tutorials')}}</a></li>
-          <li><router-link :to="{name: 'document'}">{{$t('nav.docs')}}</router-link></li>
-          <li><a>{{$t('nav.support')}}</a></li>
-        </ul>
-      </div>
-    </header>
-    <router-view class="content"></router-view>
-    <el-dialog
-      :title="$t('signIn')"
-      :visible.sync="dialogVisible"
-      width="30%">
-      <form @submit.prevent="login">
-        <div class="field">
-          <el-input class="username"
-                    v-model="username"
-                    name="username"
-                    v-validate="'required|min:3'"
-                    :data-vv-as="$t('userName')"
-                    :class="{'error':errors.has('username') }"
-                    :placeholder="$t('userName')"></el-input>
-          <span v-show="errors.has('username')"
-                class="help error">{{ errors.first('username') }}</span>
-        </div>
-        <div class="field">
-          <el-input class="password"
-                    type="password"
-                    name="password"
-                    v-model="password"
-                    v-validate="'required|min:3'"
-                    :data-vv-as="$t('password')"
-                    :class="{'error':errors.has('password') }"
-                    :placeholder="$t('password')"></el-input>
-          <span v-show="errors.has('password')"
-                class="help error">{{ errors.first('password') }}</span>
-        </div>
-        <el-button class="login" type="success" native-type="submit" :loading="logging">{{$t('signIn')}}</el-button>
-      </form>
-    </el-dialog>
+                  class="login-button float-right"
+                  @click="openLoginDialog">Login
+        </el-button>
+      </el-header>
+      <!-- <el-header class="header">
+        <el-row :gutter="20" class="container" style="margin: 0 auto">
+          <el-col :span="4">
+            <div class="grid-content bg-purple">INSPAD</div>
+          </el-col>
+          <el-col :span="6">
+            <router-link :to="{name: 'note'}" class="header-nav"></router-link>
+          </el-col>
+          <el-col :span="6">
+            <div class="grid-content bg-purple"></div>
+          </el-col>
+          <el-col :span="6">
+            <div class="grid-content bg-purple"></div>
+          </el-col>
+        </el-row>
+      </el-header> -->
+
+      <el-container class="container">
+        <!-- <el-aside width="200px">
+          <div class="inspad-menu">
+            <el-menu default-active="2" :router='true'>
+              <el-menu-item index="/note">
+                <i class="el-icon-menu"></i>
+                <span slot="title">Notepad</span>
+              </el-menu-item>
+              
+              <el-menu-item index="/tags">
+                <i class="el-icon-menu"></i>
+                <span slot="title">Tags</span>
+              </el-menu-item>
+              <el-menu-item index="/note/123">
+                <i class="el-icon-setting"></i>
+                <span slot="title">Smart Graph</span>
+              </el-menu-item>
+            </el-menu>
+          </div>
+
+        </el-aside> -->
+        <el-main class="inspad-main">
+          <transition name="fade" mode="out-in">
+            <router-view class="container"></router-view>
+          </transition>
+        </el-main>
+
+      </el-container>
+
+    </el-container>
+
   </div>
 </template>
 
 <script>
-import { Dialog, Message, Dropdown, DropdownItem, DropdownMenu } from 'element-ui'
+import { Header, Message, Container, Aside, Footer, Main, Row, Col, Menu, MenuItem, Card } from 'element-ui'
 import apiAuth from 'api/auth'
 import Cookies from 'js-cookie'
-import { cookieToken, cookieRefreshToken, cookieUsername } from '@/const/cookies'
-import { setLang } from '@/i18n'
-import languages from '@/const/languages'
+import { cookieToken, cookieRefreshToken, cookieUsername, cookieUserId } from '@/const/cookies'
+import 'md/validate'
+const jwtDecode = require('jwt-decode')
+
 export default {
   components: {
-    [Dialog.name]: Dialog,
-    [Dropdown.name]: Dropdown,
-    [DropdownItem.name]: DropdownItem,
-    [DropdownMenu.name]: DropdownMenu,
+    [Header.name]: Header,
+    [Aside.name]: Aside,
+    [Footer.name]: Footer,
+    [Container.name]: Container,
+    [Main.name]: Main,
+    [Row.name]: Row,
+    [Col.name]: Col,
+    [Menu.name]: Menu,
+    [MenuItem.name]: MenuItem,
+    [Card.name]: Card,
   },
   data() {
     return {
@@ -98,20 +103,6 @@ export default {
     },
   },
   methods: {
-    getLang(lang) {
-      return languages[lang || this.$i18n.locale].short.toUpperCase()
-    },
-    handleUserCommand(command) {
-      this[command]()
-    },
-    selectLang(lang) {
-      setLang(lang, () => {
-        this.errors.clear()
-      })
-    },
-    openLoginDialog() {
-      this.dialogVisible = true
-    },
     showError(err) {
       Message({
         message: err,
@@ -127,31 +118,18 @@ export default {
             username: this.username,
             password: this.password,
           })
+          const info = jwtDecode(res.token)
           if (res.errcode) {
-            switch (res.errcode) {
-              case '30101':
-                this.showError(this.$t('error.noUser'))
-                break
-              case '30103':
-                this.showError(this.$t('error.wrongPassword'))
-                break
-              case '30104':
-                this.showError(this.$t('error.logged'))
-                break
-              case '30107':
-                this.showError(this.$t('error.expired'))
-                break
-              default:
-                this.showError(this.$t('error.systemError'))
-            }
+            this.showError('Login Error')
+
             this.logging = false
             return
           }
+          Cookies.set(cookieUserId, info.sub)
           Cookies.set(cookieRefreshToken, res.refresh_token)
           Cookies.set(cookieToken, res.token)
           Cookies.set(cookieUsername, this.username.trim())
           this.$store.commit('refreshLoggedUser')
-          this.dialogVisible = false
         } finally {
           this.logging = false
         }
@@ -161,115 +139,101 @@ export default {
       await apiAuth.logout()
       this.$store.commit('removeLoggedUser')
     },
-  },
+  }
 }
 </script>
 
 <style scoped lang="scss">
-  @import "~sty/var";
-  @import "~sty/mixins";
-  .header{
-    height: $headerHeight;
-    background: #002b33;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 300;
-  }
-  .header-left{
-    >.logo{
-      vertical-align: top;
-      width: 152px;
-      height: 33px;
-      margin-top: ($headerHeight - 33px) / 2;
-    }
-  }
-  .login-button{
-    margin-right: 66px;
-    margin-top: ($headerHeight - 32px) / 2;
-    width: 64px;
-    height: 32px;
-    border-radius: 4px;
-    background: transparent;
-    padding: 0 8px;
-    border: solid 1px #ffffff;
-    font-size: 14px;
-    color: #ffffff;
-  }
-  .content {
-    position: absolute;
-    left: 0;
-    top: $headerHeight;
-    right: 0;
-    bottom: 0;
-    color: #333333;
-  }
-  .login{
-    width: 100%;
-  }
-  .error{
-    margin: 5px 0;
-    display: block;
-  }
-  .field{
-    margin-bottom: 20px;
-  }
-  .user-name{
-    color: #ffffff;
-    margin-top: ($headerHeight - 32px) / 2;
-    height: 32px;
-    float: right;
+@import "~sty/var";
 
-    >.el-dropdown-link{
-      display: block;
-      border-radius: 18px;
-      background-color: #237483;
-      padding: 0 16px;
-      font-size: 14px;
-      width: 96px;
-      height: 32px;
-      line-height: 32px;
-      @include text-truncate;
-    }
+.header {
+  padding-top: 14px;
+  background: #fff;
+  box-shadow: 0 1px 0 0 rgba(32, 76, 101, 0.3);
+}
+.header {
+  height: $headerHeight;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 300;
+}
+.header-left {
+  margin-left: 24px;
+  > .logo {
+    vertical-align: top;
+    width: 214px;
+    height: 37px;
+    margin-top: ($headerHeight - 37px) / 2;
   }
-  .logout{
-    color: $green;
-    font-size: 14px;
-    margin-left: 12px;
+}
+.login-button {
+  margin-right: 66px;
+  margin-top: ($headerHeight - 32px) / 2;
+  width: 64px;
+  height: 32px;
+  border-radius: 4px;
+  background: transparent;
+  padding: 0 8px;
+  border: solid 1px #ffffff;
+  font-size: 14px;
+  color: #ffffff;
+}
+.content {
+  position: absolute;
+  left: 0;
+  top: $headerHeight;
+  right: 0;
+  bottom: 0;
+  color: #333333;
+}
+.login {
+  width: 100%;
+}
+.error {
+  margin: 5px 0;
+  display: block;
+}
+.field {
+  margin-bottom: 20px;
+}
+.user-name {
+  float: right;
+  color: #ffffff;
+  margin-right: 20px;
+  line-height: 30px;
+  margin-top: 15px;
+}
+.logout {
+  color: $green;
+  font-size: 14px;
+  margin-left: 12px;
+}
+.header-nav {
+  color: $blue;
+}
+.inspad-menu {
+  background: #fff;
+  box-shadow: 1px 1px 4px 1px rgba(32, 76, 101, 0.3);
+}
+.inspad-main {
+  padding: 0;
+  min-height: $min-height;
+  overflow: hidden;
+}
+.el-menu {
+  .is-active {
+    background: #e8f0f5;
   }
-  .el-dropdown.lang{
-    color: #237483;
-    cursor: pointer;
-    margin-right: 18px;
-    margin-top: ($headerHeight - 20px) / 2;
-    height: 20px;
-    line-height: 20px;
-    font-size: 16px;
-  }
-  .nav-list{
-    float: right;
-    color: #62a9b6;
-    white-space: nowrap;
-    margin-top: ($headerHeight - 20px) / 2;
-    margin-right: 144px;
-    >li{
-      display: inline-block;
-      margin-left: 60px;
-      >a{
-        line-height: 20px;
-        font-size: 18px;
-        font-weight: bold;
-        color: #62a9b6;
-      }
-      &:first-child{
-        margin-left: 0;
-      }
-    }
-  }
-  @media (max-width: 999px){
-    .nav-list {
-      margin-right: 20px;
-    }
-  }
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+  transform: translateX(30px);
+}
 </style>

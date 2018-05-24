@@ -35,6 +35,7 @@ export default {
     width: 16px;
     height: 16px;
     display: inline-block;
+    vertical-align: middle;
   }
 
   .icon > svg{
