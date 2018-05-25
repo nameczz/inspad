@@ -1,57 +1,41 @@
 <template>
-    <el-row :gutter="20" class="edit-note">
-      <el-col :span="10">
-        <div >
-            <div class="editor-content">
-               <div>
-                <h4 class="time">Today</h4>
-                <el-card 
-                shadow="never" class="edit_item" 
-                :body-style="{ padding: '0px'}">
-                {{content.substring(0,80) + '...'}}
-                </el-card>
-                <span class="timeNow">{{timeNow}}</span>
-              </div>
-            </div>
+  <el-row :gutter="20" class="edit-note">
+    <el-col :span="10">
+      <div>
+        <div class="editor-content">
+          <div>
+            <h4 class="time">Today</h4>
+            <el-card shadow="never" class="edit_item" :body-style="{ padding: '0px'}">
+              {{content.substring(0,80) + '...'}}
+            </el-card>
+            <span class="timeNow">{{timeNow}}</span>
+          </div>
         </div>
-        <div>
-          <h4 class="time">Tags:</h4>
-          <el-tag 
-          class="tag-item"
-          color="#52a6d8"
-          v-for="(item,index) in dynamicTags"
-          closable
-          :key="index"
-          v-if="dynamicTags.length > 0"
-          @close="handleClose(item)"
-          >
+      </div>
+      <div>
+        <h4 class="time">Tags:</h4>
+        <el-tag class="tag-item" color="#52a6d8" v-for="(item,index) in dynamicTags" closable :key="index" v-if="dynamicTags.length > 0" @close="handleClose(item)">
           {{item}}
-          </el-tag>
-        </div>
-        <div>
-          <el-input
-            class="input-new-tag"
-            v-if="inputVisible"
-            v-model="inputValue"
-            ref="saveTagInput"
-            @keyup.enter.native="handleInputConfirm"
-            @blur="handleInputConfirm"
-          >
-          </el-input>
-          <el-button v-else class="button_new_tag" @click="showInput">+ New Tag</el-button>
-        </div>
-      </el-col>
-      <el-col :span="14">
-        <div >
-						<summernote  ref="content" id="content" :content="content"></summernote>
-            <el-button class="submit" @click="postNote">Save</el-button>
-        </div>
-      </el-col>
-    </el-row>
+        </el-tag>
+      </div>
+      <div>
+        <el-input class="input-new-tag" v-if="inputVisible" v-model="inputValue" ref="saveTagInput" @keyup.enter.native="handleInputConfirm" @blur="handleInputConfirm">
+        </el-input>
+        <el-button v-else class="button_new_tag" @click="showInput">+ New Tag</el-button>
+      </div>
+    </el-col>
+    <el-col :span="14">
+      <div>
+        <summernote ref="content" id="content" :content="content"></summernote>
+        <el-button class="submit" @click="postNote">Save</el-button>
+      </div>
+    </el-col>
+  </el-row>
 
 </template>
 <script>
-import apiData from 'api/data'
+
+// import apiData from 'api/data'
 import { Row, Col, Card, Tag } from 'element-ui'
 import summernote from 'md/summernote/'
 import moment from 'moment'
@@ -84,12 +68,7 @@ export default {
     }
   },
   created() {
-    const noteId = this.$route.params.noteId
-    console.log(noteId)
-    apiData.getNote().then(res => {
-      this.content = res.body
-      this.dynamicTags = res.tags
-    })
+
   },
   watch: {
     content(val) {

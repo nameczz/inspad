@@ -43,27 +43,21 @@ const apiOptionTpl = {
   },
   dev(opt) {
     opt = Object.assign({}, opt)
-    opt.baseURL = `${process.env.API_DOMAIN_DEV_CENTER}/developer/api`
-    if (opt.data) {
-      const fd = new FormData()
-      fd.append('data', JSON.stringify(opt.data))
-      opt.data = fd
-    }
+    opt.baseURL = `http://360release-search.patsnap.com/patsnap360-search`
+    opt.headers['content-type'] = 'application/x-www-form-urlencoded'
+    opt.headers['X-PatSnap-From'] = 'Swagger-UI-Test'
+    console.log(opt)
     return opt
   },
   openapi(opt) {
     opt = Object.assign({}, opt)
-    opt.baseURL = `${process.env.API_DOMAIN_DEV_CENTER}/developer/api/openapi/common`
+    opt.baseURL = `${process.env.API_DOMAIN_DEV_CENTER}/api`
     const token = Cookies.get(cookieToken)
     if (!token) {
       throw new Error('unlogged')
     }
     opt.headers.Authorization = `Bearer ${token}`
-    if (opt.data) {
-      const fd = new FormData()
-      fd.append('data', JSON.stringify(opt.data))
-      opt.data = fd
-    }
+    opt.headers['content-type'] = 'application/json'
     return opt
   },
 }

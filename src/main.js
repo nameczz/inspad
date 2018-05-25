@@ -14,7 +14,11 @@ import i18n, {
 } from '@/i18n'
 import VeeValidate from 'vee-validate'
 import axios from 'axios'
+import moment from 'moment'
 
+const config = {
+  fieldsBagName: 'vee-fields', // 默认为 fields
+}
 Vue.prototype.$http = axios.create({
   // baseURL: process.env.API_ORIGIN + process.env.API_PATH,
   baseURL: '/',
@@ -22,12 +26,14 @@ Vue.prototype.$http = axios.create({
   timeout: 10000,
 })
 
+Vue.prototype.$moment = moment
+
 Vue.prototype.$ELEMENT = {
   size: 'mini'
 }
 Vue.use(Button)
 Vue.use(Input)
-Vue.use(VeeValidate)
+Vue.use(VeeValidate, config)
 
 Vue.component('icon', Icon)
 Vue.component('Copyright', Copyright)

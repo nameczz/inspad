@@ -1,40 +1,37 @@
 <template>
-    <el-row  class="subject_detail">
-      <el-col :span="10" class="subject_ideas">
-        <h2 class="title">有哪些旅行神器值得推荐？</h2>
-        <ul class="ideas">
-          <li class="single_idea"
-            v-for="(idea,index) in ideas"
-            :key="index"
-          >
-            <p class="inspad_blue">
-              <span>{{idea.username}}</span>
-              <span class="time">{{idea.createdTime}}</span>
-            </p>
-            <div class="inspad_black idea_content" v-html="idea.content">
-       
-            </div>
-            <div class="button-wrapper">
-              <li >
-                  <icon :src="voteIcon" class="icon"></icon>
-                  <span class="txt">Like ({{idea.likeCount}})</span>
-              </li>
+  <el-row class="subject_detail">
+    <el-col :span="10" class="subject_ideas">
+      <h2 class="title">有哪些旅行神器值得推荐？</h2>
+      <ul class="ideas">
+        <li class="single_idea" v-for="(idea,index) in ideas" :key="index">
+          <p class="inspad_blue">
+            <span>{{idea.username}}</span>
+            <span class="time">{{idea.createdTime}}</span>
+          </p>
+          <div class="inspad_black idea_content" v-html="idea.content">
 
-              <li class="fetch-font-14 fetch-226892">
-                  <icon :src="require('svg/comment.svg')" class="icon"></icon>
-                  <span class="txt">Comments ({{idea.commentsCount}})</span>
-              </li>
-            </div>
-          </li>
-          
-        </ul>
-      </el-col>
-      <el-col :span="12" class="subject_content">
-        <transition name="fade" mode="out-in">
-            <router-view ></router-view>
-          </transition>
-      </el-col>
-    </el-row>
+          </div>
+          <div class="button-wrapper">
+            <li>
+              <icon :src="voteIcon" class="icon"></icon>
+              <span class="txt">Like ({{idea.likeCount}})</span>
+            </li>
+
+            <li class="fetch-font-14 fetch-226892">
+              <icon :src="require('svg/comment.svg')" class="icon"></icon>
+              <span class="txt">Comments ({{idea.commentsCount}})</span>
+            </li>
+          </div>
+        </li>
+
+      </ul>
+    </el-col>
+    <el-col :span="13" class="subject_content">
+      <transition name="fade" mode="out-in">
+        <router-view></router-view>
+      </transition>
+    </el-col>
+  </el-row>
 </template>
 
 <script>

@@ -9,7 +9,7 @@ const router = new Router({
     {
       path: '/',
       redirect: {
-        name: 'subjects',
+        name: 'topicsSearch',
       },
     },
     {
@@ -30,6 +30,21 @@ const router = new Router({
           path: 'note/:noteId',
           name: 'noteDetail',
           component: () => import('@/pages/noteDetail/index.vue'),
+        },
+        {
+          path: 'topics/new',
+          name: 'newTopic',
+          component: () => import('@/pages/newTopic/newTopic.vue'),
+        },
+        {
+          path: 'topics/search',
+          name: 'topicsSearch',
+          component: () => import('@/pages/search/index.vue'),
+        },
+        {
+          path: 'topics/topic/idea/:ideaId',
+          name: 'ideaDetail',
+          component: () => import('@/pages/ideaDetail/ideaDetail.vue'),
         },
         {
           path: 'subject/:subjectId',
