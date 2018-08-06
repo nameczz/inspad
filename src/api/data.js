@@ -39,6 +39,27 @@ export default mapApi({
       return params
     }
   },
+  getPeriodical: {
+    url: '/search/periodical',
+    method: 'post',
+    transformRequest(params, opt) {
+      return params
+    }
+  },
+  getNews: {
+    url: '/search/news',
+    method: 'post',
+    transformRequest(params, opt) {
+      return params
+    }
+  },
+  getPatent: {
+    url: '/search/patent',
+    method: 'post',
+    transformRequest(params, opt) {
+      return params
+    }
+  },
   postIdea: {
     url: '/ideas',
     method: 'post',
@@ -54,7 +75,7 @@ export default mapApi({
     }
   },
   postIdeaDown: {
-    url: '/ideas/up',
+    url: '/ideas/down',
     method: 'post',
     transformRequest(params, opt) {
       return params

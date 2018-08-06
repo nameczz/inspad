@@ -44,7 +44,6 @@ import apiData from 'api/data'
 import { Row, Col, Dialog, FormItem, Form } from 'element-ui'
 import Cookies from 'js-cookie'
 import { cookieUserId, cookieUsername, cookieIdea } from '@/const/cookies'
-import Vue from 'vue'
 
 export default {
     components: {
@@ -125,10 +124,7 @@ export default {
             if (this.newComment.type === 'IDEA') {
                 this.ideaComments.push(result)
             } else if (this.newComment.index > -1) {
-                const comment = this.ideaComments[this.newComment.index]
-                console.log(comment)
-                comment.children = result
-                Vue.$set(this.ideaComments, this.newComment.index, comment)
+                this.getIdeaComments()
             }
             this.commentLoading = false
             this.newCommentVisible = false

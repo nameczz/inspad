@@ -15,8 +15,7 @@ import i18n from '@/i18n'
 const ai = axios.create({
   // baseURL: process.env.API_ORIGIN + process.env.API_PATH,
   baseURL: process.env.API_DOMAIN,
-  withCredentials: true,
-  timeout: 10000,
+  withCredentials: true
 })
 const jwtDecode = require('jwt-decode')
 
@@ -46,7 +45,7 @@ const apiOptionTpl = {
     opt.baseURL = `http://360release-search.patsnap.com/patsnap360-search`
     opt.headers['content-type'] = 'application/x-www-form-urlencoded'
     opt.headers['X-PatSnap-From'] = 'Swagger-UI-Test'
-    console.log(opt)
+
     return opt
   },
   openapi(opt) {
@@ -57,7 +56,6 @@ const apiOptionTpl = {
       throw new Error('unlogged')
     }
     opt.headers.Authorization = `Bearer ${token}`
-    opt.headers['content-type'] = 'application/json'
     return opt
   },
 }
@@ -124,10 +122,6 @@ async function request(opt, reqOpts) {
       })
       throw e
     }
-    Message({
-      message: i18n.t('error.systemError'),
-      type: 'error',
-    })
     throw e
   }
 }
@@ -148,7 +142,7 @@ function mapApi(apis) {
           baseURL: '',
           url: opt.url,
           headers: {
-            'content-type': 'application/x-www-form-urlencoded',
+            'content-type': 'application/json',
           },
         }
         if (!opt.tpl) {

@@ -4,7 +4,7 @@
       <el-header class="header">
         <el-row class="container" type="flex" justify="space-between">
           <el-col class=" header-left">
-            INSPAD
+            IDEAPAD
           </el-col>
           <el-col v-if="loginStatus==='logged'" class="user_name">
             <span>T</span>
@@ -32,7 +32,7 @@
         </el-row>
       </el-header> -->
 
-      <el-container>
+      <el-container style="padding: 0 20px">
         <el-aside width="280px">
           <div class="topics_menu">
             <el-menu :default-active="topics[0].id + ''" v-if="topics.length>0">
@@ -63,13 +63,15 @@
               </div>
               <div class="button-wrapper">
 
-                <li @click="vote(idea.id, 'unlike')">
-                  <icon :src="require('svg/dislike.svg')" class="likeicon"></icon>
+                <li>
+                  <icon :src="require('svg/dislike_full.svg')" v-show="idea.myDown === 'down'" style="width: 16px;height: 16px;" @click.native="vote(idea.id, 'no', index)"></icon>
+                  <icon :src="require('svg/dislike.svg')" v-show="idea.myDown !== 'down'" style="width: 16px;height: 16px;" @click.native="vote(idea.id, 'unlike', index)"></icon>
                   <span class="txt"> ({{idea.downCount}})</span>
                 </li>
 
-                <li @click="vote(idea.id, 'like')">
-                  <icon :src="require('svg/like.svg')" class="likeicon"></icon>
+                <li>
+                  <icon :src="require('svg/like_full.svg')" v-show="idea.myUp === 'up'" @click.native="vote(idea.id, 'no', index)"></icon>
+                  <icon :src="require('svg/like.svg')" v-show="idea.myUp !== 'up'" @click.native="vote(idea.id, 'like', index)"></icon>
                   <span class="txt"> ({{idea.upCount}})</span>
                 </li>
 
@@ -192,8 +194,7 @@ export default {
   },
   mounted() {
     this.getTopics()
-
-    // this.getNewComment()
+    this.getNewComment()
   },
   computed: {
     loginStatus() {
@@ -207,17 +208,15 @@ export default {
     }
   },
   methods: {
-    showError(err) {
+    showError(err, type) {
       Message({
         message: err,
-        type: 'error',
+        type: type || 'error',
       })
     },
     addTag() {
       const highlights = document.getElementsByClassName('highlight')
       const self = this
-      console.log(highlights.length)
-      console.log(highlights[0])
       for (let i = 0; i < highlights.length; i++) {
         highlights[i].addEventListener('click', function () {
           const tag = this.innerText
@@ -247,6 +246,9 @@ export default {
       this.choosedTopic.title = topic.title
       this.choosedTopic.content = topic.content
       this.$store.commit('setTopic', topic.title)
+      this.$router.push({
+        name: 'topicsSearch'
+      })
       this.moreIdeas(false)
     },
     async NewTopic() {
@@ -320,13 +322,15 @@ export default {
           return
         }
         ideas.map(val => {
-          const keywords = ['区块链', '节点']
-          keywords.map(key => {
-            const regx = new RegExp(key, 'g')
-            const highlight = `<span class="highlight">${key}</span>`
-            val.content = val.content.replace(regx, highlight)
-            return false
-          })
+          if (val.keywords) {
+            const keywords = val.keywords.split(',')
+            keywords.map(key => {
+              const regx = new RegExp(key.trim(), 'g')
+              const highlight = `<span class="highlight">${key}</span>`
+              val.content = val.content.replace(regx, highlight)
+              return key
+            })
+          }
           val.createdTime = this.$moment(val.createdTime).format('YYYY-MM-DD HH:mm:ss')
           this.ideas.push(val)
           return val
@@ -351,44 +355,59 @@ export default {
         content: this.ideaContent
       }
       const result = await apiData.postIdea(config)
-      console.log(result)
+      if (result.keywords) {
+        const keywords = result.keywords.split(',')
+        keywords.map(key => {
+          const regx = new RegExp(key.trim(), 'g')
+          const highlight = `<span class="highlight">${key}</span>`
+          result.content = result.content.replace(regx, highlight)
+          return key
+        })
+      }
       result.username = username.split('@')[0]
       result.createdTime = this.$moment(result.createdTime).format('YYYY-MM-DD HH:mm:ss')
       this.ideas.push(result)
+      this.$nextTick(() => {
+        this.addTag()
+      })
     },
-    async vote(id, type) {
+    async vote(id, type, index) {
       const userId = Cookies.get(cookieUserId)
       const config = {
         uid: userId,
         ideaId: id
       }
+      console.log(index)
       if (type === 'like') {
-        apiData.postIdeaUp(config)
+        const result = await apiData.postIdeaUp(config)
+        this.ideas[index].upCount = result.upCount
+        this.ideas[index].myUp = 'up'
+      } else if (type === 'no') {
+        this.showError('您已投过票', 'info')
       } else {
         const result = await apiData.postIdeaDown(config)
-        console.log(result)
+        this.ideas[index].downCount = result.downCount
+        this.ideas[index].myDown = 'down'
       }
     },
     async getNewComment() {
       const config = {
         uid: 0,
-        createdTime: time,
-        topicId: this.choosedTopic.id
+        createdTime: time
       }
-
-      config.topicId = this.choosedTopic.id
       const result = await apiData.getNewComment(config)
       if (result.length > 0) {
         Notification({
           title: '有新增评论',
-          dangerouslyUseHTMLString: true,
-          message: `<a href="#/topics/topic/idea/${result[0].relatedId}">${result[0].content}</a>`,
+          message: result[0].content,
           duration: 0
         })
         console.log(result)
         time = new Date().getTime()
       }
-      this.getNewComment()
+      setTimeout(() => {
+        this.getNewComment()
+      }, 1000)
     },
     openLoginDialog() {
       this.dialogVisible = true
@@ -487,11 +506,12 @@ $gray: #828282;
   h4 {
     font-size: 18px;
     color: $blue;
-    height: 58px;
+    min-height: 58px;
     line-height: 58px;
   }
   p {
-    height: 56px;
+    padding-bottom: 10px;
+    min-height: 56px;
     line-height: 1.5;
     font-size: 14px;
     color: $gray;
@@ -559,6 +579,7 @@ $gray: #828282;
     border: 1px solid #fff;
     padding: 6px;
     border-radius: 6px;
+    line-height: 1.5;
     background: #fff;
     box-shadow: 0 1px 4px 0 rgba(32, 76, 101, 0.3);
     cursor: pointer;
